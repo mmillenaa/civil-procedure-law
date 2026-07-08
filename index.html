@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulado — Processo Civil II (135 questões)</title>
+<title>Simulado DPC II + Flashcards</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,6 +77,13 @@
   .match-card.matched { border-color: var(--color-correct); background: rgba(16, 185, 129, 0.1); color: #a1a1aa; cursor: default; opacity: 0.7; }
   .match-card.error { border-color: var(--color-wrong); background: rgba(239, 68, 68, 0.15); animation: shakeMatch 0.4s; }
   @keyframes shakeMatch { 0% { transform: translateX(0); } 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-4px); } 100% { transform: translateX(0); } }
+
+  /* Flashcards */
+  #flashcard-container { display: none; background: #1a1a24; padding: 25px; border-radius: 8px; margin: 10px 0; border-left: 4px solid var(--accent-color); }
+  #flashcard-counter { color: var(--text-muted); font-size: 14px; }
+  #flashcard-question { font-size: 20px; color: #fff; margin-bottom: 20px; }
+  #flashcard-answer { font-size: 18px; color: #a7f3d0; background: #222227; padding: 15px; border-radius: 6px; margin-top: 10px; display: none; }
+  .flash-buttons { display: flex; gap: 12px; margin-top: 20px; justify-content: center; }
 </style>
 </head>
 <body>
@@ -109,6 +116,19 @@
       <h2 class="match-game-title">Associações Finais</h2>
       <p class="match-game-subtitle">Clique no conceito (esquerda) e depois na sua correspondência (direita).</p>
       <div id="match-games-container"></div>
+    </div>
+    <!-- Flashcard container -->
+    <div id="flashcard-container">
+      <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+        <span id="flashcard-counter">Card 1 de 1</span>
+        <span style="color:var(--accent-color); cursor:pointer;" onclick="toggleFlashcardAnswer()">💡 Revelar</span>
+      </div>
+      <div id="flashcard-question">Pergunta</div>
+      <div id="flashcard-answer">Resposta</div>
+      <div class="flash-buttons">
+        <button class="btn-nav" onclick="prevFlashcard()" id="flash-prev">← Anterior</button>
+        <button class="btn-nav" onclick="nextFlashcard()" id="flash-next">Próximo →</button>
+      </div>
     </div>
     <div class="control-panel">
       <button class="btn-nav" id="btn-prev" onclick="navigateQ(-1)" disabled>← Voltar</button>
@@ -248,7 +268,6 @@ const rawQuestions = [
   { q: "102. A ________ é a identidade de partes, pedido e causa de pedir.", opts: ["Litispendência", "Coisa julgada", "Preclusão", "Conexão"], ans: 0, exp: "Litispendência = mesmos elementos." },
   { q: "103. A ________ é a dependência de um processo em relação a outro.", opts: ["Prejudicialidade", "Conexão", "Continência", "Litispendência"], ans: 0, exp: "Prejudicialidade = decisão de um influencia outro." },
   { q: "104. A ________ é a competência territorial do juízo.", opts: ["Foro", "Juízo", "Tribunal", "Corte"], ans: 0, exp: "Foro = local da ação." },
-  // ===== CORREÇÕES SOLICITADAS (105, 106, 109, 121-125) =====
   { q: "105. A incompetência absoluta (matéria, pessoa, função) é uma nulidade que:", opts: ["Pode ser suprida pela prorrogação de competência", "Só pode ser arguida pelo réu", "Pode ser conhecida de ofício pelo juiz a qualquer tempo", "Preclui se não arguida na contestação"], ans: 2, exp: "Incompetência absoluta é de ordem pública, pode ser arguida a qualquer tempo e conhecida de ofício (art. 64, §1º, CPC)." },
   { q: "106. A incompetência relativa (territorial) deve ser arguida pelo réu na contestação, sob pena de:", opts: ["Decadência", "Preclusão", "Renúncia tácita à competência", "Nulidade absoluta"], ans: 2, exp: "A incompetência relativa prorroga-se se não for arguida na contestação (art. 65, CPC)." },
   { q: "107. A ________ é o vício da petição inicial que impede a compreensão do pedido.", opts: ["Inépcia", "Ilegitimidade", "Incompetência", "Nulidade"], ans: 0, exp: "Inépcia = falta de clareza." },
@@ -460,23 +479,8 @@ const matchData = [
     ], matches: {"c37":"a37","c38":"a38","c39":"a39","c40":"a40"} }
 ];
 
-<script>
 // ============================================================
-//  BANCO DE 135 QUESTÕES (mantido o mesmo conteúdo anterior)
-//  (insira aqui as 135 questões que você já tinha – não vou repetir para não estourar o limite)
-// ============================================================
-//  ATENÇÃO: COLE AQUI O ARRAY rawQuestions COM AS 135 QUESTÕES QUE VOCÊ JÁ POSSUI.
-//  (caso não tenha, use o código que enviei anteriormente)
-// ============================================================
-
-// ============================================================
-//  MATCH DATA – 10 BLOCOS DE ASSOCIAÇÃO (mantido)
-// ============================================================
-// (cole aqui o matchData que você já tem – não vou repetir)
-// ============================================================
-
-// ============================================================
-//  FLASHCARDS – NOVO BLOCO COM CONTEÚDO DOS 3 SLIDES
+//  FLASHCARDS – CONTEÚDO DOS 3 SLIDES
 // ============================================================
 const flashcards = [
   // ---- AULA 1 (localização, fases, casos STJ) ----
@@ -565,7 +569,7 @@ const flashcards = [
 ];
 
 // ============================================================
-//  CÓDIGO DO SIMULADOR (ADAPTADO PARA FLASHCARDS)
+//  CÓDIGO DO SIMULADOR (com flashcards integrados)
 // ============================================================
 let currentQ = 0;
 let userAnswers = new Array(rawQuestions.length).fill(null);
@@ -579,26 +583,9 @@ const elPrev = document.getElementById('btn-prev');
 const elNext = document.getElementById('btn-next');
 
 // --- elementos para flashcards ---
-const flashcardContainer = document.createElement('div');
-flashcardContainer.id = 'flashcard-container';
-flashcardContainer.style.display = 'none';
-flashcardContainer.innerHTML = `
-  <div style="background:#1a1a24; padding:25px; border-radius:8px; margin:10px 0; border-left:4px solid #d97706;">
-    <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-      <span id="flashcard-counter" style="color:#9494a1;">Card 1 de ${flashcards.length}</span>
-      <span style="color:#d97706; cursor:pointer;" onclick="toggleFlashcardAnswer()">💡 Revelar</span>
-    </div>
-    <div id="flashcard-question" style="font-size:20px; color:#fff; margin-bottom:20px;">Pergunta</div>
-    <div id="flashcard-answer" style="font-size:18px; color:#a7f3d0; display:none; background:#222227; padding:15px; border-radius:6px; margin-top:10px;">Resposta</div>
-    <div style="display:flex; gap:12px; margin-top:20px; justify-content:center;">
-      <button class="btn-nav" onclick="prevFlashcard()" id="flash-prev">← Anterior</button>
-      <button class="btn-nav" onclick="nextFlashcard()" id="flash-next">Próximo →</button>
-    </div>
-  </div>
-`;
-document.getElementById('standard-q-container').after(flashcardContainer);
+const flashDiv = document.getElementById('flashcard-container');
 
-// --- variáveis de estado dos flashcards ---
+// --- variáveis dos flashcards ---
 let currentFlashcard = 0;
 let flashRevealed = false;
 
@@ -639,10 +626,19 @@ function nextFlashcard() {
   }
 }
 
-// --- modificação na função init para incluir flashcards no nav ---
+// --- funções do simulador ---
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function init() {
   elNav.innerHTML = '';
-  // total de itens = questões + 2 (associações e flashcards)
+  // total de itens = 135 questões + 2 especiais (associações e flashcards)
   const totalSpecial = 2;
   const totalItems = rawQuestions.length + totalSpecial;
   for(let i = 0; i < totalItems; i++) {
@@ -672,9 +668,7 @@ function init() {
   renderMatchGames();
 }
 
-// --- substituir loadQuestion para lidar com índices especiais ---
 function loadQuestion() {
-  // Atualiza estado da barra de navegação
   const totalItems = rawQuestions.length + 2;
   for(let i = 0; i < totalItems; i++) {
     const item = document.getElementById('nav-item-' + i);
@@ -746,155 +740,6 @@ function loadQuestion() {
     renderReviewMode();
   } else {
     renderAnsweringMode();
-  }
-}
-
-// --- ajustar navigateQ para lidar com o final ---
-function navigateQ(step) {
-  if (step === 1 && currentQ === rawQuestions.length + 1) {
-    showResults();
-    return;
-  }
-  currentQ += step;
-  if (currentQ < 0) currentQ = 0;
-  const maxIndex = rawQuestions.length + 1;
-  if (currentQ > maxIndex) currentQ = maxIndex;
-  loadQuestion();
-}
-
-// --- ajustar jumpToQuestion ---
-function jumpToQuestion(idx) {
-  currentQ = idx;
-  loadQuestion();
-}
-
-// --- ajustar showResults (já existente) ---
-function showResults() {
-  document.getElementById('quiz-screen').style.display = 'none';
-  document.getElementById('result-screen').style.display = 'block';
-  const totalItems = rawQuestions.length + 2;
-  for(let i=0; i < totalItems; i++) {
-    const item = document.getElementById('nav-item-' + i);
-    if (item) item.style.boxShadow = "none";
-  }
-  let correct = 0, answered = 0;
-  userAnswers.forEach(a => {
-    if (a !== null) {
-      answered++;
-      if (a.isCorrect) correct++;
-    }
-  });
-  const pct = answered > 0 ? Math.round((correct / rawQuestions.length) * 100) : 0;
-  document.getElementById('score-val').textContent = pct + '%';
-  document.getElementById('val-correct').textContent = correct;
-  document.getElementById('val-wrong').textContent = answered - correct;
-  if (pct >= 70) {
-    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
-  }
-}
-
-// --- manter o restante do código: renderAnsweringMode, renderReviewMode, handleAction, match logic ---
-// (esses permanecem iguais aos que você já tem – não vou repetir para não alongar)
-// ============================================================
-//  IMPORTANTE: COLE AQUI O RESTANTE DO CÓDIGO QUE VOCÊ JÁ POSSUI
-//  (renderAnsweringMode, renderReviewMode, handleAction, match logic, etc.)
-// ============================================================
-
-// Inicialização
-document.addEventListener("DOMContentLoaded", init);
-</script>
-
-// ============================================================
-//  CÓDIGO DO SIMULADOR
-// ============================================================
-let currentQ = 0;
-let userAnswers = new Array(rawQuestions.length).fill(null);
-const elNav = document.getElementById('nav-container');
-const elQText = document.getElementById('q-text');
-const elOpts = document.getElementById('opts');
-const elBtn = document.getElementById('btn-action');
-const elFeedback = document.getElementById('feedback');
-const elCounter = document.getElementById('q-counter');
-const elPrev = document.getElementById('btn-prev');
-const elNext = document.getElementById('btn-next');
-
-function init() {
-  elNav.innerHTML = '';
-  for(let i = 0; i <= rawQuestions.length; i++) {
-    const a = document.createElement('a');
-    a.id = 'nav-item-' + i;
-    a.className = 'nav-item unanswered';
-    a.textContent = i === rawQuestions.length ? 'Revisão' : (i + 1);
-    a.title = i === rawQuestions.length ? 'Ir para o Desafio' : 'Ir para Questão ' + (i + 1);
-    a.onclick = (e) => {
-      e.preventDefault();
-      document.getElementById('result-screen').style.display = 'none';
-      document.getElementById('quiz-screen').style.display = 'block';
-      jumpToQuestion(i);
-      document.getElementById('quiz-screen').scrollIntoView({behavior: "smooth"});
-    };
-    elNav.appendChild(a);
-  }
-  loadQuestion();
-  renderMatchGames();
-}
-
-function shuffleArray(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function loadQuestion() {
-  for(let i = 0; i <= rawQuestions.length; i++) {
-    const item = document.getElementById('nav-item-' + i);
-    if (!item) continue;
-    item.className = 'nav-item';
-    if (i === rawQuestions.length) {
-      item.classList.add('challenge');
-    } else if (userAnswers[i] !== null) {
-      item.classList.add(userAnswers[i].isCorrect ? 'status-correct' : 'status-wrong');
-    } else {
-      item.classList.add('unanswered');
-    }
-    item.style.boxShadow = "none";
-  }
-  const currentItem = document.getElementById('nav-item-' + currentQ);
-  if (currentItem) {
-    if (currentQ < rawQuestions.length && userAnswers[currentQ] === null) {
-      currentItem.classList.remove('unanswered');
-      currentItem.classList.add('active-color');
-    } else if (currentQ === rawQuestions.length) {
-      currentItem.style.boxShadow = "0 0 0 2px #fff";
-    } else {
-      currentItem.style.boxShadow = "0 0 0 2px #fff";
-    }
-  }
-  elPrev.disabled = (currentQ === 0);
-
-  if (currentQ === rawQuestions.length) {
-    document.getElementById('standard-q-container').style.display = 'none';
-    document.getElementById('interactive-addon').style.display = 'block';
-    elBtn.style.display = 'none';
-    elCounter.textContent = 'Seção de Associações';
-    elNext.textContent = 'Finalizar 🏁';
-  } else {
-    document.getElementById('standard-q-container').style.display = 'block';
-    document.getElementById('interactive-addon').style.display = 'none';
-    elBtn.style.display = 'block';
-    elCounter.textContent = 'Questão ' + (currentQ + 1) + ' de ' + rawQuestions.length;
-    elQText.textContent = rawQuestions[currentQ].q;
-    elFeedback.style.display = 'none';
-    elOpts.innerHTML = '';
-    elNext.textContent = 'Avançar →';
-    if (userAnswers[currentQ] !== null) {
-      renderReviewMode();
-    } else {
-      renderAnsweringMode();
-    }
   }
 }
 
@@ -977,13 +822,14 @@ function handleAction() {
 }
 
 function navigateQ(step) {
-  if (step === 1 && currentQ === rawQuestions.length) {
+  if (step === 1 && currentQ === rawQuestions.length + 1) {
     showResults();
     return;
   }
   currentQ += step;
   if (currentQ < 0) currentQ = 0;
-  if (currentQ > rawQuestions.length) currentQ = rawQuestions.length;
+  const maxIndex = rawQuestions.length + 1;
+  if (currentQ > maxIndex) currentQ = maxIndex;
   loadQuestion();
 }
 
@@ -995,21 +841,30 @@ function jumpToQuestion(idx) {
 function showResults() {
   document.getElementById('quiz-screen').style.display = 'none';
   document.getElementById('result-screen').style.display = 'block';
-  for(let i=0; i <= rawQuestions.length; i++) {
+  const totalItems = rawQuestions.length + 2;
+  for(let i=0; i < totalItems; i++) {
     const item = document.getElementById('nav-item-' + i);
     if (item) item.style.boxShadow = "none";
   }
   let correct = 0, answered = 0;
-  userAnswers.forEach(a => { if (a !== null) { answered++; if (a.isCorrect) correct++; } });
+  userAnswers.forEach(a => {
+    if (a !== null) {
+      answered++;
+      if (a.isCorrect) correct++;
+    }
+  });
   const pct = answered > 0 ? Math.round((correct / rawQuestions.length) * 100) : 0;
   document.getElementById('score-val').textContent = pct + '%';
   document.getElementById('val-correct').textContent = correct;
   document.getElementById('val-wrong').textContent = answered - correct;
-  if (pct >= 70) confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+  if (pct >= 70) {
+    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+  }
 }
 
-// Match logic
+// --- Match logic ---
 let activeConcept = null, activeAuthor = null;
+
 function renderMatchGames() {
   const container = document.getElementById('match-games-container');
   let html = '';
@@ -1059,6 +914,7 @@ function checkMatch(blockIndex) {
   activeAuthor = null;
 }
 
+// Inicialização
 document.addEventListener("DOMContentLoaded", init);
 </script>
 </body>
