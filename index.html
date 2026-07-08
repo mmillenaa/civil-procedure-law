@@ -82,7 +82,7 @@
 <body>
 <div class="container">
   <div class="header">
-    <h1>Preparação: Processo Civil II</h1>
+    <h1>Estudo Dirigido: Processo Civil II</h1>
     <div class="header-info">
       <div class="sub-header-text">Baseado no material do Prof. Titular José Roberto dos Santos Bedaque<br>e Profa. Associada Clarisse Frechiani Lara Leite</div>
       <div class="added-info-text">DPC 0319 - 3º Ano Noturno</div>
@@ -135,7 +135,7 @@
 
 <script>
 // ============================================================
-//  BANCO DE 135 QUESTÕES – ORDEM PROGRESSIVA
+//  BANCO DE 135 QUESTÕES – ORDEM PROGRESSIVA (CORRIGIDO)
 // ============================================================
 const rawQuestions = [
   // ===== BLOCO 1: FUNDAMENTOS (1–20) =====
@@ -248,12 +248,13 @@ const rawQuestions = [
   { q: "102. A ________ é a identidade de partes, pedido e causa de pedir.", opts: ["Litispendência", "Coisa julgada", "Preclusão", "Conexão"], ans: 0, exp: "Litispendência = mesmos elementos." },
   { q: "103. A ________ é a dependência de um processo em relação a outro.", opts: ["Prejudicialidade", "Conexão", "Continência", "Litispendência"], ans: 0, exp: "Prejudicialidade = decisão de um influencia outro." },
   { q: "104. A ________ é a competência territorial do juízo.", opts: ["Foro", "Juízo", "Tribunal", "Corte"], ans: 0, exp: "Foro = local da ação." },
-  { q: "105. A ________ é a incompetência absoluta (matéria, pessoa, função).", opts: ["Incompetência absoluta", "Incompetência relativa", "Nulidade", "Irregularidade"], ans: 0, exp: "Incompetência absoluta = pode ser arguida a qualquer tempo." },
-  { q: "106. A ________ é a incompetência relativa (territorial).", opts: ["Incompetência relativa", "Incompetência absoluta", "Nulidade", "Preclusão"], ans: 0, exp: "Relativa = alegada na contestação." },
+  // ===== CORREÇÕES SOLICITADAS (105, 106, 109, 121-125) =====
+  { q: "105. A incompetência absoluta (matéria, pessoa, função) é uma nulidade que:", opts: ["Pode ser suprida pela prorrogação de competência", "Só pode ser arguida pelo réu", "Pode ser conhecida de ofício pelo juiz a qualquer tempo", "Preclui se não arguida na contestação"], ans: 2, exp: "Incompetência absoluta é de ordem pública, pode ser arguida a qualquer tempo e conhecida de ofício (art. 64, §1º, CPC)." },
+  { q: "106. A incompetência relativa (territorial) deve ser arguida pelo réu na contestação, sob pena de:", opts: ["Decadência", "Preclusão", "Renúncia tácita à competência", "Nulidade absoluta"], ans: 2, exp: "A incompetência relativa prorroga-se se não for arguida na contestação (art. 65, CPC)." },
   { q: "107. A ________ é o vício da petição inicial que impede a compreensão do pedido.", opts: ["Inépcia", "Ilegitimidade", "Incompetência", "Nulidade"], ans: 0, exp: "Inépcia = falta de clareza." },
   { q: "108. A ________ é a falta de legitimidade de uma das partes.", opts: ["Ilegitimidade de parte", "Inépcia", "Incompetência", "Impossibilidade jurídica"], ans: 0, exp: "Ilegitimidade = parte errada." },
-  { q: "109. O ________ é a defesa do réu que impugna o processo.", opts: ["Embargos declaratórios", "Contestação", "Reconvenção", "Exceção"], ans: 0, exp: "Contestação = defesa." },
-  { q: "110. A ________ é a oposição de questões processuais pelo réu antes do mérito.", opts: ["Preliminar", "Mérito", "Recurso", "Exceção"], ans: 0, exp: "Preliminar = defesa processual." },
+  { q: "109. A defesa processual em que o réu aponta vícios formais da petição inicial (ex: inépcia, ilegitimidade) antes de discutir o mérito é chamada de:", opts: ["Contestação direta", "Preliminar de mérito", "Preliminar de defesa processual", "Reconvenção"], ans: 2, exp: "As preliminares são questões processuais levantadas pelo réu para impugnar o processo (art. 337, CPC)." },
+  { q: "110. O ________ é a defesa do réu que impugna o mérito do pedido do autor.", opts: ["Embargos declaratórios", "Contestação", "Reconvenção", "Exceção"], ans: 1, exp: "Contestação é a defesa de mérito (art. 336, CPC)." },
   { q: "111. A ________ é o ato de o juiz declarar a carência da ação.", opts: ["Extinção sem mérito", "Extinção com mérito", "Saneamento", "Instrução"], ans: 0, exp: "Art. 485: extinção sem mérito." },
   { q: "112. A ________ é a decisão que julga procedente ou improcedente o pedido.", opts: ["Sentença de mérito", "Sentença terminativa", "Decisão interlocutória", "Despacho"], ans: 0, exp: "Sentença de mérito = art. 487." },
   { q: "113. A ________ é a fase em que o juiz organiza o processo e corrige vícios.", opts: ["Saneamento", "Postulatória", "Instrutória", "Decisória"], ans: 0, exp: "Saneamento = art. 357." },
@@ -264,11 +265,11 @@ const rawQuestions = [
   { q: "118. A ________ é a decisão que resolve incidente (ex: interceptação telefônica).", opts: ["Decisão interlocutória", "Sentença", "Despacho", "Acórdão"], ans: 0, exp: "Decisão interlocutória = ato decisório não sentença." },
   { q: "119. O ________ é o recurso cabível contra decisão interlocutória.", opts: ["Agravo de instrumento", "Apelação", "Embargos", "Recurso especial"], ans: 0, exp: "Agravo de instrumento (art. 1015)." },
   { q: "120. A ________ é a impugnação à sentença por omissão, contradição ou obscuridade.", opts: ["Embargos de declaração", "Apelação", "Agravo", "Recurso extraordinário"], ans: 0, exp: "Embargos de declaração (art. 1022)." },
-  { q: "121. O ________ é o recurso para uniformizar a jurisprudência.", opts: ["Recurso especial", "Recurso extraordinário", "Agravo", "Embargos de divergência"], ans: 0, exp: "Embargos de divergência (art. 1043)." },
-  { q: "122. A ________ é a decisão monocrática do relator no tribunal.", opts: ["Decisão monocrática", "Acórdão", "Sentença", "Despacho"], ans: 0, exp: "Art. 932: decisão do relator." },
-  { q: "123. A ________ é a técnica de julgamento por amostragem de recursos repetitivos.", opts: ["Recurso repetitivo", "Recurso especial", "Recurso extraordinário", "Agravo"], ans: 0, exp: "Recurso repetitivo (art. 1036)." },
-  { q: "124. A ________ é a súmula vinculante editada pelo STF.", opts: ["Súmula vinculante", "Súmula comum", "Precedente", "Jurisprudência"], ans: 0, exp: "Súmula vinculante = eficácia geral." },
-  { q: "125. A ________ é o incidente de resolução de demandas repetitivas (IRDR).", opts: ["IRDR", "Recurso repetitivo", "Ação rescisória", "Mandado de segurança"], ans: 0, exp: "IRDR = art. 976." },
+  { q: "121. Os embargos de divergência são cabíveis no STJ e no TST para uniformizar a jurisprudência quando houver:", opts: ["Decisão contrária à súmula vinculante", "Divergência entre julgados da mesma turma ou de turmas diferentes", "Ofensa direta à Constituição", "Contradição na fundamentação"], ans: 1, exp: "Embargos de divergência cabem quando houver divergência jurisprudencial (art. 1043, CPC)." },
+  { q: "122. A decisão monocrática proferida pelo relator, prevista no art. 932 do CPC, pode ser impugnada por:", opts: ["Apelação", "Agravo interno", "Recurso especial", "Embargos de declaração"], ans: 1, exp: "Art. 932, V, e art. 1021: agravo interno contra decisão monocrática do relator." },
+  { q: "123. A técnica de julgamento de recursos repetitivos (arts. 1036 a 1041 do CPC) consiste em:", opts: ["Julgar todos os recursos individualmente", "Selecionar recursos representativos da controvérsia para uniformização", "Suspender todos os processos até decisão do STF", "Substituir o mérito por acordo"], ans: 1, exp: "O sistema de recursos repetitivos permite a afetação de recursos representativos para julgamento paradigmático." },
+  { q: "124. A súmula vinculante editada pelo STF, nos termos da EC 45/2004, tem eficácia:", opts: ["Erga omnes e efeito vinculante em relação à administração pública e Judiciário", "Apenas entre as partes do processo", "Apenas para os órgãos do Judiciário", "Não possui efeito vinculante, apenas persuasivo"], ans: 0, exp: "Súmula vinculante obriga toda a administração pública e órgãos do Judiciário (art. 103-A, CF)." },
+  { q: "125. O Incidente de Resolução de Demandas Repetitivas (IRDR) é cabível para uniformizar a interpretação de questão de direito:", opts: ["Em casos individuais de valor ínfimo", "Quando houver efetiva repetição de processos com controvérsia jurídica comum", "Exclusivamente em matéria tributária", "Para revogar súmulas do STJ"], ans: 1, exp: "IRDR (art. 976) exige efetiva repetição de processos e controvérsia sobre questão de direito." },
   // ===== BLOCO 7: QUESTÕES ORIGINAIS E DESAFIOS FINAIS (126–135) =====
   { q: "126. De acordo com J.J. Calmon de Passos, 'importa mais à ordem jurídica o restabelecimento da paz social que a exaustiva apuração dos fatos'. Assinale a alternativa que apresenta uma regra do nosso sistema processual que DESAFIA essa afirmação (ou seja, que privilegia a busca autêntica pela verdade material):",
     opts: [
@@ -460,7 +461,7 @@ const matchData = [
 ];
 
 // ============================================================
-//  CÓDIGO DO SIMULADOR (ADAPTADO PARA 135 QUESTÕES)
+//  CÓDIGO DO SIMULADOR
 // ============================================================
 let currentQ = 0;
 let userAnswers = new Array(rawQuestions.length).fill(null);
