@@ -460,6 +460,350 @@ const matchData = [
     ], matches: {"c37":"a37","c38":"a38","c39":"a39","c40":"a40"} }
 ];
 
+<script>
+// ============================================================
+//  BANCO DE 135 QUESTÕES (mantido o mesmo conteúdo anterior)
+//  (insira aqui as 135 questões que você já tinha – não vou repetir para não estourar o limite)
+// ============================================================
+//  ATENÇÃO: COLE AQUI O ARRAY rawQuestions COM AS 135 QUESTÕES QUE VOCÊ JÁ POSSUI.
+//  (caso não tenha, use o código que enviei anteriormente)
+// ============================================================
+
+// ============================================================
+//  MATCH DATA – 10 BLOCOS DE ASSOCIAÇÃO (mantido)
+// ============================================================
+// (cole aqui o matchData que você já tem – não vou repetir)
+// ============================================================
+
+// ============================================================
+//  FLASHCARDS – NOVO BLOCO COM CONTEÚDO DOS 3 SLIDES
+// ============================================================
+const flashcards = [
+  // ---- AULA 1 (localização, fases, casos STJ) ----
+  { pergunta: "Qual é o conteúdo programático de DPC II?", resposta: "Provas, decisões, coisa julgada, litisconsórcio e intervenção de terceiros." },
+  { pergunta: "Quais são as fases (subfases) do processo de conhecimento?", resposta: "Postulatória, ordinatória (saneamento), instrutória e decisória." },
+  { pergunta: "O que ocorre na fase postulatória?", resposta: "Apresentação da demanda, contestação e reconvenção." },
+  { pergunta: "Qual a finalidade da fase de saneamento?", resposta: "Corrigir irregularidades, julgar o que for possível e orientar a produção de provas." },
+  { pergunta: "O que acontece na fase instrutória?", resposta: "Colheita de provas (perícias, documentos, testemunhos)." },
+  { pergunta: "Quando se encerra a fase decisória?", resposta: "Com a prolação da sentença (com ou sem mérito)." },
+  { pergunta: "Segundo o STJ, é possível homologar ato notarial estrangeiro sobre bens no Brasil?", resposta: "Não, quando se trata de testamento e partilha de bens situados no Brasil (competência exclusiva da jurisdição brasileira – art. 23, II, CPC)." },
+  { pergunta: "A concordância entre herdeiras dispensa o controle do Judiciário brasileiro sobre bens no país?", resposta: "Não, o acordo não afasta a competência exclusiva do Brasil." },
+  { pergunta: "O que o STJ discute no Tema 1396 (Controvérsia 730)?", resposta: "Se é obrigatória a tentativa prévia de solução extrajudicial para configurar interesse de agir em ações de consumo." },
+  { pergunta: "O STJ já validou a citação por WhatsApp em ações cíveis?", resposta: "Está em julgamento (REsp representativo) – ainda não há posição definitiva." },
+  { pergunta: "O divórcio liminar pode ser concedido sem contraditório prévio? Por quê?", resposta: "Sim, porque o divórcio é direito potestativo; pode ser dado como tutela de evidência ou julgamento antecipado parcial de mérito." },
+
+  // ---- AULA 2 – PROVA (polissemia, forma, verdade, escopos, direito à prova, destinatários) ----
+  { pergunta: "Quais são os três significados (acepções) da palavra 'prova' no processo?", resposta: "Fonte, meio e resultado/demonstração." },
+  { pergunta: "Qual a diferença entre PROVA e FORMA?", resposta: "Forma é pressuposto de existência e validade do ato jurídico (direito material); prova é demonstração do fato." },
+  { pergunta: "Dê exemplos de negócios jurídicos que exigem forma escrita como requisito de validade.", resposta: "Doação, fiança, convenção arbitral (forma escrita); escritura pública para alienação de imóveis > 30 SM, pacto antenupcial, cessão de direitos hereditários, partilha amigável extrajudicial." },
+  { pergunta: "Como a doutrina define a verdade no processo?", resposta: "Como correspondência (Tarski): um enunciado é verdadeiro se corresponde à realidade." },
+  { pergunta: "O que é 'verifobia'?", resposta: "Ceticismo absoluto sobre a possibilidade de conhecimento da verdade, o que tornaria a prova inútil." },
+  { pergunta: "Quais dispositivos do CPC incentivam a busca da verdade?", resposta: "Art. 369 (provas atípicas), art. 370 (poderes instrutórios do juiz), redução da tarifação probatória e art. 378 (dever de colaboração)." },
+  { pergunta: "Quais são as limitações à busca da verdade no processo?", resposta: "Prazos/preclusões, coisa julgada, inadmissibilidade de provas ilícitas, restrições procedimentais e regras residuais que exigem prova específica." },
+  { pergunta: "Qual a diferença entre 'demonstração objetiva' e 'convencimento subjetivo'?", resposta: "Demonstração = elementos de juízo suficientes nos autos; convencimento = estado psicológico do juiz. A perspectiva objetiva permite controle externo." },
+  { pergunta: "Quais são os escopos (finalidades) da prova no processo?", resposta: "Social (pacificação justa, conhecimento dos fatos para acordos), jurídico (correta aplicação da norma) e político (legitimidade do Judiciário e dissuasão)." },
+  { pergunta: "O que integra o 'direito à prova'?", resposta: "Uso de todos os meios legítimos para demonstrar fatos, influir na convicção do juiz, e obter informações (direito à investigação, direito ao conhecimento das fontes)." },
+  { pergunta: "O direito à prova é absoluto?", resposta: "Não, sofre limites (ilicitude, preclusão, etc.)." },
+  { pergunta: "O que mudou com o paradigma objetivista (racionalista) em relação aos destinatários da prova?", resposta: "Antes: juiz único destinatário. Hoje: destinatários são a juíza, as partes e a sociedade (controle externo)." },
+
+  // ---- PRINCÍPIOS DA PROVA ----
+  { pergunta: "Qual o fundamento constitucional da proibição da prova ilícita?", resposta: "Art. 5º, LVI, CF: 'são inadmissíveis, no processo, as provas obtidas por meios ilícitos'." },
+  { pergunta: "O que é prova ilícita stricto sensu?", resposta: "Obtida com violação a direitos fundamentais materiais (ex: tortura, invasão de domicílio sem mandado)." },
+  { pergunta: "O que é prova ilegítima?", resposta: "Obtida com violação à legalidade processual (ex: oitiva de testemunha sem contraditório)." },
+  { pergunta: "A distinção entre prova ilícita e ilegítima tem consequências práticas distintas?", resposta: "Em regra, ambas são excluídas; a distinção é mais teórica." },
+  { pergunta: "Cite três justificativas para a vedação da prova ilícita.", resposta: "Proteção de direitos fundamentais (presunção de inocência), desestímulo a métodos ilegais de investigação, legitimidade do sistema de justiça." },
+  { pergunta: "O que é a teoria do fruto da árvore envenenada?", resposta: "Prova derivada de uma ilícita também é ineficaz (CPP, art. 157, §1º)." },
+  { pergunta: "Quais as exceções à teoria do fruto da árvore envenenada?", resposta: "Ausência de nexo de causalidade (derivação mediata) ou se a prova puder ser obtida por fonte independente (descoberta inevitável)." },
+  { pergunta: "O que fazer se uma prova ilícita for constatada antes da decisão?", resposta: "Deve ser desentranhada dos autos para não influenciar o juiz." },
+  { pergunta: "Se a prova ilícita for o fundamento central da decisão, qual a consequência?", resposta: "A decisão pode ser anulada ou rescindida." },
+  { pergunta: "O que significa 'atipicidade dos meios de prova'?", resposta: "Admissão de meios não previstos em lei, desde que moralmente legítimos (art. 369)." },
+  { pergunta: "O que é 'moralmente legítimo' na atipicidade probatória?", resposta: "Não violar direitos da personalidade, boa-fé objetiva, segredos etc. – discussão doutrinária." },
+  { pergunta: "Qual o princípio da aquisição (comunhão) da prova?", resposta: "A prova, uma vez produzida, incorpora-se ao processo e pode ser usada contra a parte que a produziu (art. 371)." },
+  { pergunta: "O que é o princípio dispositivo na produção de provas?", resposta: "Iniciativa das partes para aportar fatos e provas." },
+  { pergunta: "O que é o princípio inquisitivo na produção de provas?", resposta: "Iniciativa do juiz para determinar provas de ofício (art. 370)." },
+  { pergunta: "O sistema brasileiro é dispositivo ou inquisitivo?", resposta: "Predominantemente dispositivo, mas com poderes instrutórios do juiz (mix)." },
+  { pergunta: "O que diz o dever de colaboração (art. 378)?", resposta: "Ninguém se exime de colaborar com o Judiciário para o descobrimento da verdade." },
+  { pergunta: "Qual a ressalva do art. 379, caput?", resposta: "Preservado o direito de não produzir prova contra si própria." },
+  { pergunta: "O direito de não produzir prova contra si próprio aplica-se ao processo civil?", resposta: "Há divergência: enunciados 51 do FPPC e 31 do CJF entendem que se aplica apenas quando houver reflexos na esfera penal." },
+  { pergunta: "Qual a diferença entre DEVER e ÔNUS processual?", resposta: "Dever é imperativo de interesse alheio (inexecução é ilícito, admite cumprimento forçado); ônus é imperativo de interesse próprio (inexecução é lícita, mas gera consequências desfavoráveis, sem cumprimento forçado)." },
+  { pergunta: "Dê exemplo de ônus processual.", resposta: "Art. 373: o autor tem o ônus de provar o fato constitutivo; o réu, os impeditivos, modificativos ou extintivos." },
+
+  // ---- AULA 6 – MOMENTOS DA PROVA ----
+  { pergunta: "Quais são os momentos da prova?", resposta: "Propositura (requerimento), admissão (deferimento), realização (produção), valoração/decisão." },
+  { pergunta: "O que é analisado na admissão da prova?", resposta: "Licitude, pertinência/relevância, adequação procedimental (preclusão) e, se for o caso, autorização para invasão de esfera alheia." },
+  { pergunta: "Quando ocorre a produção da prova documental?", resposta: "Já na fase postulatória (juntada com a inicial/contestatória)." },
+  { pergunta: "Quando ocorre a produção da prova constituenda (perícia, testemunhas)?", resposta: "Na fase instrutória, após o saneamento." },
+  { pergunta: "Em sede de recursos, é possível produzir novas provas?", resposta: "Excepcionalmente, apenas se houver justo motivo (e nos recursos extraordinários, extrema excepcionalidade)." },
+  { pergunta: "O que é a valoração da prova?", resposta: "Avaliação da capacidade das provas de demonstrar os fatos (etapa lógico-jurídica posterior à admissibilidade)." },
+  { pergunta: "Quais são os três sistemas de valoração da prova?", resposta: "Prova legal, convencimento íntimo (moral) e persuasão racional (livre convencimento motivado)." },
+  { pergunta: "Em que consiste o sistema da prova legal?", resposta: "A lei atribui valor predeterminado a certos meios (ex: documento público faz prova plena)." },
+  { pergunta: "Em que consiste o convencimento íntimo?", resposta: "O juiz forma sua convicção por impulsos e ciência privada (hoje só no Tribunal do Júri)." },
+  { pergunta: "Qual o sistema adotado pelo CPC brasileiro?", resposta: "Persuasão racional (art. 371): decisão fundamentada, baseada em exame racional das provas, sem vinculação a regras de prova legal." },
+  { pergunta: "O juiz pode rejeitar a conclusão do laudo pericial?", resposta: "Sim, se fundamentadamente (art. 479)." },
+  { pergunta: "O que são 'ilhas de prova legal'?", resposta: "Exceções em que a lei ainda vincula o valor probatório (ex: documento público, confissão, documento confessório)." },
+  { pergunta: "O princípio da comunhão (aquisição) da prova significa que?", resposta: "A prova pertence ao processo, não à parte; pode ser usada independentemente de quem a produziu." },
+
+  // ---- STANDARDS DE PROVA ----
+  { pergunta: "O que é standard de prova?", resposta: "Grau objetivo de suficiência probatória necessário para considerar um fato provado." },
+  { pergunta: "Qual a relação entre standard e ônus da prova?", resposta: "O standard é etapa lógica anterior; se não atingido, aplica-se a regra do ônus (julgamento na dúvida)." },
+  { pergunta: "Como se classificam os standards nos EUA?", resposta: "(1) Além da dúvida razoável (criminal), (2) prova clara e convincente (cível sensível), (3) preponderância da prova (cível geral), (4) causa provável e (5) suspeita razoável." },
+  { pergunta: "Quais os riscos de erro associados ao standard?", resposta: "Standard baixo → mais falsos positivos (tipo I); standard alto → mais falsos negativos (tipo II)." },
+  { pergunta: "No Brasil, há previsão legal expressa dos standards?", resposta: "Não, mas há consenso de que o standard penal é mais elevado; em casos cíveis sensíveis (internação, perda do poder familiar) e sancionatórios (improbidade), exige-se maior grau de certeza." },
+
+  // ---- PRESUNÇÕES ----
+  { pergunta: "O que é uma presunção?", resposta: "Raciocínio que parte de um fato conhecido (base) para concluir pela ocorrência de um fato desconhecido (presumido)." },
+  { pergunta: "O que são presunções legais absolutas (iure et de iure)?", resposta: "Não admitem prova em contrário (ex: presunção de intenção de abandonar imóvel – CC, art. 1.276, §1º)." },
+  { pergunta: "O que são presunções legais relativas (iuris tantum)?", resposta: "Dispensam a prova do fato presumido, mas admitem prova em contrário (ex: entrega do título presume pagamento – CC, art. 324)." },
+  { pergunta: "O que é uma ficção legal?", resposta: "O legislador impõe uma consequência mesmo sabendo que o fato presumido não ocorreu (ex: pena de confesso – CPC, art. 385)." },
+  { pergunta: "O que são presunções judiciais (hominis)?", resposta: "Raciocínio do juiz baseado em regras de experiência (art. 375) – sempre relativas." },
+
+  // ---- ÔNUS DA PROVA ----
+  { pergunta: "Qual a função do ônus da prova como regra de julgamento?", resposta: "Na dúvida, decide-se contra a parte que detinha o ônus (evita o non liquet)." },
+  { pergunta: "O reconhecimento do fato equivale ao reconhecimento do direito?", resposta: "Não, podem faltar outros requisitos ou haver fatos impeditivos/modificativos/extintivos." },
+  { pergunta: "O ônus subjetivo (regra de conduta) o que incentiva?", resposta: "A parte a produzir a prova para evitar a decisão desfavorável." },
+  { pergunta: "O que é distribuição dinâmica do ônus da prova?", resposta: "O juiz pode inverter o ônus (art. 373, §1º) diante de peculiaridades, mas nunca pode impor prova diabólica (impossível)." }
+];
+
+// ============================================================
+//  CÓDIGO DO SIMULADOR (ADAPTADO PARA FLASHCARDS)
+// ============================================================
+let currentQ = 0;
+let userAnswers = new Array(rawQuestions.length).fill(null);
+const elNav = document.getElementById('nav-container');
+const elQText = document.getElementById('q-text');
+const elOpts = document.getElementById('opts');
+const elBtn = document.getElementById('btn-action');
+const elFeedback = document.getElementById('feedback');
+const elCounter = document.getElementById('q-counter');
+const elPrev = document.getElementById('btn-prev');
+const elNext = document.getElementById('btn-next');
+
+// --- elementos para flashcards ---
+const flashcardContainer = document.createElement('div');
+flashcardContainer.id = 'flashcard-container';
+flashcardContainer.style.display = 'none';
+flashcardContainer.innerHTML = `
+  <div style="background:#1a1a24; padding:25px; border-radius:8px; margin:10px 0; border-left:4px solid #d97706;">
+    <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+      <span id="flashcard-counter" style="color:#9494a1;">Card 1 de ${flashcards.length}</span>
+      <span style="color:#d97706; cursor:pointer;" onclick="toggleFlashcardAnswer()">💡 Revelar</span>
+    </div>
+    <div id="flashcard-question" style="font-size:20px; color:#fff; margin-bottom:20px;">Pergunta</div>
+    <div id="flashcard-answer" style="font-size:18px; color:#a7f3d0; display:none; background:#222227; padding:15px; border-radius:6px; margin-top:10px;">Resposta</div>
+    <div style="display:flex; gap:12px; margin-top:20px; justify-content:center;">
+      <button class="btn-nav" onclick="prevFlashcard()" id="flash-prev">← Anterior</button>
+      <button class="btn-nav" onclick="nextFlashcard()" id="flash-next">Próximo →</button>
+    </div>
+  </div>
+`;
+document.getElementById('standard-q-container').after(flashcardContainer);
+
+// --- variáveis de estado dos flashcards ---
+let currentFlashcard = 0;
+let flashRevealed = false;
+
+// --- funções dos flashcards ---
+function renderFlashcard() {
+  const card = flashcards[currentFlashcard];
+  document.getElementById('flashcard-question').textContent = card.pergunta;
+  document.getElementById('flashcard-answer').textContent = card.resposta;
+  document.getElementById('flashcard-answer').style.display = 'none';
+  flashRevealed = false;
+  document.getElementById('flashcard-counter').textContent = `Card ${currentFlashcard+1} de ${flashcards.length}`;
+  document.getElementById('flash-prev').disabled = (currentFlashcard === 0);
+  document.getElementById('flash-next').disabled = (currentFlashcard === flashcards.length - 1);
+}
+
+function toggleFlashcardAnswer() {
+  const ansDiv = document.getElementById('flashcard-answer');
+  if (ansDiv.style.display === 'none') {
+    ansDiv.style.display = 'block';
+    flashRevealed = true;
+  } else {
+    ansDiv.style.display = 'none';
+    flashRevealed = false;
+  }
+}
+
+function prevFlashcard() {
+  if (currentFlashcard > 0) {
+    currentFlashcard--;
+    renderFlashcard();
+  }
+}
+
+function nextFlashcard() {
+  if (currentFlashcard < flashcards.length - 1) {
+    currentFlashcard++;
+    renderFlashcard();
+  }
+}
+
+// --- modificação na função init para incluir flashcards no nav ---
+function init() {
+  elNav.innerHTML = '';
+  // total de itens = questões + 2 (associações e flashcards)
+  const totalSpecial = 2;
+  const totalItems = rawQuestions.length + totalSpecial;
+  for(let i = 0; i < totalItems; i++) {
+    const a = document.createElement('a');
+    a.id = 'nav-item-' + i;
+    a.className = 'nav-item unanswered';
+    if (i === rawQuestions.length) {
+      a.textContent = 'Associações';
+      a.title = 'Ir para Associações';
+    } else if (i === rawQuestions.length + 1) {
+      a.textContent = 'Flashcards';
+      a.title = 'Ir para Flashcards';
+    } else {
+      a.textContent = (i + 1);
+      a.title = 'Ir para Questão ' + (i + 1);
+    }
+    a.onclick = (e) => {
+      e.preventDefault();
+      document.getElementById('result-screen').style.display = 'none';
+      document.getElementById('quiz-screen').style.display = 'block';
+      jumpToQuestion(i);
+      document.getElementById('quiz-screen').scrollIntoView({behavior: "smooth"});
+    };
+    elNav.appendChild(a);
+  }
+  loadQuestion();
+  renderMatchGames();
+}
+
+// --- substituir loadQuestion para lidar com índices especiais ---
+function loadQuestion() {
+  // Atualiza estado da barra de navegação
+  const totalItems = rawQuestions.length + 2;
+  for(let i = 0; i < totalItems; i++) {
+    const item = document.getElementById('nav-item-' + i);
+    if (!item) continue;
+    item.className = 'nav-item';
+    if (i === rawQuestions.length) {
+      item.classList.add('challenge');
+      item.textContent = 'Associações';
+    } else if (i === rawQuestions.length + 1) {
+      item.classList.add('challenge');
+      item.textContent = 'Flashcards';
+    } else {
+      if (userAnswers[i] !== null) {
+        item.classList.add(userAnswers[i].isCorrect ? 'status-correct' : 'status-wrong');
+      } else {
+        item.classList.add('unanswered');
+      }
+    }
+    item.style.boxShadow = "none";
+  }
+  
+  const currentItem = document.getElementById('nav-item-' + currentQ);
+  if (currentItem) {
+    currentItem.style.boxShadow = "0 0 0 2px #fff";
+    if (currentQ < rawQuestions.length && userAnswers[currentQ] === null) {
+      currentItem.classList.remove('unanswered');
+      currentItem.classList.add('active-color');
+    }
+  }
+  
+  elPrev.disabled = (currentQ === 0);
+  
+  // Se for associações
+  if (currentQ === rawQuestions.length) {
+    document.getElementById('standard-q-container').style.display = 'none';
+    document.getElementById('interactive-addon').style.display = 'block';
+    document.getElementById('flashcard-container').style.display = 'none';
+    elBtn.style.display = 'none';
+    elCounter.textContent = 'Seção de Associações';
+    elNext.textContent = 'Próximo →';
+    return;
+  }
+  
+  // Se for flashcards
+  if (currentQ === rawQuestions.length + 1) {
+    document.getElementById('standard-q-container').style.display = 'none';
+    document.getElementById('interactive-addon').style.display = 'none';
+    document.getElementById('flashcard-container').style.display = 'block';
+    elBtn.style.display = 'none';
+    elCounter.textContent = 'Revisão com Flashcards';
+    elNext.textContent = 'Finalizar 🏁';
+    renderFlashcard();
+    return;
+  }
+  
+  // Questões normais
+  document.getElementById('standard-q-container').style.display = 'block';
+  document.getElementById('interactive-addon').style.display = 'none';
+  document.getElementById('flashcard-container').style.display = 'none';
+  elBtn.style.display = 'block';
+  
+  elCounter.textContent = 'Questão ' + (currentQ + 1) + ' de ' + rawQuestions.length;
+  elQText.textContent = rawQuestions[currentQ].q;
+  elFeedback.style.display = 'none';
+  elOpts.innerHTML = '';
+  elNext.textContent = 'Avançar →';
+  
+  if (userAnswers[currentQ] !== null) {
+    renderReviewMode();
+  } else {
+    renderAnsweringMode();
+  }
+}
+
+// --- ajustar navigateQ para lidar com o final ---
+function navigateQ(step) {
+  if (step === 1 && currentQ === rawQuestions.length + 1) {
+    showResults();
+    return;
+  }
+  currentQ += step;
+  if (currentQ < 0) currentQ = 0;
+  const maxIndex = rawQuestions.length + 1;
+  if (currentQ > maxIndex) currentQ = maxIndex;
+  loadQuestion();
+}
+
+// --- ajustar jumpToQuestion ---
+function jumpToQuestion(idx) {
+  currentQ = idx;
+  loadQuestion();
+}
+
+// --- ajustar showResults (já existente) ---
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'block';
+  const totalItems = rawQuestions.length + 2;
+  for(let i=0; i < totalItems; i++) {
+    const item = document.getElementById('nav-item-' + i);
+    if (item) item.style.boxShadow = "none";
+  }
+  let correct = 0, answered = 0;
+  userAnswers.forEach(a => {
+    if (a !== null) {
+      answered++;
+      if (a.isCorrect) correct++;
+    }
+  });
+  const pct = answered > 0 ? Math.round((correct / rawQuestions.length) * 100) : 0;
+  document.getElementById('score-val').textContent = pct + '%';
+  document.getElementById('val-correct').textContent = correct;
+  document.getElementById('val-wrong').textContent = answered - correct;
+  if (pct >= 70) {
+    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+  }
+}
+
+// --- manter o restante do código: renderAnsweringMode, renderReviewMode, handleAction, match logic ---
+// (esses permanecem iguais aos que você já tem – não vou repetir para não alongar)
+// ============================================================
+//  IMPORTANTE: COLE AQUI O RESTANTE DO CÓDIGO QUE VOCÊ JÁ POSSUI
+//  (renderAnsweringMode, renderReviewMode, handleAction, match logic, etc.)
+// ============================================================
+
+// Inicialização
+document.addEventListener("DOMContentLoaded", init);
+</script>
+
 // ============================================================
 //  CÓDIGO DO SIMULADOR
 // ============================================================
