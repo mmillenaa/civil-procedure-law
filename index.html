@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulado — Processo Civil II (135 questões)</title>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f10; --bg-card: #16161a; --bg-opt: #222227;
+    --text: #e4e4ed; --text-muted: #9494a1;
+    --border: #2d2d38; --border-hover: #444456;
+    --accent-color: #d97706;
+    --color-correct: #2e7d32; --color-wrong: #c62828;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background-color: var(--bg); color: var(--text); padding: 25px 15px; font-family: 'Cardo', Georgia, serif; }
+  .container { max-width: 850px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); overflow: hidden; display: flex; flex-direction: column; }
+  .header { padding: 25px 30px; background: #111114; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+  .header h1 { font-size: 26px; color: #ffffff; margin: 0; font-weight: 700; letter-spacing: -0.5px; text-align: left; }
+  .header-info { text-align: right; }
+  .sub-header-text { color: var(--text-muted); font-size: 13px; margin-bottom: 4px; line-height: 1.3; }
+  .added-info-text { color: var(--accent-color); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; }
+  .nav-wrapper { padding: 12px 20px; background: #0d0d10; border-bottom: 1px solid var(--border); display: flex; justify-content: center; }
+  .nav-container { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; max-width: 680px; } 
+  .nav-item { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; font-weight: bold; transition: all 0.2s ease; border-radius: 4px; color: #fff; text-decoration: none; font-family: system-ui, sans-serif; }
+  .nav-item.unanswered { background: #25252e; border: 1px solid var(--border); color: #888; }
+  .nav-item.unanswered:hover { background: #31313d; color: #fff; }
+  .nav-item.active-color { background: var(--accent-color); border: none; box-shadow: 0 0 8px var(--accent-color); }
+  .nav-item.status-correct { background: var(--color-correct); border: none; opacity: 0.8; }
+  .nav-item.status-correct:hover { opacity: 1; }
+  .nav-item.status-wrong { background: var(--color-wrong); border: none; opacity: 0.8; }
+  .nav-item.status-wrong:hover { opacity: 1; }
+  .nav-item.challenge { background: #6b21a8; border: none; color: #fff; width: auto; padding: 0 10px;}
+  .content { padding: 25px 35px; flex-grow: 1; scroll-margin-top: 30px; }
+  .q-meta { margin-bottom: 12px; color: var(--text-muted); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; }
+  .q-text { font-size: 18px; margin-bottom: 20px; line-height: 1.45; color: #ffffff; } 
+  .options { display: flex; flex-direction: column; gap: 8px; } 
+  .option { display: flex; align-items: flex-start; padding: 12px 14px; background: var(--bg-opt); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; transition: background 0.2s, border-color 0.2s; font-size: 16px; line-height: 1.4; } 
+  .option:hover:not(.disabled) { border-color: var(--border-hover); background: #2b2b33; }
+  .option input { margin-right: 12px; margin-top: 3px; accent-color: var(--accent-color); cursor: pointer; width: 16px; height: 16px; }
+  .option.disabled { cursor: default; opacity: 0.75; }
+  .option.correct-ans { border-color: #4caf50; background: rgba(76, 175, 80, 0.1); color: #a7f3d0; }
+  .option.wrong-ans { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); color: #fca5a5; }
+  .feedback-box { display: none; margin-top: 15px; padding: 14px; border-radius: 6px; background: #1c1c24; border-left: 4px solid var(--accent-color); font-size: 15.5px; line-height: 1.45; }
+  .control-panel { margin-top: 20px; display: flex; gap: 12px; justify-content: space-between; align-items: center; }
+  .btn-nav { padding: 12px 18px; font-size: 15px; font-weight: 600; background: #222227; color: var(--text); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; transition: 0.2s; font-family: 'Cardo', Georgia, serif; }
+  .btn-nav:hover:not(:disabled) { background: #2d2d35; border-color: #555566; }
+  .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+  .btn-primary { flex-grow: 1; max-width: 350px; padding: 14px; font-size: 16px; font-weight: 700; background: var(--accent-color); color: #fff; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; font-family: 'Cardo', Georgia, serif; }
+  .btn-primary:hover:not(:disabled) { background: #b45309; }
+  .btn-primary:disabled { background: #222227; color: #555566; border: 1px solid var(--border); cursor: not-allowed; }
+  .result-screen { display: none; text-align: center; padding: 40px 30px; }
+  .score-val { font-size: 52px; margin: 15px 0; color: var(--accent-color); font-weight: bold; }
+  .stats-row { display: flex; justify-content: center; gap: 40px; margin-bottom: 25px; }
+  .stats-row div { font-size: 18px; display: flex; align-items: center; gap: 6px; font-family: system-ui, sans-serif; font-weight: 500; }
+  .footer-disclaimer { padding: 20px 35px; background: #0c0c0e; border-top: 1px solid var(--border); font-size: 12px; color: #575766; text-align: justify; line-height: 1.5; font-family: system-ui, sans-serif; }
+  .interactive-addon { display: none; text-align: left; }
+  .essay-section { background: #1a1a24; padding: 25px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid var(--accent-color); }
+  .essay-section h2 { color: #fff; margin-bottom: 15px; font-size: 22px; }
+  .essay-section p { margin-bottom: 12px; line-height: 1.45; color: #d1d1d6; } 
+  .essay-section p:last-child { margin-bottom: 0; }
+  .match-game-title { color: #fff; text-align: center; margin-bottom: 10px; font-size: 22px; }
+  .match-game-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+  .match-block { margin-bottom: 35px; background: #111115; border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .match-block h3 { color: var(--accent-color); margin-bottom: 5px; font-size: 18px; }
+  .match-block p.desc { color: var(--text-muted); font-size: 13.5px; margin-bottom: 15px; }
+  .match-grid { display: flex; gap: 15px; }
+  .match-col { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .match-card { background: #222227; border: 1px solid #333340; border-radius: 6px; padding: 14px; cursor: pointer; font-size: 15px; line-height: 1.35; transition: all 0.2s ease; user-select: none; color: var(--text); }
+  .match-card:hover:not(.matched) { background: #2a2a33; border-color: #555566; }
+  .match-card.selected { border-color: var(--accent-color); background: rgba(217, 119, 6, 0.15); box-shadow: 0 0 8px rgba(217, 119, 6, 0.4); transform: scale(1.01); }
+  .match-card.matched { border-color: var(--color-correct); background: rgba(16, 185, 129, 0.1); color: #a1a1aa; cursor: default; opacity: 0.7; }
+  .match-card.error { border-color: var(--color-wrong); background: rgba(239, 68, 68, 0.15); animation: shakeMatch 0.4s; }
+  @keyframes shakeMatch { 0% { transform: translateX(0); } 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-4px); } 100% { transform: translateX(0); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Estudo Dirigido: Processo Civil II</h1>
+    <div class="header-info">
+      <div class="sub-header-text">Baseado no material do Prof. Titular José Roberto dos Santos Bedaque<br>e Profa. Associada Clarisse Frechiani Lara Leite</div>
+      <div class="added-info-text">DPC 0319 - 3º Ano Noturno</div>
+    </div>
+  </div>
+  <div class="nav-wrapper">
+    <div class="nav-container" id="nav-container"></div>
+  </div>
+  <div class="content" id="quiz-screen">
+    <div class="q-meta">
+        <span id="q-counter">Questão 1 de 135</span>
+        <span style="color: var(--accent-color); cursor: pointer;" onclick="showResults(true)">Finalizar ➔</span>
+    </div>
+    <div id="standard-q-container">
+        <div class="q-text" id="q-text">Carregando questão...</div>
+        <div class="options" id="opts"></div>
+        <div class="feedback-box" id="feedback"></div>
+    </div>
+    <div class="interactive-addon" id="interactive-addon">
+      <div class="essay-section">
+        <h2>🧠 Revisão Integrada – Associações Finais</h2>
+        <p>Pratique a conexão entre conceitos e suas aplicações. Clique no item da esquerda e depois no correspondente da direita.</p>
+      </div>
+      <h2 class="match-game-title">Associações Finais</h2>
+      <p class="match-game-subtitle">Clique no conceito (esquerda) e depois na sua correspondência (direita).</p>
+      <div id="match-games-container"></div>
+    </div>
+    <div class="control-panel">
+      <button class="btn-nav" id="btn-prev" onclick="navigateQ(-1)" disabled>← Voltar</button>
+      <button class="btn-primary" id="btn-action" onclick="handleAction()" disabled>Confirmar Resposta</button>
+      <button class="btn-nav" id="btn-next" onclick="navigateQ(1)">Avançar →</button>
+    </div>
+  </div>
+  <div class="content result-screen" id="result-screen">
+    <h2>Revisão concluída</h2>
+    <div class="score-val" id="score-val">0%</div>
+    <div class="stats-row">
+      <div style="color: #4caf50;">Acertos: <span id="val-correct">0</span></div>
+      <div style="color: #ef4444;">Erros: <span id="val-wrong">0</span></div>
+    </div>
+    <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+      Clique nos blocos vermelhos na barra de navegação superior para revisar as questões que você errou.
+    </p>
+    <button class="btn-primary" onclick="location.reload()" style="max-width: 250px; margin-bottom: 20px;">Reiniciar Simulado</button>
+  </div>
+  <div class="footer-disclaimer">
+    <strong>NOTA DE ESTUDO:</strong> Este material foi gerado autonomamente para fins de revisão acadêmica com base nas questões das provas (Final e Substitutiva) da disciplina de Direito Processual Civil II (DPC 0319 - USP). O conteúdo aborda teoria geral da prova, intervenção de terceiros, litisconsórcio e coisa julgada. Ideal para treinamento prático e fixação dogmática.
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  BANCO DE 135 QUESTÕES – ORDEM PROGRESSIVA
+// ============================================================
+const rawQuestions = [
+  // ===== BLOCO 1: FUNDAMENTOS (1–20) =====
+  { q: "1. A ________ é o poder-dever do Estado de aplicar o direito ao caso concreto, substituindo a vontade das partes.", opts: ["Jurisdição", "Ação", "Processo", "Sentença"], ans: 0, exp: "Jurisdição é a função estatal de dizer o direito, substituindo as partes." },
+  { q: "2. O ________ é o instrumento pelo qual as partes buscam a atuação da vontade concreta da lei.", opts: ["Processo", "Procedimento", "Recurso", "Ação"], ans: 3, exp: "Ação é o direito subjetivo de provocar o Judiciário." },
+  { q: "3. São condições da ação: legitimidade de parte, interesse processual e ________.", opts: ["Possibilidade jurídica do pedido", "Justa causa", "Advogado constituído", "Citação válida"], ans: 0, exp: "Possibilidade jurídica do pedido (hoje chamada de adequação) completa o trinômio." },
+  { q: "4. O interesse processual se caracteriza pelo binômio: ________ e ________.", opts: ["Necessidade e adequação", "Utilidade e oportunidade", "Urgência e periculum", "Fumus boni iuris e periculum"], ans: 0, exp: "Necessidade (ausência de outro meio) e adequação (meio processual correto)." },
+  { q: "5. A ________ é a situação em que duas ou mais pessoas atuam no mesmo polo processual.", opts: ["Litisconsórcio", "Intervenção de terceiros", "Reconvenção", "Oposição"], ans: 0, exp: "Litisconsórcio = pluralidade de partes." },
+  { q: "6. A ________ é o ingresso de terceiro em processo já existente.", opts: ["Intervenção de terceiros", "Substituição processual", "Sucessão", "Litispendência"], ans: 0, exp: "Intervenção de terceiros é o ingresso de alguém que não era parte." },
+  { q: "7. A ________ é a autoridade da sentença que a torna imutável após o trânsito em julgado.", opts: ["Coisa julgada", "Preclusão", "Eficácia", "Imperatividade"], ans: 0, exp: "Coisa julgada é a imutabilidade da decisão." },
+  { q: "8. A ________ é a perda da faculdade de praticar um ato processual.", opts: ["Preclusão", "Decadência", "Prescrição", "Coisa julgada"], ans: 0, exp: "Preclusão = perda da oportunidade processual." },
+  { q: "9. O procedimento é a ________ externa do processo.", opts: ["Forma", "Essência", "Finalidade", "Estrutura"], ans: 0, exp: "Procedimento é o rito, a forma como o processo se desenvolve." },
+  { q: "10. A ________ é a garantia de que ninguém será privado de seus bens sem o devido processo legal.", opts: ["Ampla defesa", "Contraditório", "Devido processo legal", "Juiz natural"], ans: 2, exp: "Devido processo legal é princípio constitucional basilar." },
+  { q: "11. O ________ é o princípio que assegura às partes o direito de se manifestar sobre provas e alegações.", opts: ["Contraditório", "Ampla defesa", "Publicidade", "Motivação"], ans: 0, exp: "Contraditório = ciência e possibilidade de manifestação." },
+  { q: "12. A ________ é a fase do processo em que o autor formula seu pedido.", opts: ["Postulatória", "Instrutória", "Decisória", "Recursal"], ans: 0, exp: "Fase postulatória: petição inicial e contestação." },
+  { q: "13. A ________ é a resposta do réu na fase postulatória.", opts: ["Contestação", "Reconvenção", "Réplica", "Tréplica"], ans: 0, exp: "Contestação é a defesa do réu." },
+  { q: "14. A ________ é o contra-ataque do réu, com pedido contra o autor.", opts: ["Reconvenção", "Impugnação", "Exceção", "Denunciação"], ans: 0, exp: "Reconvenção = pedido do réu contra o autor no mesmo processo." },
+  { q: "15. A ________ é a fase de colheita de provas.", opts: ["Instrutória", "Decisória", "Saneamento", "Postulatória"], ans: 0, exp: "Fase instrutória = produção de provas." },
+  { q: "16. A ________ é a decisão que resolve o mérito da causa.", opts: ["Sentença definitiva", "Sentença terminativa", "Decisão interlocutória", "Despacho"], ans: 0, exp: "Sentença definitiva julga o mérito." },
+  { q: "17. A ________ extingue o processo sem resolver o mérito.", opts: ["Sentença terminativa", "Sentença definitiva", "Agravo", "Apelação"], ans: 0, exp: "Sentença terminativa extingue sem mérito (art. 485)." },
+  { q: "18. O ________ é o recurso cabível contra sentença.", opts: ["Apelação", "Agravo de instrumento", "Embargos", "Recurso especial"], ans: 0, exp: "Apelação é o recurso ordinário contra sentença." },
+  { q: "19. A ________ é a decisão colegiada proferida por tribunal.", opts: ["Acórdão", "Sentença", "Despacho", "Decisão monocrática"], ans: 0, exp: "Acórdão = decisão de tribunal." },
+  { q: "20. O ________ é o prazo para interpor recurso, em regra, de 15 dias úteis.", opts: ["Prazo recursal", "Prazo dilatório", "Prazo peremptório", "Prazo comum"], ans: 0, exp: "Prazo recursal é de 15 dias úteis (art. 1003, CPC)." },
+  // ===== BLOCO 2: TEORIA GERAL DA PROVA – INTRODUÇÃO (21–40) =====
+  { q: "21. A prova, como ________, é a atividade de demonstrar a existência de fatos.", opts: ["Atividade", "Meio", "Resultado", "Fonte"], ans: 0, exp: "Acepção atividade = esforço probatório." },
+  { q: "22. A prova, como ________, são os instrumentos utilizados (documento, testemunho).", opts: ["Meio", "Resultado", "Fonte", "Atividade"], ans: 0, exp: "Meios de prova = instrumentos." },
+  { q: "23. A prova, como ________, é o efeito de convencimento produzido no juiz.", opts: ["Resultado", "Atividade", "Meio", "Fonte"], ans: 0, exp: "Resultado = estar provado." },
+  { q: "24. ________ são os elementos externos ao processo que carregam informações (pessoas, coisas).", opts: ["Fontes de prova", "Meios de prova", "Prova documental", "Prova testemunhal"], ans: 0, exp: "Fonte é a origem da informação (ex: testemunha)." },
+  { q: "25. O ________ é o procedimento para inserir a fonte no processo (ex: oitiva).", opts: ["Meio de prova", "Fonte", "Resultado", "Ônus"], ans: 0, exp: "Meio é a técnica processual." },
+  { q: "26. O ________ é o conjunto de fatos controvertidos que precisam ser provados.", opts: ["Objeto da prova", "Standard", "Ônus", "Iniciativa"], ans: 0, exp: "Objeto da prova = fatos relevantes e controvertidos." },
+  { q: "27. O ________ é o encargo legal de provar determinados fatos.", opts: ["Ônus da prova", "Standard", "Iniciativa", "Princípio"], ans: 0, exp: "Ônus = encargo." },
+  { q: "28. O ________ é o grau de suficiência probatória exigido.", opts: ["Standard da prova", "Ônus", "Meio", "Fonte"], ans: 0, exp: "Standard = régua de corroboração." },
+  { q: "29. O ________ é a garantia de usar todos os meios legítimos para provar.", opts: ["Direito à prova", "Ônus", "Standard", "Iniciativa"], ans: 0, exp: "Direito à prova (art. 369 CPC)." },
+  { q: "30. O ________ é o poder de introduzir provas no processo, das partes e do juiz.", opts: ["Iniciativa probatória", "Ônus", "Standard", "Princípio"], ans: 0, exp: "Iniciativa = poder de requerer ou determinar provas." },
+  { q: "31. O sistema de valoração adotado pelo CPC é o ________.", opts: ["Persuasão racional", "Prova legal", "Livre convicção", "Intimo convencimento"], ans: 0, exp: "Persuasão racional = convencimento motivado (art. 371)." },
+  { q: "32. No sistema de ________, a lei atribui valor predeterminado a certas provas.", opts: ["Prova legal", "Persuasão racional", "Livre convicção", "Intimo"], ans: 0, exp: "Prova legal = tarifação (ex: escritura pública)." },
+  { q: "33. O princípio da ________ determina que a prova, uma vez produzida, pertence ao processo.", opts: ["Comunhão da prova", "Aquisição", "Contraditório", "Ilicitude"], ans: 0, exp: "Comunhão = a prova é do processo, não da parte." },
+  { q: "34. A prova obtida com violação a direitos fundamentais é ________.", opts: ["Ilícita", "Ilegítima", "Inidônea", "Irregular"], ans: 0, exp: "Prova ilícita = violação material (ex: tortura)." },
+  { q: "35. A prova obtida com violação a normas processuais é ________.", opts: ["Ilegítima", "Ilícita", "Inútil", "Atípica"], ans: 0, exp: "Ilegítima = violação processual (ex: falta de contraditório)." },
+  { q: "36. A ________ é a regra que exclui provas derivadas de provas ilícitas.", opts: ["Teoria da árvore envenenada", "Fonte independente", "Inexorabilidade", "Atipicidade"], ans: 0, exp: "Árvore envenenada = derivação ilícita." },
+  { q: "37. O ________ é o momento em que o juiz decide se a prova é pertinente.", opts: ["Admissibilidade", "Produção", "Valoração", "Requerimento"], ans: 0, exp: "Admissibilidade = juízo de pertinência." },
+  { q: "38. A ________ é a fase de colheita da prova admitida.", opts: ["Produção", "Admissão", "Valoração", "Requerimento"], ans: 0, exp: "Produção = realização do meio." },
+  { q: "39. A ________ é a apreciação da força probatória pelo juiz.", opts: ["Valoração", "Admissão", "Produção", "Requerimento"], ans: 0, exp: "Valoração = julgamento da prova." },
+  { q: "40. A ________ é a possibilidade de usar meios não previstos em lei, desde que legítimos.", opts: ["Atipicidade", "Tipicidade", "Legalidade", "Liberdade"], ans: 0, exp: "Atipicidade (art. 369) = meios moralmente legítimos." },
+  // ===== BLOCO 3: PROVA – DETALHES (41–60) =====
+  { q: "41. O juiz pode determinar provas de ofício com base no art. ________ do CPC.", opts: ["370", "373", "369", "371"], ans: 0, exp: "Art. 370 = poderes instrutórios do juiz." },
+  { q: "42. A regra do art. 373, I, estabelece que o autor deve provar o ________ do seu direito.", opts: ["Fato constitutivo", "Fato impeditivo", "Fato extintivo", "Fato modificativo"], ans: 0, exp: "Fato constitutivo = nascimento do direito." },
+  { q: "43. O réu deve provar os fatos ________, ________ ou ________ do direito do autor.", opts: ["Impeditivos, modificativos ou extintivos", "Constitutivos, declaratórios ou condenatórios", "Simples, complexos ou alternativos", "Lícitos, ilícitos ou atípicos"], ans: 0, exp: "Art. 373, II: impeditivos, modificativos ou extintivos." },
+  { q: "44. A ________ é a presunção de que a dívida foi paga quando o título é devolvido ao devedor.", opts: ["Presunção de pagamento", "Presunção de quitação", "Ficção legal", "Coisa julgada"], ans: 0, exp: "Art. 322 do CC: entrega do título presume pagamento." },
+  { q: "45. As presunções legais podem ser ________ (admitem prova em contrário) ou ________ (não admitem).", opts: ["Relativas e absolutas", "Simples e compostas", "Fáticas e jurídicas", "Unilaterais e bilaterais"], ans: 0, exp: "Iuris tantum (relativa) e iure et de iure (absoluta)." },
+  { q: "46. A ________ é o raciocínio do juiz baseado na experiência comum.", opts: ["Presunção hominis", "Presunção legal", "Ficção", "Standard"], ans: 0, exp: "Presunção judicial = hominis." },
+  { q: "47. A ________ é a declaração de conhecimento de fatos contrários aos interesses do declarante.", opts: ["Confissão", "Depoimento", "Perícia", "Documento"], ans: 0, exp: "Confissão = reconhecimento de fato desfavorável." },
+  { q: "48. A confissão pode ser ________ (em juízo) ou ________ (fora dele).", opts: ["Judicial e extrajudicial", "Simples e qualificada", "Tácita e expressa", "Verbal e escrita"], ans: 0, exp: "Confissão judicial (art. 389) e extrajudicial (art. 394)." },
+  { q: "49. A prova ________ é aquela que já existe antes do processo (ex: documento).", opts: ["Pré-constituída", "Constituenda", "Emprestada", "Atípica"], ans: 0, exp: "Pré-constituída = pronto." },
+  { q: "50. A prova ________ é produzida durante o processo (ex: perícia).", opts: ["Constituenda", "Pré-constituída", "Emprestada", "Documental"], ans: 0, exp: "Constituenda = formada no processo." },
+  { q: "51. A ________ é a prova produzida em outro processo e trasladada.", opts: ["Prova emprestada", "Prova documental", "Prova testemunhal", "Perícia"], ans: 0, exp: "Prova emprestada = utilizada em outro feito." },
+  { q: "52. Para a prova emprestada, exige-se o ________ da parte contra quem é usada.", opts: ["Contraditório", "Consentimento", "Homologação", "Autorização judicial"], ans: 0, exp: "STJ: contraditório é essencial." },
+  { q: "53. A ________ é a avaliação de provas por um especialista.", opts: ["Perícia", "Testemunha", "Documento", "Inspeção"], ans: 0, exp: "Perícia = exame técnico." },
+  { q: "54. A ________ é a visita do juiz ao local dos fatos.", opts: ["Inspeção judicial", "Perícia", "Depoimento", "Acareação"], ans: 0, exp: "Inspeção = art. 481 CPC." },
+  { q: "55. A ________ é o confronto de pessoas para esclarecer divergências.", opts: ["Acareação", "Perícia", "Depoimento", "Testemunha"], ans: 0, exp: "Acareação = art. 469 CPC." },
+  { q: "56. O depoimento pessoal é prestado pela ________.", opts: ["Parte", "Testemunha", "Perito", "Juiz"], ans: 0, exp: "Depoimento pessoal = parte (autor ou réu)." },
+  { q: "57. A testemunha é a pessoa ________ que declara sobre fatos.", opts: ["Estranha à causa", "Parte", "Advogado", "Perito"], ans: 0, exp: "Testemunha = terceiro." },
+  { q: "58. A prova documental abrange ________ e ________.", opts: ["Documentos públicos e particulares", "Livros e revistas", "Fotos e vídeos", "Todas as anteriores"], ans: 0, exp: "Documento público e particular (art. 405 e 411)." },
+  { q: "59. O documento ________ é elaborado por autoridade pública no exercício de suas funções.", opts: ["Público", "Particular", "Eletrônico", "Original"], ans: 0, exp: "Documento público = fé pública." },
+  { q: "60. O documento ________ é firmado por particulares sem intervenção oficial.", opts: ["Particular", "Público", "Original", "Cópia"], ans: 0, exp: "Documento particular = validade entre as partes." },
+  // ===== BLOCO 4: LITISCONSÓRCIO E INTERVENÇÃO (61–80) =====
+  { q: "61. O litisconsórcio é ________ quando a lei ou a natureza da relação exige a presença de todos.", opts: ["Necessário", "Facultativo", "Unitário", "Simples"], ans: 0, exp: "Necessário = obrigatório (art. 114)." },
+  { q: "62. No litisconsórcio ________, a decisão deve ser idêntica para todos.", opts: ["Unitário", "Simples", "Necessário", "Facultativo"], ans: 0, exp: "Unitário = homogeneidade da decisão." },
+  { q: "63. No litisconsórcio ________, a decisão pode ser diferente para cada litisconsorte.", opts: ["Simples (comum)", "Unitário", "Necessário", "Facultativo"], ans: 0, exp: "Simples = decisões distintas." },
+  { q: "64. O litisconsórcio ________ ocorre quando as partes optam por litigar juntas, mas não são obrigadas.", opts: ["Facultativo", "Necessário", "Unitário", "Simples"], ans: 0, exp: "Facultativo = opcional." },
+  { q: "65. O litisconsórcio ________ é formado desde o início da ação.", opts: ["Inicial", "Ulterior", "Incidental", "Tardio"], ans: 0, exp: "Inicial = já na petição inicial." },
+  { q: "66. O litisconsórcio ________ surge após o início do processo (ex: por intervenção).", opts: ["Ulterior", "Inicial", "Necessário", "Facultativo"], ans: 0, exp: "Ulterior = formado durante o processo." },
+  { q: "67. A ________ é a intervenção voluntária de terceiro com interesse jurídico na vitória de uma parte.", opts: ["Assistência", "Denunciação", "Chamamento", "Oposição"], ans: 0, exp: "Assistência = interesse jurídico (art. 119)." },
+  { q: "68. Na assistência ________, o assistente tem relação jurídica direta com o adversário.", opts: ["Litisconsorcial", "Simples", "Voluntária", "Provocada"], ans: 0, exp: "Litisconsorcial = atua como litisconsorte." },
+  { q: "69. A ________ é a intervenção provocada para propor demanda de regresso.", opts: ["Denunciação da lide", "Chamamento ao processo", "Assistência", "Oposição"], ans: 0, exp: "Denunciação = regresso (art. 125)." },
+  { q: "70. A denunciação é cabível em casos de ________ e de obrigação de indenizar.", opts: ["Garantia por evicção", "Solidariedade", "Fiança", "Todos os anteriores"], ans: 0, exp: "Evicção e indenização (art. 125, I e II)." },
+  { q: "71. O ________ é a intervenção provocada para chamar devedor solidário ou fiador.", opts: ["Chamamento ao processo", "Denunciação", "Assistência", "Amicus curiae"], ans: 0, exp: "Chamamento = art. 130." },
+  { q: "72. O ________ é o terceiro que ingressa voluntariamente para auxiliar o juiz com conhecimento técnico.", opts: ["Amicus curiae", "Assistente", "Opoente", "Denunciante"], ans: 0, exp: "Amicus curiae = amigo da corte." },
+  { q: "73. O Incidente de Desconsideração da Personalidade Jurídica (IDPJ) é instaurado a pedido da parte ou do ________.", opts: ["Ministério Público", "Juiz", "Defensor público", "Advogado"], ans: 0, exp: "IDPJ = pedido da parte ou MP (art. 133)." },
+  { q: "74. O IDPJ não pode ser instaurado de ________.", opts: ["Ofício pelo juiz", "Pedido da parte", "Pedido do MP", "Nenhuma das anteriores"], ans: 0, exp: "Juiz não pode de ofício." },
+  { q: "75. A ________ é o processo incidente em que terceiro formula pedido contra autor e réu.", opts: ["Oposição", "Assistência", "Denunciação", "Chamamento"], ans: 0, exp: "Oposição = terceiro opoente contra ambos (art. 682)." },
+  { q: "76. A ________ é a substituição do réu ilegítimo pelo legítimo.", opts: ["Substituição de parte", "Oposição", "Denunciação", "Chamamento"], ans: 0, exp: "Substituição = art. 338." },
+  { q: "77. A falta do litisconsorte necessário gera ________ da sentença.", opts: ["Nulidade", "Ineficácia", "Mera irregularidade", "Preclusão"], ans: 0, exp: "Nulidade (art. 115, parágrafo único)." },
+  { q: "78. O litisconsórcio multitudinário pode ser ________ pelo juiz para evitar tumulto.", opts: ["Limitado (desmembrado)", "Extinto", "Transformado em unitário", "Convertido em facultativo"], ans: 0, exp: "Art. 113, §1º: limitação do número de litisconsortes." },
+  { q: "79. Na assistência simples, o assistente não pode ________ os atos do assistido.", opts: ["Contrariar", "Auxiliar", "Complementar", "Impugnar"], ans: 0, exp: "Não pode contrariar (art. 121)." },
+  { q: "80. A denunciação da lide, no CPC/2015, é ________.", opts: ["Facultativa", "Obrigatória", "Sempre admitida", "Vedada"], ans: 0, exp: "Art. 125: faculdade do denunciante." },
+  // ===== BLOCO 5: COISA JULGADA E SENTENÇA (81–100) =====
+  { q: "81. A coisa julgada ________ impede a rediscussão no mesmo processo.", opts: ["Formal", "Material", "Ambas", "Nenhuma"], ans: 0, exp: "Formal = estabilidade interna." },
+  { q: "82. A coisa julgada ________ torna o mérito indiscutível em qualquer outro processo.", opts: ["Material", "Formal", "Ambas", "Nenhuma"], ans: 0, exp: "Material = eficácia externa." },
+  { q: "83. A coisa julgada atinge apenas o ________ da sentença.", opts: ["Dispositivo", "Relatório", "Motivação", "Ementa"], ans: 0, exp: "Art. 504: dispositivo." },
+  { q: "84. A eficácia ________ da coisa julgada impede que a parte alegue fatos que poderia ter alegado.", opts: ["Preclusiva", "Declaratória", "Executiva", "Constitutiva"], ans: 0, exp: "Eficácia preclusiva (art. 508)." },
+  { q: "85. Em regra, a coisa julgada beneficia e prejudica apenas as ________.", opts: ["Partes", "Partes e sucessores", "Terceiros", "Ministério Público"], ans: 0, exp: "Art. 506: partes." },
+  { q: "86. O trânsito em julgado ocorre quando não cabem mais ________.", opts: ["Recursos", "Alegações", "Provas", "Exceções"], ans: 0, exp: "Esgotamento recursal." },
+  { q: "87. A sentença condenatória produz efeitos antes do trânsito se não houver ________.", opts: ["Recurso com efeito suspensivo", "Citação", "Intimação", "Fundamentação"], ans: 0, exp: "Efeito suspensivo = adia eficácia." },
+  { q: "88. A sentença declaratória, em regra, produz efeitos apenas após o ________.", opts: ["Trânsito em julgado", "Registro", "Publicação", "Intimação"], ans: 0, exp: "Declaratória = efeitos ex tunc, mas necessidade de trânsito." },
+  { q: "89. A sentença constitutiva produz efeitos ________, mas só após o trânsito.", opts: ["Ex nunc", "Ex tunc", "Pro futuro", "Pro passado"], ans: 0, exp: "Constitutiva = efeitos futuros." },
+  { q: "90. Os elementos da sentença são: relatório, ________ e dispositivo.", opts: ["Motivação", "Fundamentação", "Ementa", "Preâmbulo"], ans: 0, exp: "Art. 489: relatório, motivação, dispositivo." },
+  { q: "91. A motivação deve enfrentar os ________ das partes.", opts: ["Argumentos", "Pedidos", "Provas", "Todos os anteriores"], ans: 0, exp: "Enfrentamento de argumentos (art. 489, §1º)." },
+  { q: "92. A sentença ________ é aquela que concede mais do que o pedido.", opts: ["Ultra petita", "Extra petita", "Citra petita", "Nula"], ans: 0, exp: "Ultra petita = além do pedido." },
+  { q: "93. A sentença ________ é aquela que concede algo diverso do pedido.", opts: ["Extra petita", "Ultra petita", "Citra petita", "Omissa"], ans: 0, exp: "Extra petita = diferente." },
+  { q: "94. A sentença ________ é aquela que concede menos do que o pedido.", opts: ["Citra petita", "Ultra petita", "Extra petita", "Incompleta"], ans: 0, exp: "Citra petita = a menos." },
+  { q: "95. A ________ é a ação para desconstituir decisão transitada em julgado.", opts: ["Ação rescisória", "Apelação", "Agravo", "Embargos"], ans: 0, exp: "Ação rescisória (art. 966)." },
+  { q: "96. O prazo para a ação rescisória é de ________ anos.", opts: ["2", "1", "5", "10"], ans: 0, exp: "Art. 975: 2 anos." },
+  { q: "97. A ________ é a ação para invalidar sentença nula por falta de citação.", opts: ["Querela nullitatis", "Ação rescisória", "Apelação", "Reexame necessário"], ans: 0, exp: "Querela nullitatis = nulidade absoluta." },
+  { q: "98. Nas relações de trato continuado, a coisa julgada pode ser revista por ________.", opts: ["Ação revisional", "Ação rescisória", "Apelação", "Embargos"], ans: 0, exp: "Art. 505, I: ação revisional." },
+  { q: "99. A estabilidade da tutela antecipada antecedente (art. 304) não é ________.", opts: ["Coisa julgada", "Preclusão", "Eficácia", "Imutabilidade"], ans: 0, exp: "Estabilização = não faz coisa julgada." },
+  { q: "100. A sentença arbitral faz coisa julgada, mas pode ser anulada por ________.", opts: ["Ação anulatória", "Ação rescisória", "Apelação", "Agravo"], ans: 0, exp: "Lei de Arbitragem: ação anulatória (prazo 90 dias)." },
+  // ===== BLOCO 6: AVANÇADAS E MISTAS (101–125) =====
+  { q: "101. A teoria da causa de pedir é o ________ que fundamenta o pedido.", opts: ["Fato jurídico", "Documento", "Prova", "Testemunha"], ans: 0, exp: "Causa de pedir = fatos que dão base ao pedido." },
+  { q: "102. A ________ é a identidade de partes, pedido e causa de pedir.", opts: ["Litispendência", "Coisa julgada", "Preclusão", "Conexão"], ans: 0, exp: "Litispendência = mesmos elementos." },
+  { q: "103. A ________ é a dependência de um processo em relação a outro.", opts: ["Prejudicialidade", "Conexão", "Continência", "Litispendência"], ans: 0, exp: "Prejudicialidade = decisão de um influencia outro." },
+  { q: "104. A ________ é a competência territorial do juízo.", opts: ["Foro", "Juízo", "Tribunal", "Corte"], ans: 0, exp: "Foro = local da ação." },
+  { q: "105. A ________ é a incompetência absoluta (matéria, pessoa, função).", opts: ["Incompetência absoluta", "Incompetência relativa", "Nulidade", "Irregularidade"], ans: 0, exp: "Incompetência absoluta = pode ser arguida a qualquer tempo." },
+  { q: "106. A ________ é a incompetência relativa (territorial).", opts: ["Incompetência relativa", "Incompetência absoluta", "Nulidade", "Preclusão"], ans: 0, exp: "Relativa = alegada na contestação." },
+  { q: "107. A ________ é o vício da petição inicial que impede a compreensão do pedido.", opts: ["Inépcia", "Ilegitimidade", "Incompetência", "Nulidade"], ans: 0, exp: "Inépcia = falta de clareza." },
+  { q: "108. A ________ é a falta de legitimidade de uma das partes.", opts: ["Ilegitimidade de parte", "Inépcia", "Incompetência", "Impossibilidade jurídica"], ans: 0, exp: "Ilegitimidade = parte errada." },
+  { q: "109. O ________ é a defesa do réu que impugna o processo.", opts: ["Embargos declaratórios", "Contestação", "Reconvenção", "Exceção"], ans: 0, exp: "Contestação = defesa." },
+  { q: "110. A ________ é a oposição de questões processuais pelo réu antes do mérito.", opts: ["Preliminar", "Mérito", "Recurso", "Exceção"], ans: 0, exp: "Preliminar = defesa processual." },
+  { q: "111. A ________ é o ato de o juiz declarar a carência da ação.", opts: ["Extinção sem mérito", "Extinção com mérito", "Saneamento", "Instrução"], ans: 0, exp: "Art. 485: extinção sem mérito." },
+  { q: "112. A ________ é a decisão que julga procedente ou improcedente o pedido.", opts: ["Sentença de mérito", "Sentença terminativa", "Decisão interlocutória", "Despacho"], ans: 0, exp: "Sentença de mérito = art. 487." },
+  { q: "113. A ________ é a fase em que o juiz organiza o processo e corrige vícios.", opts: ["Saneamento", "Postulatória", "Instrutória", "Decisória"], ans: 0, exp: "Saneamento = art. 357." },
+  { q: "114. A ________ é a oportunidade de produção de provas orais.", opts: ["Audiência de instrução", "Saneamento", "Postulatória", "Decisória"], ans: 0, exp: "AIJ = audiência de instrução e julgamento." },
+  { q: "115. Na AIJ, a ordem de inquirição é: testemunhas do autor, depois ________.", opts: ["Testemunhas do réu", "Depoimento do réu", "Peritos", "Alegações finais"], ans: 0, exp: "Ordem: autor, depois réu." },
+  { q: "116. As alegações finais podem ser orais ou substituídas por ________.", opts: ["Memoriais escritos", "Recursos", "Pareceres", "Laudos"], ans: 0, exp: "Art. 364: memoriais." },
+  { q: "117. A sentença pode ser proferida na ________ ou em momento posterior.", opts: ["Audiência", "Saneamento", "Postulatória", "Recursal"], ans: 0, exp: "Pode ser oral na audiência (art. 366)." },
+  { q: "118. A ________ é a decisão que resolve incidente (ex: interceptação telefônica).", opts: ["Decisão interlocutória", "Sentença", "Despacho", "Acórdão"], ans: 0, exp: "Decisão interlocutória = ato decisório não sentença." },
+  { q: "119. O ________ é o recurso cabível contra decisão interlocutória.", opts: ["Agravo de instrumento", "Apelação", "Embargos", "Recurso especial"], ans: 0, exp: "Agravo de instrumento (art. 1015)." },
+  { q: "120. A ________ é a impugnação à sentença por omissão, contradição ou obscuridade.", opts: ["Embargos de declaração", "Apelação", "Agravo", "Recurso extraordinário"], ans: 0, exp: "Embargos de declaração (art. 1022)." },
+  { q: "121. O ________ é o recurso para uniformizar a jurisprudência.", opts: ["Recurso especial", "Recurso extraordinário", "Agravo", "Embargos de divergência"], ans: 0, exp: "Embargos de divergência (art. 1043)." },
+  { q: "122. A ________ é a decisão monocrática do relator no tribunal.", opts: ["Decisão monocrática", "Acórdão", "Sentença", "Despacho"], ans: 0, exp: "Art. 932: decisão do relator." },
+  { q: "123. A ________ é a técnica de julgamento por amostragem de recursos repetitivos.", opts: ["Recurso repetitivo", "Recurso especial", "Recurso extraordinário", "Agravo"], ans: 0, exp: "Recurso repetitivo (art. 1036)." },
+  { q: "124. A ________ é a súmula vinculante editada pelo STF.", opts: ["Súmula vinculante", "Súmula comum", "Precedente", "Jurisprudência"], ans: 0, exp: "Súmula vinculante = eficácia geral." },
+  { q: "125. A ________ é o incidente de resolução de demandas repetitivas (IRDR).", opts: ["IRDR", "Recurso repetitivo", "Ação rescisória", "Mandado de segurança"], ans: 0, exp: "IRDR = art. 976." },
+  // ===== BLOCO 7: QUESTÕES ORIGINAIS E DESAFIOS FINAIS (126–135) =====
+  { q: "126. De acordo com J.J. Calmon de Passos, 'importa mais à ordem jurídica o restabelecimento da paz social que a exaustiva apuração dos fatos'. Assinale a alternativa que apresenta uma regra do nosso sistema processual que DESAFIA essa afirmação (ou seja, que privilegia a busca autêntica pela verdade material):",
+    opts: [
+      "A ocorrência inexorável da preclusão em matéria probatória se as partes perderem o prazo legal.",
+      "A garantia de imutabilidade conferida pela coisa julgada material e sua forte eficácia preclusiva após o trânsito em julgado.",
+      "Os amplos poderes instrutórios conferidos ao juiz, somados à redução das antigas regras de tarifação probatória rigorosa.",
+      "As restrições formais ao direito de produzir provas em procedimentos especiais sumaríssimos, como no rito do Juizado Especial Cível."
+    ], ans: 2, exp: "Os poderes instrutórios do juiz (art. 370) e a atipicidade probatória são marcos da busca pela verdade material." },
+  { q: "127. Analise a seguinte situação de litisconsórcio passivo e intervenção de terceiros envolvendo devedores solidários: em uma demanda de cobrança movida contra apenas um deles, assinale a opção juridicamente correta.",
+    opts: [
+      "A juíza, ao constatar o vínculo, pode e deve determinar de ofício a inclusão do outro devedor solidário, por se tratar de litisconsórcio passivo estritamente necessário.",
+      "O autor não pode ser compelido pelo réu originário a litigar contra o outro devedor solidário que decidiu poupar, não cabendo qualquer modalidade de intervenção forçada.",
+      "A solidariedade (art. 275 do CC) institui litisconsórcio passivo facultativo; a juíza não o inclui de ofício, mas o réu processado pode atrair os codevedores ao polo passivo por meio do instituto do chamamento ao processo.",
+      "A inclusão ex officio é vedada. O réu, no entanto, para assegurar o rateio, deve lançar mão unicamente da denunciação da lide contra o co-devedor solidário."
+    ], ans: 2, exp: "O credor pode cobrar de um ou de todos (facultativo). O réu pode chamar os demais (chamamento ao processo, art. 130)." },
+  { q: "128. Com relação ao conflito aparente entre os poderes instrutórios do juiz e a regra estatal de distribuição do ônus da prova, a perspectiva publicista do processo defende que:",
+    opts: [
+      "Os poderes de iniciativa do juiz são rigorosamente limitados pela teoria do ônus da prova, sob pena de vulnerar a inércia, desequilibrar o contraditório e premiar indevidamente a parte omissa.",
+      "O poder instrutório do magistrado só tem validade inconteste perante o sistema quando versar sobre litígios que envolvam direitos de natureza eminentemente indisponível.",
+      "O poder instrutório do juiz não se subordina ao art. 373 do CPC (ônus da prova); este último funciona como autêntica regra de julgamento subsidiária, voltada exclusivamente a solucionar dúvidas persistentes após esgotados os meios de instrução.",
+      "As normas atinentes à distribuição do ônus da prova são essencialmente regras ativas de procedimento que proíbem o magistrado de converter o julgamento em diligência na fase recursal."
+    ], ans: 2, exp: "O ônus da prova é regra de julgamento (última saída), não limita os poderes instrutórios do juiz." },
+  { q: "129. Carlos, motorista de um carro, perdeu uma demanda indenizatória proposta contra a Viação Subino, com trânsito em julgado. Posteriormente, foi acionado pela empresa Andança (dona de um caminhão também envolvido no sinistro). Carlos contesta e formula denunciação da lide contra a Subino, trazendo depoimento de uma testemunha que, noutro processo, admitiu ter mentido sob coação da viação na primeira causa de Carlos. Qual o destino processual dessa denunciação?",
+    opts: [
+      "Deverá ser processada normalmente, haja vista que a prova inconteste de coação desfaz liminarmente os efeitos materiais da coisa julgada pregressa em qualquer grau de jurisdição.",
+      "Deverá ser admitida sob o fundamento de que, como a Andança figura como autora na nova lide, a ausência de identidade tríplice (partes, causa e pedido) neutraliza a coisa julgada pretérita.",
+      "Deverá ser inadmitida sumariamente. Ocorre identidade de demandas entre a pretensão regressiva de Carlos e a lide anterior; outrossim, a descoberta probatória encontra-se fulminada pela eficácia preclusiva da coisa julgada.",
+      "Deverá ser acolhida parcialmente; a viação será denunciada apenas para repartição das custas do novo processo, não comportando debate sobre a culpa que já se encontra selada."
+    ], ans: 2, exp: "Coisa julgada material e eficácia preclusiva impedem a rediscussão (art. 508). A única via seria ação rescisória." },
+  { q: "130. Ao proferir sentença liminar de improcedência indeferindo a oitiva de testemunhas sob o simples argumento de que 'sendo o juiz o destinatário único da prova, restou o juízo suficientemente convencido pelos documentos colacionados', o magistrado incorreu em erro. À luz do moderno paradigma objetivista do direito à prova:",
+    opts: [
+      "A decisão revela postura excessivamente humanista, ignorando a preclusão.",
+      "A decisão é eivada de viés subjetivista limitador; modernamente, entende-se que a prova se destina não apenas à consciência íntima do juiz, mas também às partes (para justificação) e ao controle racional da sociedade, gerando cerceamento de defesa o indeferimento abrupto do debate.",
+      "A decisão encontra-se correta, pois a jurisprudência sumulada estabelece de forma peremptória a subsidiariedade absoluta da prova testemunhal face a qualquer indício de prova material (art. 400, CPC).",
+      "A decisão seria ilícita apenas se envolvesse lides envolvendo ente federativo, já que o paradigma objetivista aplica-se apenas no microssistema de tutela coletiva."
+    ], ans: 1, exp: "Paradigma objetivista: a prova é direito da parte e da sociedade, não apenas convicção íntima do juiz." },
+  { q: "131. Na teoria probatória pormenorizada pela doutrina e cobrada em avaliação, convivem os conceitos de 'ônus da prova' (perspectiva subjetiva e objetiva) e de 'standard probatório'. Qual a correlação dogmática correta entre eles?",
+    opts: [
+      "O standard probatório é um mecanismo sancionatório subsidiário que o juiz aciona somente se o ônus subjetivo falhar durante a instrução probatória em audiência.",
+      "A lógica inverte a cronologia: o ônus da prova na perspectiva objetiva figura como a primeira etapa lógico-jurídica, enquanto a avaliação do standard consolida-se exclusivamente no acórdão colegiado.",
+      "Standard da prova traduz-se no grau objetivo de suficiência ('quantidade/qualidade' mínima de convencimento). Logicamente, precede a aplicação da sanção de encargo; na incerteza do atingimento desse patamar rigoroso, deflagra-se subsidiariamente o ônus em seu viés objetivo contra o onerado.",
+      "No vigente CPC, as figuras se fundiram. O standard de prova diluiu-se por completo nas hipóteses de distribuição dinâmica do encargo estipuladas ex ante no saneamento do processo."
+    ], ans: 2, exp: "Standard é o grau mínimo; se não atingido, aplica-se a regra de julgamento (ônus objetivo)." },
+  { q: "132. A célebre sentença 'O objeto da prova no processo cinge-se invariavelmente aos fatos articulados no mérito' carece de rigor técnico. São motivos que tornam a proposição insuficiente, EXCETO:",
+    opts: [
+      "O objeto da prova recai comumente não sobre a totalidade de eventos irrestritos, mas de forma limitada sobre o esquadro das alegações estritamente controvertidas desenhadas pelas partes.",
+      "O escopo não se confina ao mérito puro; mostra-se com frequência crucial produzir elementos demonstrativos sobre alegações atinentes à tempestividade processual e pressupostos processuais intrínsecos.",
+      "Em caráter excepcional, pode recair a exigência de demonstração inclusive sobre matéria de direito (como provar a vigência e o teor de direito consuetudinário, local ou codificação estrangeira, nos termos da lei).",
+      "Toda e qualquer confissão real extrajudicial obsta inteiramente a produção probatória posterior pelas vias ordinárias, extinguindo ex tunc a natureza controversa de 100% dos eventos processuais."
+    ], ans: 3, exp: "A assertiva III está incorreta – a confissão não obsta toda prova." },
+  { q: "133. O instituto do litisconsórcio segmenta-se quanto à obrigatoriedade de formação e à constância do resultado judicial de mérito. Assinale a correlação tecnicamente hígida entre a tipologia e a praxe forense:",
+    opts: [
+      "Litisconsórcio unitário nasce, sob qualquer hipótese, da singela comunhão de interesses, sendo sua figura mais emblemática o litisconsórcio ativo irrestrito em demandas rito de usucapião ordinária.",
+      "Litisconsórcio necessário é ditado pela impositividade da lei ou incindibilidade relacional (cujo chamamento é inafastável). A presença do proprietário registral e todos os lindeiros confinantes na Usucapião imobiliária plasma com exatidão a subespécie 'necessário não-unitário (comum)'.",
+      "O litisconsórcio de cunho facultativo, perante o nosso estatuto adjetivo, rechaça de forma categórica a natureza unitária, uma vez que a exigibilidade de resposta uniforme obrigaria a citação integral de todos ab initio.",
+      "O arranjo litisconsorcial necessário detém a propriedade perpétua da homogeneidade sentencial; de conseguinte, toda intervenção por chamamento transmuta-se ipso facto em litisconsórcio multitudinário."
+    ], ans: 1, exp: "Na usucapião, citação obrigatória (necessário), mas a decisão pode ser distinta para cada um (comum)." },
+  { q: "134. No bojo de ação originária de cobrança intentada pela firma Marta S/A (R$ 180 mil, contrato A), a requerida Formiga Ltda protocola contestação acompanhada de pleito autônomo reconvencional fundado em contrato distinto de mútuo financeiro (R$ 250 mil, contrato B), o qual, contudo, ainda pende de vencimento. Seccionar o trâmite e arquivar precocemente a reconvenção demanda do juiz togado:",
+    opts: [
+      "A prolação de Sentença com exame completo do mérito, a qual recobre-se pela pesada fumaça da coisa julgada material, obstando que a Formiga Ltda volte a postular os valores perenemente.",
+      "O exarar de Decisão Interlocutória com fulcro na ausência do legítimo interesse processual de agir, provocando uma extinção parcial sem mérito. Consequentemente, forja apenas coisa julgada formal, viabilizando que a devedora acione o judiciário assim que eclodir o termo da prestação.",
+      "A elaboração de Sentença extintiva de cadência terminativa global, haja vista que as demandas imbricam-se com forte prejudicialidade, derrubando a ação primeva pela inépcia reflexa.",
+      "O despacho saneador meramente ordinatório ordenando o apensamento perpétuo das contendas em fila sucessiva sem qualquer resolução interina transitável em julgado."
+    ], ans: 1, exp: "Falta interesse de agir (dívida vincenda). Extinção parcial sem mérito, coisa julgada formal, possibilidade de repropositura após vencimento." },
+  { q: "135. Sobre o instituto da Coisa Julgada no sistema processual civil, considerando seu conceito, finalidade, meios de impugnação e limites, assinale a alternativa correta:",
+    opts: [
+      "Tem por finalidade primordial garantir a justiça absoluta das decisões, motivo pelo qual seus limites objetivos abrangem não apenas o dispositivo, mas também a verdade dos fatos estabelecida como fundamento da sentença.",
+      "Atinge, em regra, as partes entre as quais é dada, não prejudicando terceiros (limite subjetivo), e torna indiscutível o comando normativo contido na parte dispositiva da decisão de mérito (limite objetivo), visando à segurança jurídica.",
+      "Sua impugnação é livre a qualquer tempo, bastando a constatação de prova falsa superveniente por meio de simples petição nos autos originais, o que afasta de imediato a eficácia preclusiva do comando judicial.",
+      "Trata-se de autoridade inerente a toda e qualquer decisão proferida no processo, seja ela terminativa (sem mérito) ou definitiva (com mérito), tornando o julgamento imutável esgotados os prazos recursais."
+    ], ans: 1, exp: "Coisa julgada material = limites objetivos (dispositivo) e subjetivos (partes). Impugnação por ação rescisória ou querela, não por simples petição."
+  }
+];
+
+// ============================================================
+//  MATCH DATA – 10 BLOCOS DE ASSOCIAÇÃO
+// ============================================================
+const matchData = [
+  { title: "Fundamentos do Processo", desc: "Relacione os conceitos básicos.", left: [
+      {id:"c1",text:"Poder-dever do Estado de aplicar o direito"},
+      {id:"c2",text:"Instrumento para provocar o Judiciário"},
+      {id:"c3",text:"Pluralidade de partes no mesmo polo"},
+      {id:"c4",text:"Autoridade da sentença imutável"}
+    ], right: [
+      {id:"a1",text:"Jurisdição"},
+      {id:"a2",text:"Ação"},
+      {id:"a3",text:"Litisconsórcio"},
+      {id:"a4",text:"Coisa julgada"}
+    ], matches: {"c1":"a1","c2":"a2","c3":"a3","c4":"a4"} },
+  { title: "Teoria da Prova – Acepções", desc: "Conecte cada acepção à sua definição.", left: [
+      {id:"c5",text:"Atividade de demonstrar fatos"},
+      {id:"c6",text:"Instrumentos utilizados (documento, testemunho)"},
+      {id:"c7",text:"Efeito de convencimento no juiz"},
+      {id:"c8",text:"Elementos externos que carregam informação"}
+    ], right: [
+      {id:"a5",text:"Prova como atividade"},
+      {id:"a6",text:"Prova como meio"},
+      {id:"a7",text:"Prova como resultado"},
+      {id:"a8",text:"Fonte de prova"}
+    ], matches: {"c5":"a5","c6":"a6","c7":"a7","c8":"a8"} },
+  { title: "Ônus da Prova e Standard", desc: "Associe os conceitos.", left: [
+      {id:"c9",text:"Grau de suficiência probatória"},
+      {id:"c10",text:"Encargo de provar determinados fatos"},
+      {id:"c11",text:"Regra de julgamento para decisão na dúvida"},
+      {id:"c12",text:"Princípio que torna a prova pertencente ao processo"}
+    ], right: [
+      {id:"a9",text:"Standard da prova"},
+      {id:"a10",text:"Ônus subjetivo"},
+      {id:"a11",text:"Ônus objetivo"},
+      {id:"a12",text:"Comunhão da prova"}
+    ], matches: {"c9":"a9","c10":"a10","c11":"a11","c12":"a12"} },
+  { title: "Litisconsórcio – Classificações", desc: "Ligue cada tipo à sua característica.", left: [
+      {id:"c13",text:"Obrigatório por lei ou natureza da relação"},
+      {id:"c14",text:"Decisão idêntica para todos"},
+      {id:"c15",text:"Opcional, mas permite economia processual"},
+      {id:"c16",text:"Formado após o início do processo"}
+    ], right: [
+      {id:"a13",text:"Necessário"},
+      {id:"a14",text:"Unitário"},
+      {id:"a15",text:"Facultativo"},
+      {id:"a16",text:"Ulterior"}
+    ], matches: {"c13":"a13","c14":"a14","c15":"a15","c16":"a16"} },
+  { title: "Intervenções de Terceiros", desc: "Relacione cada modalidade à sua definição.", left: [
+      {id:"c17",text:"Terceiro auxilia uma parte (interesse jurídico)"},
+      {id:"c18",text:"Chamamento para regresso (evicção, indenização)"},
+      {id:"c19",text:"Réu chama devedor solidário ou fiador"},
+      {id:"c20",text:"Entidade com conhecimento técnico para auxiliar o juiz"}
+    ], right: [
+      {id:"a17",text:"Assistência"},
+      {id:"a18",text:"Denunciação da lide"},
+      {id:"a19",text:"Chamamento ao processo"},
+      {id:"a20",text:"Amicus curiae"}
+    ], matches: {"c17":"a17","c18":"a18","c19":"a19","c20":"a20"} },
+  { title: "Coisa Julgada – Limites", desc: "Associe cada aspecto ao conceito.", left: [
+      {id:"c21",text:"Impede rediscussão no mesmo processo"},
+      {id:"c22",text:"Torna o mérito indiscutível em qualquer outro processo"},
+      {id:"c23",text:"Atinge apenas o dispositivo da sentença"},
+      {id:"c24",text:"Impede alegação de fatos que poderiam ter sido alegados"}
+    ], right: [
+      {id:"a21",text:"Coisa julgada formal"},
+      {id:"a22",text:"Coisa julgada material"},
+      {id:"a23",text:"Limite objetivo"},
+      {id:"a24",text:"Eficácia preclusiva"}
+    ], matches: {"c21":"a21","c22":"a22","c23":"a23","c24":"a24"} },
+  { title: "Sentença – Elementos e Vícios", desc: "Ligue cada termo à sua definição.", left: [
+      {id:"c25",text:"Resumo do processo"},
+      {id:"c26",text:"Fundamentos de fato e de direito"},
+      {id:"c27",text:"Comando final da sentença"},
+      {id:"c28",text:"Sentença que concede além do pedido"}
+    ], right: [
+      {id:"a25",text:"Relatório"},
+      {id:"a26",text:"Motivação"},
+      {id:"a27",text:"Dispositivo"},
+      {id:"a28",text:"Ultra petita"}
+    ], matches: {"c25":"a25","c26":"a26","c27":"a27","c28":"a28"} },
+  { title: "Fases do Processo", desc: "Relacione cada fase à sua atividade.", left: [
+      {id:"c29",text:"Petição inicial e contestação"},
+      {id:"c30",text:"Organização e correção de vícios"},
+      {id:"c31",text:"Produção de provas (perícias, testemunhas)"},
+      {id:"c32",text:"Prolação da sentença"}
+    ], right: [
+      {id:"a29",text:"Postulatória"},
+      {id:"a30",text:"Saneamento"},
+      {id:"a31",text:"Instrutória"},
+      {id:"a32",text:"Decisória"}
+    ], matches: {"c29":"a29","c30":"a30","c31":"a31","c32":"a32"} },
+  { title: "Recursos e Impugnações", desc: "Associe o recurso à decisão cabível.", left: [
+      {id:"c33",text:"Contra sentença"},
+      {id:"c34",text:"Contra decisão interlocutória"},
+      {id:"c35",text:"Para corrigir omissão, contradição ou obscuridade"},
+      {id:"c36",text:"Para desconstituir decisão transitada em julgado"}
+    ], right: [
+      {id:"a33",text:"Apelação"},
+      {id:"a34",text:"Agravo de instrumento"},
+      {id:"a35",text:"Embargos de declaração"},
+      {id:"a36",text:"Ação rescisória"}
+    ], matches: {"c33":"a33","c34":"a34","c35":"a35","c36":"a36"} },
+  { title: "Procedimentos Especiais", desc: "Conecte o procedimento à sua finalidade.", left: [
+      {id:"c37",text:"Recuperar posse de imóvel invadido"},
+      {id:"c38",text:"Obrigar administrador a prestar contas"},
+      {id:"c39",text:"Partilha de bens de pessoa falecida"},
+      {id:"c40",text:"Anulação de ato societário (sócios)"}
+    ], right: [
+      {id:"a37",text:"Ação possessória"},
+      {id:"a38",text:"Ação de exigir contas"},
+      {id:"a39",text:"Inventário e partilha"},
+      {id:"a40",text:"Ação anulatória (litisconsórcio unitário)"}
+    ], matches: {"c37":"a37","c38":"a38","c39":"a39","c40":"a40"} }
+];
+
+// ============================================================
+//  CÓDIGO DO SIMULADOR (ADAPTADO PARA 135 QUESTÕES)
+// ============================================================
+let currentQ = 0;
+let userAnswers = new Array(rawQuestions.length).fill(null);
+const elNav = document.getElementById('nav-container');
+const elQText = document.getElementById('q-text');
+const elOpts = document.getElementById('opts');
+const elBtn = document.getElementById('btn-action');
+const elFeedback = document.getElementById('feedback');
+const elCounter = document.getElementById('q-counter');
+const elPrev = document.getElementById('btn-prev');
+const elNext = document.getElementById('btn-next');
+
+function init() {
+  elNav.innerHTML = '';
+  for(let i = 0; i <= rawQuestions.length; i++) {
+    const a = document.createElement('a');
+    a.id = 'nav-item-' + i;
+    a.className = 'nav-item unanswered';
+    a.textContent = i === rawQuestions.length ? 'Revisão' : (i + 1);
+    a.title = i === rawQuestions.length ? 'Ir para o Desafio' : 'Ir para Questão ' + (i + 1);
+    a.onclick = (e) => {
+      e.preventDefault();
+      document.getElementById('result-screen').style.display = 'none';
+      document.getElementById('quiz-screen').style.display = 'block';
+      jumpToQuestion(i);
+      document.getElementById('quiz-screen').scrollIntoView({behavior: "smooth"});
+    };
+    elNav.appendChild(a);
+  }
+  loadQuestion();
+  renderMatchGames();
+}
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function loadQuestion() {
+  for(let i = 0; i <= rawQuestions.length; i++) {
+    const item = document.getElementById('nav-item-' + i);
+    if (!item) continue;
+    item.className = 'nav-item';
+    if (i === rawQuestions.length) {
+      item.classList.add('challenge');
+    } else if (userAnswers[i] !== null) {
+      item.classList.add(userAnswers[i].isCorrect ? 'status-correct' : 'status-wrong');
+    } else {
+      item.classList.add('unanswered');
+    }
+    item.style.boxShadow = "none";
+  }
+  const currentItem = document.getElementById('nav-item-' + currentQ);
+  if (currentItem) {
+    if (currentQ < rawQuestions.length && userAnswers[currentQ] === null) {
+      currentItem.classList.remove('unanswered');
+      currentItem.classList.add('active-color');
+    } else if (currentQ === rawQuestions.length) {
+      currentItem.style.boxShadow = "0 0 0 2px #fff";
+    } else {
+      currentItem.style.boxShadow = "0 0 0 2px #fff";
+    }
+  }
+  elPrev.disabled = (currentQ === 0);
+
+  if (currentQ === rawQuestions.length) {
+    document.getElementById('standard-q-container').style.display = 'none';
+    document.getElementById('interactive-addon').style.display = 'block';
+    elBtn.style.display = 'none';
+    elCounter.textContent = 'Seção de Associações';
+    elNext.textContent = 'Finalizar 🏁';
+  } else {
+    document.getElementById('standard-q-container').style.display = 'block';
+    document.getElementById('interactive-addon').style.display = 'none';
+    elBtn.style.display = 'block';
+    elCounter.textContent = 'Questão ' + (currentQ + 1) + ' de ' + rawQuestions.length;
+    elQText.textContent = rawQuestions[currentQ].q;
+    elFeedback.style.display = 'none';
+    elOpts.innerHTML = '';
+    elNext.textContent = 'Avançar →';
+    if (userAnswers[currentQ] !== null) {
+      renderReviewMode();
+    } else {
+      renderAnsweringMode();
+    }
+  }
+}
+
+function renderAnsweringMode() {
+  const q = rawQuestions[currentQ];
+  elBtn.textContent = 'Confirmar';
+  elBtn.disabled = true;
+  const mapped = q.opts.map((t, i) => ({ text: t, isCorrect: i === q.ans }));
+  const shuffled = shuffleArray(mapped);
+  this.currentShuffledOpts = shuffled;
+  shuffled.forEach((optObj, idx) => {
+    const lbl = document.createElement('label');
+    lbl.className = 'option';
+    lbl.id = 'opt-lbl-' + idx;
+    const inp = document.createElement('input');
+    inp.type = 'radio';
+    inp.name = 'option';
+    inp.value = idx;
+    inp.onclick = () => { elBtn.disabled = false; };
+    lbl.appendChild(inp);
+    lbl.appendChild(document.createTextNode(' ' + optObj.text));
+    elOpts.appendChild(lbl);
+  });
+}
+
+function renderReviewMode() {
+  const ans = userAnswers[currentQ];
+  const q = rawQuestions[currentQ];
+  elBtn.textContent = 'Respondida';
+  elBtn.disabled = true;
+  ans.shuffledOptsArray.forEach((optObj, idx) => {
+    const lbl = document.createElement('label');
+    lbl.className = 'option disabled';
+    lbl.id = 'opt-lbl-' + idx;
+    const inp = document.createElement('input');
+    inp.type = 'radio';
+    inp.name = 'option';
+    inp.value = idx;
+    inp.disabled = true;
+    if (idx === ans.selectedShuffledIdx) inp.checked = true;
+    lbl.appendChild(inp);
+    lbl.appendChild(document.createTextNode(' ' + optObj.text));
+    if (optObj.isCorrect) lbl.classList.add('correct-ans');
+    if (idx === ans.selectedShuffledIdx && !optObj.isCorrect) lbl.classList.add('wrong-ans');
+    elOpts.appendChild(lbl);
+  });
+  elFeedback.innerHTML = '<strong>' + (ans.isCorrect ? 'Acertou' : 'Errou') + '</strong><br>' + q.exp;
+  elFeedback.style.borderLeftColor = ans.isCorrect ? '#4caf50' : '#ef4444';
+  elFeedback.style.display = 'block';
+}
+
+function handleAction() {
+  if (userAnswers[currentQ] !== null) return;
+  const sel = document.querySelector('input[name="option"]:checked');
+  if (!sel) return;
+  const ansIdx = parseInt(sel.value);
+  const chosen = this.currentShuffledOpts[ansIdx];
+  const isCorrect = chosen.isCorrect;
+  userAnswers[currentQ] = {
+    selectedShuffledIdx: ansIdx,
+    isCorrect: isCorrect,
+    shuffledOptsArray: this.currentShuffledOpts
+  };
+  const correctIdx = this.currentShuffledOpts.findIndex(o => o.isCorrect);
+  document.querySelectorAll('input[name="option"]').forEach(i => i.disabled = true);
+  document.querySelectorAll('.option').forEach(l => l.classList.add('disabled'));
+  document.getElementById('opt-lbl-' + correctIdx).classList.add('correct-ans');
+  if (!isCorrect) document.getElementById('opt-lbl-' + ansIdx).classList.add('wrong-ans');
+  else confetti({ particleCount: 45, spread: 60, origin: { y: 0.8 } });
+  const item = document.getElementById('nav-item-' + currentQ);
+  if (item) {
+    item.className = 'nav-item ' + (isCorrect ? 'status-correct' : 'status-wrong');
+    item.style.boxShadow = "0 0 0 2px #fff";
+  }
+  elFeedback.innerHTML = '<strong>' + (isCorrect ? '✅ Correto' : '❌ Incorreto') + '</strong><br>' + rawQuestions[currentQ].exp;
+  elFeedback.style.borderLeftColor = isCorrect ? '#4caf50' : '#ef4444';
+  elFeedback.style.display = 'block';
+  elBtn.textContent = 'Registrado';
+  elBtn.disabled = true;
+}
+
+function navigateQ(step) {
+  if (step === 1 && currentQ === rawQuestions.length) {
+    showResults();
+    return;
+  }
+  currentQ += step;
+  if (currentQ < 0) currentQ = 0;
+  if (currentQ > rawQuestions.length) currentQ = rawQuestions.length;
+  loadQuestion();
+}
+
+function jumpToQuestion(idx) {
+  currentQ = idx;
+  loadQuestion();
+}
+
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'block';
+  for(let i=0; i <= rawQuestions.length; i++) {
+    const item = document.getElementById('nav-item-' + i);
+    if (item) item.style.boxShadow = "none";
+  }
+  let correct = 0, answered = 0;
+  userAnswers.forEach(a => { if (a !== null) { answered++; if (a.isCorrect) correct++; } });
+  const pct = answered > 0 ? Math.round((correct / rawQuestions.length) * 100) : 0;
+  document.getElementById('score-val').textContent = pct + '%';
+  document.getElementById('val-correct').textContent = correct;
+  document.getElementById('val-wrong').textContent = answered - correct;
+  if (pct >= 70) confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+}
+
+// Match logic
+let activeConcept = null, activeAuthor = null;
+function renderMatchGames() {
+  const container = document.getElementById('match-games-container');
+  let html = '';
+  matchData.forEach((block, idx) => {
+    const shuffled = [...block.right].sort(() => Math.random() - 0.5);
+    let left = block.left.map(item => `<div class="match-card concept-card" id="card-${item.id}" onclick="handleMatchClick('${item.id}','concept',${idx})">${item.text}</div>`).join('');
+    let right = shuffled.map(item => `<div class="match-card author-card" style="text-align:center;font-weight:bold;font-size:15px;" id="card-${item.id}" onclick="handleMatchClick('${item.id}','author',${idx})">${item.text}</div>`).join('');
+    html += `<div class="match-block" id="block-${idx}"><h3>${block.title}</h3><p class="desc">${block.desc}</p><div class="match-grid"><div class="match-col">${left}</div><div class="match-col" style="flex:0.5;">${right}</div></div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function handleMatchClick(id, type, blockIndex) {
+  const card = document.getElementById('card-' + id);
+  if (!card || card.classList.contains('matched')) return;
+  if (type === 'concept') {
+    if (activeConcept) document.getElementById('card-' + activeConcept).classList.remove('selected');
+    activeConcept = id;
+  } else {
+    if (activeAuthor) document.getElementById('card-' + activeAuthor).classList.remove('selected');
+    activeAuthor = id;
+  }
+  card.classList.add('selected');
+  if (activeConcept && activeAuthor) checkMatch(blockIndex);
+}
+
+function checkMatch(blockIndex) {
+  const block = matchData[blockIndex];
+  const correct = block.matches[activeConcept];
+  const cCard = document.getElementById('card-' + activeConcept);
+  const aCard = document.getElementById('card-' + activeAuthor);
+  if (correct === activeAuthor) {
+    cCard.classList.remove('selected');
+    aCard.classList.remove('selected');
+    cCard.classList.add('matched');
+    aCard.classList.add('matched');
+    if (typeof confetti === 'function') confetti({ particleCount: 30, spread: 40, origin: { y: 0.8 } });
+  } else {
+    cCard.classList.add('error');
+    aCard.classList.add('error');
+    setTimeout(() => {
+      cCard.classList.remove('error', 'selected');
+      aCard.classList.remove('error', 'selected');
+    }, 600);
+  }
+  activeConcept = null;
+  activeAuthor = null;
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
