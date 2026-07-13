@@ -116,7 +116,7 @@
             font-family:'Cardo',Georgia,serif;
             font-size:17px;
             padding:2px 8px;
-            width:200px;
+            width:220px;
             margin:0 4px;
             transition:0.2s;
         }
@@ -218,7 +218,7 @@
             .container { padding:12px; }
             .header h1 { font-size:18px; }
             .question-box .q-text { font-size:17px; }
-            .question-box .q-text input[type="text"] { width:130px; font-size:15px; }
+            .question-box .q-text input[type="text"] { width:140px; font-size:15px; }
             .btn-nav { padding:8px 16px; font-size:14px; }
             .nav-btn { width:28px; height:28px; font-size:11px; }
             .control-bar .counter { font-size:13px; }
@@ -301,7 +301,7 @@ function playSound(type) {
 }
 
 // ============================================================
-// 70 QUESTÕES — PREENCHIMENTO DE LACUNA (CORRIGIDAS)
+// 70 QUESTÕES — PREENCHIMENTO DE LACUNA (REFORMULADO)
 // ============================================================
 const questionsData = [
     // 1
@@ -309,71 +309,71 @@ const questionsData = [
     // 2
     { tema: "Teoria da Prova", texto: "O ______ probatório é o grau de suficiência; o ônus ______ é a regra de conduta; o ônus ______ é a regra de julgamento.", blanks: ["standard", "subjetivo", "objetivo"], explicacao: "Standard = grau de evidência; subjetivo = conduta; objetivo = julgamento." },
     // 3
-    { tema: "Teoria da Prova", texto: "O juiz pode determinar provas de ofício com base nos ______ ______; a regra do ônus da prova é aplicada apenas no momento do ______.", blanks: ["poderes instrutórios", "julgamento"], explicacao: "Os poderes instrutórios (art. 370) permitem ao juiz determinar provas; o ônus objetivo só incide no julgamento." },
+    { tema: "Teoria da Prova", texto: "O juiz pode determinar provas de ofício com base nos ______ ______; a regra do ônus da prova é aplicada apenas no momento do ______.", blanks: ["poderes instrutórios", "julgamento"], explicacao: "Os poderes instrutórios permitem ao juiz determinar provas; o ônus objetivo só incide no julgamento." },
     // 4
-    { tema: "Teoria da Prova", texto: "Pelo princípio da ______ (ou aquisição) da prova, a prova pertence ao processo, não podendo ser retirada.", blanks: ["comunhão"], explicacao: "Princípio da comunhão/aquisição – art. 371." },
+    { tema: "Teoria da Prova", texto: "Pelo princípio da ______ (ou aquisição) da prova, a prova pertence ao processo, não podendo ser retirada.", blanks: ["comunhão"], explicacao: "Princípio da comunhão/aquisição." },
     // 5
     { tema: "Teoria da Prova", texto: "A prova ______ viola direitos materiais; a prova ______ viola regras processuais.", blanks: ["ilícita", "ilegítima"], explicacao: "Ilícita = material; ilegítima = processual." },
     // 6
     { tema: "Sentença e Coisa Julgada", texto: "A coisa julgada ______ impede a repropositura da ação; a coisa julgada ______ permite a correção e repropositura.", blanks: ["material", "formal"], explicacao: "Material = mérito; formal = ato processual." },
     // 7
-    { tema: "Sentença e Coisa Julgada", texto: "A coisa julgada recai, em regra, apenas sobre o ______ da sentença.", blanks: ["dispositivo"], explicacao: "Art. 504: apenas o dispositivo." },
+    { tema: "Sentença e Coisa Julgada", texto: "A coisa julgada recai, em regra, apenas sobre o ______ da sentença.", blanks: ["dispositivo"], explicacao: "Apenas o dispositivo." },
     // 8
-    { tema: "Sentença e Coisa Julgada", texto: "A ______ ______ da coisa julgada (art. 508) impede a parte de alegar fatos que já existiam e não foram opostos.", blanks: ["eficácia preclusiva"], explicacao: "Eficácia preclusiva (deduzido e dedutível)." },
+    { tema: "Sentença e Coisa Julgada", texto: "A ______ ______ da coisa julgada impede a parte de alegar fatos que já existiam e não foram opostos.", blanks: ["eficácia preclusiva"], explicacao: "Eficácia preclusiva (deduzido e dedutível)." },
     // 9
-    { tema: "Sentença e Coisa Julgada", texto: "Decisões continuativas, como alimentos, são revistas por ação ______, com efeitos ex nunc.", blanks: ["revisional"], explicacao: "Art. 505, I: ação revisional." },
+    { tema: "Sentença e Coisa Julgada", texto: "Decisões continuativas, como alimentos, são revistas por ação ______, com efeitos ex nunc.", blanks: ["revisional"], explicacao: "Ação revisional para relações de trato continuado." },
     // 10
     { tema: "Litisconsórcio", texto: "No litisconsórcio ______ (solidariedade), o juiz não pode incluir devedor solidário de ofício.", blanks: ["facultativo"], explicacao: "Solidariedade = litisconsórcio facultativo." },
     // 11
     { tema: "Litisconsórcio", texto: "O litisconsórcio ______ exige citação obrigatória; o litisconsórcio ______ exige decisão uniforme.", blanks: ["necessário", "unitário"], explicacao: "Necessário (citação) ≠ unitário (decisão uniforme)." },
     // 12
-    { tema: "Intervenção de Terceiros", texto: "A ______ da lide é cabível para regresso/garantia; o ______ ao processo é cabível para devedores solidários.", blanks: ["denunciação", "chamamento"], explicacao: "Denunciação (art. 125); Chamamento (art. 130)." },
+    { tema: "Intervenção de Terceiros", texto: "A ______ da lide é cabível para regresso/garantia; o ______ ao processo é cabível para devedores solidários.", blanks: ["denunciação", "chamamento"], explicacao: "Denunciação (garantia); Chamamento (solidariedade)." },
     // 13
-    { tema: "Procedimento e Decisões", texto: "O divórcio pode ser concedido antes da partilha por julgamento antecipado ______ de ______.", blanks: ["parcial", "mérito"], explicacao: "Art. 356: julgamento antecipado parcial do mérito." },
+    { tema: "Procedimento e Decisões", texto: "O divórcio pode ser concedido antes da partilha por julgamento antecipado ______ de ______.", blanks: ["parcial", "mérito"], explicacao: "Julgamento antecipado parcial do mérito." },
     // 14
-    { tema: "Procedimento e Decisões", texto: "O juiz não pode condenar a mais do que o pedido (vedação ______), pela regra da ______.", blanks: ["ultrapetita", "correlação"], explicacao: "Ultrapetita (escreve-se junto); regra da correlação/adstrição." },
+    { tema: "Procedimento e Decisões", texto: "O juiz não pode condenar a mais do que o pedido (vedação ______), pela regra da ______.", blanks: ["ultrapetita", "correlação"], explicacao: "Ultrapetita; regra da correlação/adstrição." },
     // 15
-    { tema: "Procedimento e Decisões", texto: "A sentença em regra é ______, mas admite-se sentença ______ (ilíquida) quando o quantum não puder ser apurado de imediato.", blanks: ["líquida", "genérica"], explicacao: "Art. 491: sentença genérica." },
+    { tema: "Procedimento e Decisões", texto: "A sentença em regra é ______, mas admite-se sentença ______ (ilíquida) quando o quantum não puder ser apurado de imediato.", blanks: ["líquida", "genérica"], explicacao: "Sentença genérica quando não for possível determinar o quantum." },
     // 16
-    { tema: "Recursos", texto: "O ______ é o recurso cabível contra decisões interlocutórias, com lista taxativa mitigada pelo STJ (______ mitigada).", blanks: ["agravo de instrumento", "taxatividade"], explicacao: "Agravo de instrumento (art. 1.015); taxatividade mitigada." },
+    { tema: "Recursos", texto: "O ______ é o recurso cabível contra decisões interlocutórias, com lista taxativa mitigada pelo STJ (______ mitigada).", blanks: ["agravo de instrumento", "taxatividade"], explicacao: "Agravo de instrumento; taxatividade mitigada." },
     // 17
     { tema: "Procedimento e Decisões", texto: "A sentença é executada no mesmo processo (______); o título extrajudicial exige processo autônomo de ______.", blanks: ["cumprimento de sentença", "execução"], explicacao: "Cumprimento de sentença (mesmo processo); execução (autônoma)." },
     // 18
     { tema: "Procedimento e Decisões", texto: "A inversão do ônus da prova (distribuição dinâmica) deve ser decidida antes da sentença, garantindo o ______ prévio, geralmente na fase de ______.", blanks: ["contraditório", "saneamento"], explicacao: "Contraditório prévio, no saneamento." },
     // 19
-    { tema: "Procedimento e Decisões", texto: "A exibição de documentos é um ______ processual, e não mero ônus, conforme entendimento consolidado do STJ.", blanks: ["dever"], explicacao: "STJ Tema 1000: dever processual." },
+    { tema: "Procedimento e Decisões", texto: "A exibição de documentos é um ______ processual, e não mero ônus.", blanks: ["dever"], explicacao: "A exibição é um dever processual." },
     // 20
-    { tema: "Procedimento e Decisões", texto: "Na AIJ, a ordem de oitiva é: ______ (peritos), ______ (depoimento da autora), ______ (depoimento do réu), ______ (testemunhas). Se atraso > 30 min, partes podem ir embora.", blanks: ["peritos", "autora", "réu", "testemunhas"], explicacao: "Art. 361 e 362, §2º: peritos, autora, réu, testemunhas; atraso > 30 min autoriza adiamento." },
+    { tema: "Procedimento e Decisões", texto: "Na AIJ, a ordem de oitiva é: ______ (peritos), ______ (depoimento da autora), ______ (depoimento do réu), ______ (testemunhas). Se atraso > 30 min, partes podem ir embora.", blanks: ["peritos", "autora", "réu", "testemunhas"], explicacao: "Ordem: peritos, autora, réu, testemunhas; atraso > 30 min autoriza adiamento." },
     // 21
     { tema: "Litisconsórcio", texto: "No litisconsórcio unitário, atos ______ são ineficazes; mas a confissão pode ser valorada como elemento ______.", blanks: ["prejudiciais", "probatório"], explicacao: "Atos prejudiciais são ineficazes; confissão é elemento probatório." },
     // 22
-    { tema: "Intervenção de Terceiros", texto: "Para bloquear contas de sócio, é necessário instaurar o ______ ______ da ______ ______, com citação do sócio.", blanks: ["Incidente de Desconsideração", "Personalidade Jurídica"], explicacao: "Incidente de Desconsideração da Personalidade Jurídica (IDPJ) – art. 133." },
+    { tema: "Intervenção de Terceiros", texto: "Para bloquear contas de sócio, é necessário instaurar o ______ ______ da ______ ______, com citação do sócio.", blanks: ["Incidente de Desconsideração", "Personalidade Jurídica"], explicacao: "Incidente de Desconsideração da Personalidade Jurídica (IDPJ)." },
     // 23
-    { tema: "Sentença e Coisa Julgada", texto: "A coisa julgada prejudica apenas as ______, mas beneficia terceiros. Exceção: ______ e adquirentes da coisa litigiosa.", blanks: ["partes", "sucessores"], explicacao: "Art. 506; sucessores (art. 109, §3º)." },
+    { tema: "Sentença e Coisa Julgada", texto: "A coisa julgada prejudica apenas as ______, mas beneficia terceiros. Exceção: ______ e adquirentes da coisa litigiosa.", blanks: ["partes", "sucessores"], explicacao: "Partes; sucessores e adquirentes da coisa litigiosa." },
     // 24
-    { tema: "Recursos e Competência", texto: "A competência sobre bens situados no Brasil é ______, não se homologando partilha estrangeira.", blanks: ["exclusiva"], explicacao: "Art. 23, II: competência exclusiva da jurisdição brasileira." },
+    { tema: "Recursos e Competência", texto: "A competência sobre bens situados no Brasil é ______, não se homologando partilha estrangeira.", blanks: ["exclusiva"], explicacao: "Competência exclusiva da jurisdição brasileira." },
     // 25
-    { tema: "Intervenção de Terceiros", texto: "A substituição de parte ilegítima ocorre na ______.", blanks: ["réplica"], explicacao: "Art. 338 – substituição na réplica." },
+    { tema: "Intervenção de Terceiros", texto: "A substituição de parte ilegítima ocorre na ______.", blanks: ["réplica"], explicacao: "Substituição na réplica." },
     // 26
-    { tema: "Litisconsórcio", texto: "No processo eletrônico, o prazo é ______ (art. 229, §2º); começa da data do ______ citado (art. 231, §1º).", blanks: ["simples", "último"], explicacao: "Prazo simples, do último citado." },
+    { tema: "Litisconsórcio", texto: "No processo eletrônico, o prazo é ______; começa da data do ______ citado.", blanks: ["simples", "último"], explicacao: "Prazo simples, do último citado." },
     // 27
-    { tema: "Litisconsórcio", texto: "No litisconsórcio ______, a desistência de um autor não depende dos demais, mas exige ______ do réu (art. 485, §4º).", blanks: ["facultativo", "anuência"], explicacao: "Facultativo, anuência do réu." },
+    { tema: "Litisconsórcio", texto: "No litisconsórcio ______, a desistência de um autor não depende dos demais, mas exige ______ do réu.", blanks: ["facultativo", "anuência"], explicacao: "Facultativo, anuência do réu." },
     // 28
-    { tema: "Intervenção de Terceiros", texto: "Na assistência ______, o terceiro auxilia sem relação com o adversário; na assistência ______, atua como litisconsorte.", blanks: ["simples", "litisconsorcial"], explicacao: "Art. 119 (simples) e 124 (litisconsorcial)." },
+    { tema: "Intervenção de Terceiros", texto: "Na assistência ______, o terceiro auxilia sem relação com o adversário; na assistência ______, atua como litisconsorte.", blanks: ["simples", "litisconsorcial"], explicacao: "Simples (sem relação) e litisconsorcial (com relação)." },
     // 29
-    { tema: "Intervenção de Terceiros", texto: "O assistente fica vinculado pela '______ da ______' (art. 123), salvo dolo/culpa do assistido.", blanks: ["eficácia", "intervenção"], explicacao: "Art. 123 – eficácia da intervenção." },
+    { tema: "Intervenção de Terceiros", texto: "O assistente fica vinculado pela '______ da ______', salvo dolo/culpa do assistido.", blanks: ["eficácia", "intervenção"], explicacao: "Eficácia da intervenção." },
     // 30
-    { tema: "Intervenção de Terceiros", texto: "O amicus curiae defende interesse ______, não financeiro.", blanks: ["institucional"], explicacao: "Art. 138 – interesse institucional." },
+    { tema: "Intervenção de Terceiros", texto: "O amicus curiae defende interesse ______, não financeiro.", blanks: ["institucional"], explicacao: "Interesse institucional." },
     // 31
-    { tema: "Recursos e Competência", texto: "Sentença arbitral: cabe ação ______, não rescisória.", blanks: ["anulatória"], explicacao: "Lei de Arbitragem, art. 33: ação anulatória (prazo de 90 dias)." },
+    { tema: "Recursos e Competência", texto: "Sentença arbitral: cabe ação ______, não rescisória.", blanks: ["anulatória"], explicacao: "Ação anulatória (prazo de 90 dias)." },
     // 32
     { tema: "Recursos e Competência", texto: "Para vício grave de citação, cabe ______ (vício ______), a qualquer tempo.", blanks: ["querela nullitatis", "transrescisório"], explicacao: "Querela nullitatis – vício transrescisório." },
     // 33
-    { tema: "Teoria da Prova", texto: "A compra de imóvel > 30 SM exige forma de ______, sob pena de nulidade.", blanks: ["escritura pública"], explicacao: "CC, art. 108: escritura pública." },
+    { tema: "Teoria da Prova", texto: "A compra de imóvel de valor superior a 30 salários mínimos exige forma de ______, sob pena de nulidade.", blanks: ["escritura pública"], explicacao: "Escritura pública é forma exigida." },
     // 34
-    { tema: "Teoria da Prova", texto: "Fatos ______, confessados, incontroversos ou presumidos dispensam prova.", blanks: ["notórios"], explicacao: "Art. 374." },
+    { tema: "Teoria da Prova", texto: "Fatos ______, confessados, incontroversos ou presumidos dispensam prova.", blanks: ["notórios"], explicacao: "Fatos notórios dispensam prova." },
     // 35
-    { tema: "Procedimento e Decisões", texto: "Reconvenção com dívida ______ é inadmitida por falta de ______ processual.", blanks: ["vincenda", "interesse"], explicacao: "Falta interesse de agir (dívida vincenda)." },
+    { tema: "Procedimento e Decisões", texto: "Reconvenção com dívida ______ é inadmitida por falta de ______ processual.", blanks: ["vincenda", "interesse"], explicacao: "Dívida vincenda = falta de interesse processual." },
     // 36
     { tema: "Procedimento e Decisões", texto: "Indeferir testemunhas por convicção íntima viola o paradigma ______ e configura ______ de defesa.", blanks: ["objetivista", "cerceamento"], explicacao: "Paradigma objetivista; cerceamento de defesa." },
     // 37
@@ -383,67 +383,67 @@ const questionsData = [
     // 39
     { tema: "Teoria da Prova", texto: "Standard alto gera mais ______; standard baixo gera mais ______.", blanks: ["falsos negativos", "falsos positivos"], explicacao: "Alto = falsos negativos; baixo = falsos positivos." },
     // 40
-    { tema: "Teoria da Prova", texto: "Provas ______ são permitidas (art. 369), desde que moralmente legítimas.", blanks: ["atípicas"], explicacao: "Art. 369 – provas atípicas." },
+    { tema: "Teoria da Prova", texto: "Provas ______ são permitidas, desde que moralmente legítimas.", blanks: ["atípicas"], explicacao: "Provas atípicas." },
     // 41
     { tema: "Teoria da Prova", texto: "A prova tem escopos jurídico, ______ (pacificação) e ______ (legitimidade do Judiciário).", blanks: ["social", "político"], explicacao: "Escopos social e político." },
     // 42
-    { tema: "Litisconsórcio", texto: "Litisconsórcio ______ permite o desmembramento para evitar tumulto.", blanks: ["multitudinário"], explicacao: "Art. 113, §§1º-2º." },
+    { tema: "Litisconsórcio", texto: "Litisconsórcio ______ permite o desmembramento para evitar tumulto.", blanks: ["multitudinário"], explicacao: "Litisconsórcio multitudinário." },
     // 43
     { tema: "Litisconsórcio", texto: "Credor da parte perdedora tem interesse ______, não legitimidade para atacar coisa julgada (só terceiros ______ interessados).", blanks: ["fático", "juridicamente"], explicacao: "Interesse fático ≠ interesse jurídico." },
     // 44
-    { tema: "Sentença e Coisa Julgada", texto: "A descoberta de prova falsa em ação já transitada em julgado não permite a interposição de ______, sendo a via adequada a ação ______ para desconstituir a decisão.", blanks: ["recurso", "rescisória"], explicacao: "Denunciação inadmitida; via é ação rescisória (art. 966, VII)." },
+    { tema: "Sentença e Coisa Julgada", texto: "A descoberta de prova falsa em ação já transitada em julgado não permite a interposição de ______, sendo a via adequada a ação ______ para desconstituir a decisão.", blanks: ["recurso", "rescisória"], explicacao: "Não cabe recurso; a via é ação rescisória." },
     // 45
-    { tema: "Teoria da Prova", texto: "A verdade no processo é pautada pela teoria da ______, que exige que a decisão judicial guarde relação direta com o pedido formulado.", blanks: ["correspondência"], explicacao: "Teoria da correspondência (Tarski)." },
+    { tema: "Teoria da Prova", texto: "A verdade no processo é pautada pela teoria da ______, que exige que a decisão judicial guarde relação direta com o pedido formulado, sem extrapolar ou se afastar dele.", blanks: ["correspondência"], explicacao: "Teoria da correspondência." },
     // 46
-    { tema: "Teoria da Prova", texto: "O direito ao silêncio no processo civil só se aplica quando trouxer implicações na esfera ______.", blanks: ["penal"], explicacao: "Enunciado 51 FPPC: apenas com reflexos penais." },
+    { tema: "Teoria da Prova", texto: "O direito ao silêncio no processo civil só se aplica quando trouxer implicações/prejuízos na esfera ______.", blanks: ["penal"], explicacao: "Apenas com reflexos penais." },
     // 47
     { tema: "Litisconsórcio", texto: "No litisconsórcio ______, atos ______ (ex: contestação) aproveitam a todos.", blanks: ["unitário", "benéficos"], explicacao: "Unitário: atos benéficos aproveitam." },
     // 48
-    { tema: "Litisconsórcio", texto: "Na ação ______, o litisconsorte unitário facultativo não citado não sofre coisa julgada, pois não há ______ processual.", blanks: ["popular", "substituição"], explicacao: "Sem substituição processual." },
-    // 49
-    { tema: "Sentença e Coisa Julgada", texto: "A ______ da coisa julgada é criticada pela ______ jurídica que gera.", blanks: ["relativização", "insegurança"], explicacao: "Relativização gera insegurança." },
-    // 50
-    { tema: "Temas Contemporâneos", texto: "A citação por ______ e a obrigatoriedade de tentativa de acordo extrajudicial são temas que desafiam o CPC.", blanks: ["WhatsApp"], explicacao: "Citação por WhatsApp está em julgamento; Tema 1396/STJ discute a tentativa extrajudicial." },
+    { tema: "Litisconsórcio", texto: "Na ação ______, o litisconsorte unitário facultativo não citado não sofre coisa julgada, pois não há ______ processual.", blanks: ["popular", "substituição"], explicacao: "Ação popular; sem substituição processual." },
+    // 49 – NOVA (substitui a relativização removida)
+    { tema: "Teoria Geral", texto: "O princípio da ______ estabelece que o juiz não pode iniciar o processo sem provocação da parte interessada.", blanks: ["inércia"], explicacao: "Princípio da inércia da jurisdição." },
+    // 50 – NOVA (substitui a citação WhatsApp removida)
+    { tema: "Teoria Geral", texto: "A ______ é o fenômeno que ocorre quando duas ações idênticas (mesmas partes, pedido e causa de pedir) tramitam simultaneamente.", blanks: ["litispendência"], explicacao: "Litispendência." },
     // 51
     { tema: "Teoria da Prova", texto: "As acepções da prova são: ______, ______ e resultado.", blanks: ["fonte", "meio"], explicacao: "Fonte, meio e resultado." },
     // 52
     { tema: "Teoria da Prova", texto: "A ______ não é meio de prova, mas declaração que ingressa por ______ pessoal ou documento.", blanks: ["confissão", "depoimento"], explicacao: "Confissão não é meio." },
     // 53
     { tema: "Teoria da Prova", texto: "Exceções à árvore envenenada: derivação ______ e fonte ______.", blanks: ["mediata", "independente"], explicacao: "Derivação mediata e fonte independente." },
-    // 54
-    { tema: "Procedimento e Decisões", texto: "A ordem da AIJ está no art. 361: ______, autora, réu, testemunhas.", blanks: ["peritos"], explicacao: "Art. 361." },
-    // 55
-    { tema: "Procedimento e Decisões", texto: "Atraso > 30 minutos injustificado autoriza adiamento.", blanks: ["30"], explicacao: "Art. 362, §2º." },
+    // 54 – NOVA (substitui a 54 removida)
+    { tema: "Procedimento e Decisões", texto: "A ______ é o ato pelo qual o juiz organiza o processo, fixa os pontos controvertidos e determina as provas a serem produzidas.", blanks: ["saneamento"], explicacao: "Fase de saneamento." },
+    // 55 – NOVA (substitui a 55 removida)
+    { tema: "Recursos e Competência", texto: "A ______ é a regra que proíbe o juiz de decidir sobre questão não suscitada pelas partes (nemo iudex sine actore).", blanks: ["adstrição"], explicacao: "Regra da adstrição/congruência." },
     // 56
-    { tema: "Sentença e Coisa Julgada", texto: "A sentença tem ______, motivação e dispositivo.", blanks: ["relatório"], explicacao: "Art. 489." },
+    { tema: "Sentença e Coisa Julgada", texto: "A sentença tem ______, motivação e dispositivo.", blanks: ["relatório"], explicacao: "Relatório, motivação e dispositivo." },
     // 57
-    { tema: "Sentença e Coisa Julgada", texto: "Juros, correção e honorários são pedidos ______.", blanks: ["implícitos"], explicacao: "Art. 322, §1º e outros – pedidos implícitos." },
+    { tema: "Sentença e Coisa Julgada", texto: "Juros, correção e honorários são pedidos ______.", blanks: ["implícitos"], explicacao: "Pedidos implícitos." },
     // 58
-    { tema: "Sentença e Coisa Julgada", texto: "Questão ______ pode fazer coisa julgada se preencher requisitos legais.", blanks: ["prejudicial"], explicacao: "Art. 503, §§1º-2º." },
+    { tema: "Sentença e Coisa Julgada", texto: "Questão ______ pode fazer coisa julgada se preencher requisitos legais.", blanks: ["prejudicial"], explicacao: "Questão prejudicial pode fazer coisa julgada." },
     // 59
-    { tema: "Intervenção de Terceiros", texto: "A ______ (art. 682) é processo incidente contra autor e réu.", blanks: ["oposição"], explicacao: "Art. 682." },
+    { tema: "Intervenção de Terceiros", texto: "A ______ é processo incidente contra autor e réu.", blanks: ["oposição"], explicacao: "Oposição." },
     // 60
-    { tema: "Intervenção de Terceiros", texto: "Teoria maior do IDPJ exige prova de ______.", blanks: ["abuso"], explicacao: "Art. 50 CC – abuso." },
+    { tema: "Intervenção de Terceiros", texto: "Teoria maior do IDPJ exige prova de ______.", blanks: ["abuso"], explicacao: "Abuso (desvio de finalidade ou confusão patrimonial)." },
     // 61
     { tema: "Litisconsórcio", texto: "O litisconsórcio ______ ocorre quando basta que um ou outro litisconsorte seja vencedor para satisfazer a pretensão. Já o litisconsórcio ______ é subordinado, pois a decisão em relação a um litisconsorte depende do julgamento anterior em relação ao outro.", blanks: ["alternativo", "sucessivo"], explicacao: "Alternativo: um ou outro; Sucessivo: subordinado." },
     // 62
-    { tema: "Litisconsórcio", texto: "Confissão não gera ______ contra litisconsortes.", blanks: ["presunção"], explicacao: "Art. 391." },
+    { tema: "Litisconsórcio", texto: "Confissão não gera ______ contra litisconsortes.", blanks: ["presunção"], explicacao: "Não gera presunção." },
     // 63
-    { tema: "Temas Contemporâneos", texto: "Prova emprestada não exige identidade de partes, apenas ______.", blanks: ["contraditório"], explicacao: "EREsp 617.428: requisito é o contraditório." },
+    { tema: "Temas Contemporâneos", texto: "Prova emprestada não exige identidade de partes, apenas ______.", blanks: ["contraditório"], explicacao: "Requisito: contraditório." },
     // 64
     { tema: "Temas Contemporâneos", texto: "A própria parte pode pedir para falar como prova ______ (declaração de parte).", blanks: ["atípica"], explicacao: "Prova atípica (declaração de parte)." },
-    // 65 (nova: inspeção judicial)
-    { tema: "Teoria da Prova", texto: "A ______ ______ é o meio pelo qual o juiz verifica diretamente o estado das pessoas ou coisas.", blanks: ["inspeção judicial"], explicacao: "Inspeção judicial (art. 481)." },
-    // 66 (nova: prova emprestada – outra variação)
+    // 65
+    { tema: "Teoria da Prova", texto: "A ______ ______ é o meio pelo qual o juiz verifica diretamente o estado das pessoas ou coisas.", blanks: ["inspeção judicial"], explicacao: "Inspeção judicial." },
+    // 66
     { tema: "Temas Contemporâneos", texto: "A prova ______ é aquela produzida em outro processo e trasladada para este, desde que respeitado o ______.", blanks: ["emprestada", "contraditório"], explicacao: "Prova emprestada exige contraditório." },
     // 67
     { tema: "Temas Contemporâneos", texto: "Interceptações ______ podem ser usadas no cível como prova ______.", blanks: ["criminais", "emprestada"], explicacao: "Interceptações criminais como prova emprestada." },
     // 68
-    { tema: "Procedimento e Decisões", texto: "Negócio jurídico processual (art. 190) não pode versar sobre direitos ______.", blanks: ["indisponíveis"], explicacao: "Art. 190 – direitos indisponíveis." },
+    { tema: "Procedimento e Decisões", texto: "Negócio jurídico processual não pode versar sobre direitos ______.", blanks: ["indisponíveis"], explicacao: "Não pode versar sobre direitos indisponíveis." },
     // 69
-    { tema: "Procedimento e Decisões", texto: "Na Produção Antecipada de Provas (PAP), não cabe defesa de ______, mas cabe sobre a prova.", blanks: ["mérito"], explicacao: "Art. 382, §4º." },
+    { tema: "Procedimento e Decisões", texto: "Na Produção Antecipada de Provas (PAP), não cabe defesa de ______, mas cabe sobre a prova.", blanks: ["mérito"], explicacao: "Não cabe defesa de mérito." },
     // 70
-    { tema: "Procedimento e Decisões", texto: "As regras de prova são ______, pois devem observar tanto a lei brasileira quanto a lei estrangeira para fatos ocorridos no exterior.", blanks: ["bifrontes"], explicacao: "LINDB, art. 13 – bifrontes." }
+    { tema: "Procedimento e Decisões", texto: "As regras de prova são ______, pois devem observar tanto a lei brasileira quanto a lei estrangeira para fatos ocorridos no exterior.", blanks: ["bifrontes"], explicacao: "Regras bifrontes (direito processual substancial)." }
 ];
 
 // ============================================================
