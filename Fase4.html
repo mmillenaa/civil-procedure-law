@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simulado — Estrutura da Prova (45 questões)</title>
+    <title>Simulado — Estrutura da Prova (45 lacunas)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -69,13 +70,7 @@
         .nav-btn.answered-correct { background:#2e7d32; border-color:#2e7d32; color:#fff; opacity:0.8; }
         .nav-btn.answered-wrong { background:#c62828; border-color:#c62828; color:#fff; opacity:0.8; }
         .nav-btn.marked { position:relative; }
-        .nav-btn.marked::after {
-            content:"⭐";
-            position:absolute;
-            top:-6px; right:-6px;
-            font-size:11px;
-            line-height:1;
-        }
+        .nav-btn.marked::after { content:"⭐"; position:absolute; top:-6px; right:-6px; font-size:11px; line-height:1; }
 
         .control-bar {
             display:flex; flex-wrap:wrap;
@@ -224,7 +219,7 @@
     <div class="header">
         <h1>⚖️ Estrutura da Prova — DPC II</h1>
         <div class="header-info">
-            <div>45 questões — casos práticos</div>
+            <div>45 questões — lacuna com múltipla escolha</div>
             <div><strong>Prova Final / Substitutiva</strong></div>
         </div>
     </div>
@@ -272,314 +267,333 @@
 
 <script>
 // ============================================================
-// 45 QUESTÕES – ESTRUTURA DA PROVA (CASOS PRÁTICOS)
+//  FUNÇÃO DE ÁUDIO (FEEDBACK SONORO)
+// ============================================================
+function playSound(type) {
+    const soundMap = {
+        correct: 'https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/correct.mp3',
+        wrong: 'https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/wrong.mp3',
+        win: 'https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/win.mp3'
+    };
+    const url = soundMap[type];
+    if (!url) return;
+    try {
+        const audio = new Audio(url);
+        audio.play().catch(e => console.warn('Áudio bloqueado:', e));
+    } catch (e) {
+        console.warn('Erro ao carregar áudio:', e);
+    }
+}
+
+// ============================================================
+// 45 QUESTÕES – LACUNA COM MÚLTIPLA ESCOLHA
 // ============================================================
 const questionsData = [
-    // ===== BLOCO 1: CALMON DE PASSOS (PAZ SOCIAL x VERDADE) =====
-    { tema: "Paz Social vs Verdade", enunciado: "Q1: De acordo com Calmon de Passos, 'importa mais à ordem jurídica o restabelecimento da paz social que a exaustiva apuração dos fatos'. Assinale a regra que DESAFIA essa afirmação, priorizando a busca da verdade material:", opcoes: [
-        "A preclusão em matéria probatória (arts. 223 e 434).",
-        "A eficácia preclusiva da coisa julgada (art. 508).",
-        "Os amplos poderes instrutórios do juiz (art. 370) e a admissão de provas atípicas (art. 369).",
-        "As restrições probatórias nos Juizados Especiais."
+    // BLOCO 1: CALMON DE PASSOS
+    { tema: "Paz Social vs Verdade", enunciado: "De acordo com Calmon de Passos, 'importa mais à ordem jurídica o restabelecimento da paz social que a exaustiva apuração dos fatos'. A regra que DESAFIA essa afirmação é a existência de ______.", opcoes: [
+        "preclusão em matéria probatória",
+        "eficácia preclusiva da coisa julgada",
+        "poderes instrutórios do juiz e admissão de provas atípicas",
+        "restrições probatórias nos Juizados Especiais"
     ], correta: 2, explicacao: "Os poderes instrutórios e a atipicidade probatória são marcos da busca pela verdade material, desafiando a visão de Calmon." },
-    { tema: "Paz Social vs Verdade", enunciado: "Q2: Ainda sobre Calmon de Passos, assinale a regra que ENDOSSA a afirmação de que o sistema prefere a paz social à exaustiva apuração dos fatos:", opcoes: [
-        "O dever de colaboração (art. 378).",
-        "A possibilidade de a ré revel produzir provas (art. 349).",
-        "A preclusão temporal em matéria probatória e a coisa julgada (arts. 502 e 508).",
-        "A rescisória fundada em prova nova (art. 966, VII)."
+    { tema: "Paz Social vs Verdade", enunciado: "A regra que ENDOSSA a afirmação de Calmon de Passos (paz social > verdade) é a ______.", opcoes: [
+        "dever de colaboração (art. 378)",
+        "possibilidade de a ré revel produzir provas",
+        "preclusão temporal e coisa julgada",
+        "rescisória fundada em prova nova"
     ], correta: 2, explicacao: "Preclusões e coisa julgada encerram a discussão em prol da estabilidade, endossando a paz social." },
 
-    // ===== BLOCO 2: PODERES INSTRUTÓRIOS x ÔNUS DA PROVA =====
-    { tema: "Poderes Instrutórios", enunciado: "Q3: Sobre a conciliação entre os poderes instrutórios do juiz (art. 370) e a regra do ônus da prova (art. 373), a perspectiva publicista (Bedaque) defende que:", opcoes: [
-        "O juiz só pode produzir provas se a parte onerada requerer, sob pena de violar a igualdade.",
-        "As regras do ônus da prova são regras de julgamento (última saída), aplicadas apenas na sentença; antes disso, o juiz pode e deve esgotar os meios instrutórios.",
-        "Os poderes instrutórios são absolutos e independem do ônus da prova em qualquer hipótese.",
-        "O juiz não pode produzir provas de ofício em direitos disponíveis."
-    ], correta: 1, explicacao: "As regras do ônus objetivo funcionam apenas no julgamento (evitar o non liquet). Antes da decisão, o juiz deve buscar a verdade (art. 370)." },
-    { tema: "Poderes Instrutórios", enunciado: "Q4: O não atendimento pela parte à regra do art. 373 (ônus da prova) gera qual consequência?", opcoes: [
-        "Multa processual.",
-        "Extinção do processo.",
-        "Sanção consistente no julgamento desfavorável (regra de julgamento), se a dúvida persistir após a instrução.",
-        "Inversão automática do ônus."
+    // BLOCO 2: PODERES INSTRUTÓRIOS
+    { tema: "Poderes Instrutórios", enunciado: "Segundo a perspectiva publicista (Bedaque), o ônus da prova (art. 373) funciona como regra de ______, aplicada apenas na sentença.", opcoes: [
+        "conduta",
+        "julgamento (última saída)",
+        "instrução probatória",
+        "admissibilidade da prova"
+    ], correta: 1, explicacao: "As regras do ônus objetivo funcionam apenas no julgamento (evitar o non liquet). Antes da decisão, o juiz deve buscar a verdade." },
+    { tema: "Poderes Instrutórios", enunciado: "O não atendimento ao ônus da prova gera, na dúvida, ______.", opcoes: [
+        "multa processual",
+        "extinção do processo",
+        "julgamento desfavorável",
+        "inversão automática do ônus"
     ], correta: 2, explicacao: "O ônus objetivo é sanção de natureza processual: na dúvida, julga-se contra quem tinha o encargo de provar." },
 
-    // ===== BLOCO 3: LITISCONSÓRCIO E SOLIDARIEDADE =====
-    { tema: "Litisconsórcio", enunciado: "Q5: Em ação de cobrança contra apenas um devedor solidário, a juíza pode determinar a inclusão dos demais de ofício?", opcoes: [
-        "Sim, pois a solidariedade exige litisconsórcio necessário.",
-        "Não, a solidariedade passiva é litisconsórcio facultativo (art. 275 CC). A inclusão de ofício só é possível no necessário (art. 115).",
-        "Sim, se o autor concordar.",
-        "Não, mas o réu pode denunciar os demais."
+    // BLOCO 3: LITISCONSÓRCIO
+    { tema: "Litisconsórcio", enunciado: "Em ação de cobrança contra devedor solidário, a inclusão dos demais de ofício é ______.", opcoes: [
+        "possível, pois a solidariedade exige litisconsórcio necessário",
+        "impossível, pois a solidariedade passiva é litisconsórcio facultativo",
+        "possível, se o autor concordar",
+        "possível via denunciação da lide"
     ], correta: 1, explicacao: "Art. 275 CC: credor pode cobrar de um ou de todos. Logo, litisconsórcio facultativo. A inclusão de ofício é vedada." },
-    { tema: "Litisconsórcio", enunciado: "Q6: O autor-credor pode ser compelido a litigar com um devedor solidário contra o qual não propôs demanda? Como?", opcoes: [
-        "Sim, por denunciação da lide (art. 125).",
-        "Sim, por chamamento ao processo (art. 130), que é exceção à faculdade do credor.",
-        "Não, o autor escolhe os réus.",
-        "Sim, por determinação judicial de ofício."
+    { tema: "Litisconsórcio", enunciado: "O autor-credor pode ser compelido a litigar com devedor solidário não demandado por meio do ______.", opcoes: [
+        "denunciação da lide",
+        "chamamento ao processo",
+        "assistência litisconsorcial",
+        "oposição"
     ], correta: 1, explicacao: "O chamamento ao processo (art. 130) permite ao réu integrar os demais devedores solidários, mesmo contra a vontade do autor." },
 
-    // ===== BLOCO 4: COISA JULGADA – CONCEITO E LIMITES =====
-    { tema: "Coisa Julgada", enunciado: "Q7: A coisa julgada material atinge, em regra, qual parte da sentença?", opcoes: [
-        "Os motivos e a verdade dos fatos.",
-        "Apenas o dispositivo (decisum), conforme art. 504.",
-        "O relatório e a motivação.",
-        "Toda a fundamentação."
+    // BLOCO 4: COISA JULGADA
+    { tema: "Coisa Julgada", enunciado: "A coisa julgada material atinge, em regra, o ______ da sentença.", opcoes: [
+        "motivos e verdade dos fatos",
+        "dispositivo (decisum)",
+        "relatório",
+        "toda a fundamentação"
     ], correta: 1, explicacao: "Art. 504: a coisa julgada limita-se ao dispositivo. Os motivos não são alcançados (regra geral)." },
-    { tema: "Coisa Julgada", enunciado: "Q8: A sentença que extingue o processo por ilegitimidade de parte (art. 485, VI) faz que tipo de coisa julgada?", opcoes: [
-        "Coisa julgada material.",
-        "Coisa julgada formal, permitindo a repropositura após correção do vício (art. 486, §1º).",
-        "Nenhuma coisa julgada.",
-        "Coisa julgada material, pois a ilegitimidade é questão de mérito."
+    { tema: "Coisa Julgada", enunciado: "A sentença extintiva por ilegitimidade de parte (art. 485, VI) produz ______.", opcoes: [
+        "coisa julgada material",
+        "coisa julgada formal",
+        "nenhuma coisa julgada",
+        "coisa julgada absoluta"
     ], correta: 1, explicacao: "Art. 485, VI c/c 486, §1º: extinção sem mérito gera apenas coisa julgada formal, permitindo nova ação." },
 
-    // ===== BLOCO 5: DESAFIO – ACIDENTE DE TRÂNSITO (PROVA FINAL) =====
-    { tema: "Caso Prático – Acidente", enunciado: "Q9: Carlos perdeu ação contra a Viação Subino (trânsito em julgado). Depois, a Andança o processa. Carlos denuncia a Viação com base em depoimento trabalhista novo da condutora. O juiz deve:", opcoes: [
-        "Admitir a denunciação, pois a prova nova autoriza a reabertura.",
-        "Inadmitir a denunciação, pois há identidade de demandas e a eficácia preclusiva da coisa julgada (art. 508) impede a rediscussão.",
-        "Converter o julgamento em diligência para ouvir a testemunha.",
-        "Aplicar a teoria da relativização da coisa julgada."
-    ], correta: 1, explicacao: "Coisa julgada material + eficácia preclusiva (art. 508) impedem a rediscussão. A prova nova não autoriza reabertura por vias ordinárias." },
-    { tema: "Caso Prático – Acidente", enunciado: "Q10: No caso anterior, se Carlos quisesse atacar a decisão da primeira ação (que transitou em julgado) com base na prova falsa, qual seria a via adequada?", opcoes: [
-        "Apelação.",
-        "Ação rescisória (art. 966, VII), no prazo de 2 anos.",
-        "Embargos de declaração.",
-        "Querela nullitatis."
+    // BLOCO 5: ACIDENTE
+    { tema: "Caso Prático – Acidente", enunciado: "A descoberta de nova prova em ação transitada em julgado não reabre a discussão por força da ______.", opcoes: [
+        "coisa julgada material",
+        "eficácia preclusiva (art. 508)",
+        "coisa julgada formal",
+        "litispendência"
+    ], correta: 1, explicacao: "Coisa julgada material + eficácia preclusiva (art. 508) impedem a rediscussão." },
+    { tema: "Caso Prático – Acidente", enunciado: "Para atacar decisão transitada em julgado com base em prova falsa, a via adequada é a ______.", opcoes: [
+        "apelação",
+        "ação rescisória (art. 966, VII)",
+        "embargos de declaração",
+        "querela nullitatis"
     ], correta: 1, explicacao: "Prova falsa é fundamento para ação rescisória (art. 966, VII), desde que respeitado o prazo decadencial de 2 anos." },
 
-    // ===== BLOCO 6: PARADIGMA OBJETIVISTA E DESTINATÁRIOS =====
-    { tema: "Paradigma Objetivista", enunciado: "Q11: O juiz indefere a oitiva de testemunhas dizendo que 'já está intimamente convencido da improcedência' pelos documentos. Essa decisão:", opcoes: [
-        "Está correta, pois o juiz é o destinatário único da prova.",
-        "Configura cerceamento de defesa, pois a prova se destina não apenas à consciência íntima do juiz, mas também às partes e à sociedade (paradigma objetivista).",
-        "É válida, pois a prova testemunhal é subsidiária.",
-        "É correta se o juiz fundamentar sua convicção."
+    // BLOCO 6: PARADIGMA OBJETIVISTA
+    { tema: "Paradigma Objetivista", enunciado: "Indeferir testemunhas por convicção íntima viola o paradigma ______.", opcoes: [
+        "subjetivista clássico",
+        "objetivista/racional",
+        "dispositivo",
+        "inquisitivo"
     ], correta: 1, explicacao: "Paradigma subjetivista superado. A prova é direito da parte de influir racionalmente na decisão e ser controlada socialmente." },
-    { tema: "Paradigma Objetivista", enunciado: "Q12: Quem são os destinatários da prova no processo moderno?", opcoes: [
-        "Apenas o juiz.",
-        "O juiz, as partes e a sociedade.",
-        "Apenas as partes.",
-        "O Ministério Público."
+    { tema: "Paradigma Objetivista", enunciado: "No processo moderno, os destinatários da prova são ______.", opcoes: [
+        "apenas o juiz",
+        "o juiz, as partes e a sociedade",
+        "apenas as partes",
+        "o Ministério Público"
     ], correta: 1, explicacao: "Passagem do paradigma subjetivista para o objetivista: a prova é direito à informação, com destinatários múltiplos." },
 
-    // ===== BLOCO 7: STANDARD, ÔNUS SUBJETIVO E OBJETIVO =====
-    { tema: "Standard e Ônus", enunciado: "Q13: Assinale a correlação correta entre standard probatório, ônus subjetivo e ônus objetivo:", opcoes: [
-        "Standard é regra de conduta; ônus objetivo é regra de julgamento; ônus subjetivo é grau de evidência.",
-        "Standard é o grau de evidência; ônus subjetivo é a regra de conduta (incentivo à produção); ônus objetivo é a regra de julgamento (evita o non liquet).",
-        "Standard é a regra de julgamento; ônus subjetivo é o grau de evidência; ônus objetivo é a regra de conduta.",
-        "Os três são sinônimos."
-    ], correta: 1, explicacao: "Standard = grau de suficiência; ônus subjetivo = encargo; ônus objetivo = julgamento na dúvida." },
-    { tema: "Standard e Ônus", enunciado: "Q14: Qual a relação lógica entre o standard probatório e o ônus objetivo da prova?", opcoes: [
-        "O ônus objetivo define o standard.",
-        "O standard é etapa lógica anterior: se não atingido, aplica-se o ônus objetivo (julgar contra o onerado).",
-        "São institutos independentes e não se relacionam.",
-        "O standard só se aplica depois do ônus objetivo."
+    // BLOCO 7: STANDARD
+    { tema: "Standard e Ônus", enunciado: "O standard probatório é o ______.", opcoes: [
+        "grau de evidência necessário",
+        "regra de conduta",
+        "regra de julgamento",
+        "sinônimo de ônus objetivo"
+    ], correta: 0, explicacao: "Standard = grau de suficiência; ônus subjetivo = encargo; ônus objetivo = julgamento na dúvida." },
+    { tema: "Standard e Ônus", enunciado: "O standard é etapa lógica ______ ao ônus objetivo.", opcoes: [
+        "posterior",
+        "anterior",
+        "coincidente",
+        "independente"
     ], correta: 1, explicacao: "Primeiro verifica-se se o standard foi atingido. Não atingido, o ônus objetivo resolve a dúvida contra o onerado." },
 
-    // ===== BLOCO 8: OBJETO DA PROVA =====
-    { tema: "Objeto da Prova", enunciado: "Q15: A afirmação 'o objeto da prova no processo são os fatos do mérito' é imprecisa. Assinale a razão correta:", opcoes: [
-        "O objeto são os fatos incontroversos.",
-        "O objeto são as alegações controvertidas e relevantes, abrangendo não apenas o mérito, mas também questões processuais e, excepcionalmente, o direito (local/estrangeiro).",
-        "O objeto é apenas o direito aplicável.",
-        "O objeto são as provas documentais."
-    ], correta: 1, explicacao: "Objeto = alegações (não fatos em si) + controvertidas + relevantes (mérito e processo). Excepcionalmente, prova do direito (art. 376)." },
-    { tema: "Objeto da Prova", enunciado: "Q16: Que fatos independem de prova (art. 374)?", opcoes: [
-        "Fatos notórios, confessados, incontroversos e presumidos por lei.",
-        "Todos os fatos alegados.",
-        "Apenas fatos documentados.",
-        "Fatos relativos a direitos indisponíveis."
-    ], correta: 0, explicacao: "Art. 374: fatos notórios, confessados, incontroversos e presumidos dispensam prova." },
+    // BLOCO 8: OBJETO DA PROVA
+    { tema: "Objeto da Prova", enunciado: "O objeto da prova são as alegações ______.", opcoes: [
+        "incontroversas",
+        "controvertidas e relevantes",
+        "apenas documentadas",
+        "exclusivamente de mérito"
+    ], correta: 1, explicacao: "Objeto = alegações (não fatos em si) + controvertidas + relevantes (mérito e processo)." },
+    { tema: "Objeto da Prova", enunciado: "Fatos notórios, confessados, incontroversos ou presumidos ______.", opcoes: [
+        "dependem de prova",
+        "dispensam prova (art. 374)",
+        "exigem prova documental",
+        "exigem prova testemunhal"
+    ], correta: 1, explicacao: "Art. 374: fatos notórios, confessados, incontroversos e presumidos dispensam prova." },
 
-    // ===== BLOCO 9: LITISCONSÓRCIO NECESSÁRIO x UNITÁRIO =====
-    { tema: "Litisconsórcio", enunciado: "Q17: Assinale a alternativa que diferencia corretamente litisconsórcio necessário de unitário:", opcoes: [
-        "Necessário exige decisão uniforme; unitário exige citação obrigatória.",
-        "Necessário exige citação obrigatória (art. 114); unitário exige decisão uniforme (art. 116). Podem existir separadamente (ex: usucapião necessário comum).",
-        "São sinônimos.",
-        "Necessário é sempre unitário; unitário é sempre necessário."
-    ], correta: 1, explicacao: "Necessário = obrigação de citar; unitário = obrigação de julgar uniformemente. Ex: usucapião (necessário comum) e ação popular (facultativo unitário)." },
-    { tema: "Litisconsórcio", enunciado: "Q18: Aponte um exemplo de litisconsórcio necessário comum (não unitário):", opcoes: [
-        "Ação de anulação de contrato contra todos os contratantes.",
-        "Ação de usucapião, com citação dos confinantes e do proprietário registral (art. 246, §3º).",
-        "Ação reivindicatória proposta por um condômino.",
-        "Ação de alimentos."
+    // BLOCO 9: LITISCONSÓRCIO NECESSÁRIO x UNITÁRIO
+    { tema: "Litisconsórcio", enunciado: "Litisconsórcio necessário exige ______; unitário exige decisão uniforme.", opcoes: [
+        "decisão uniforme",
+        "citação obrigatória (art. 114)",
+        "autonomia das partes",
+        "intervenção do Ministério Público"
+    ], correta: 1, explicacao: "Necessário = obrigação de citar; unitário = obrigação de julgar uniformemente." },
+    { tema: "Litisconsórcio", enunciado: "Exemplo de litisconsórcio necessário comum (não unitário): ______.", opcoes: [
+        "anulação de contrato",
+        "usucapião (citação dos confinantes)",
+        "reivindicatória proposta por condômino",
+        "ação de alimentos"
     ], correta: 1, explicacao: "Art. 246, §3º: citação dos confinantes é obrigatória (necessário), mas a decisão pode ser diferente para cada um (comum)." },
-    { tema: "Litisconsórcio", enunciado: "Q19: Aponte um exemplo de litisconsórcio facultativo unitário:", opcoes: [
-        "Ação de cobrança contra devedores solidários.",
-        "Ação de anulação de deliberação assemblear, em que qualquer sócio pode propor (facultativo), mas a decisão é uniforme para todos (unitário).",
-        "Ação de despejo.",
-        "Ação de usucapião."
+    { tema: "Litisconsórcio", enunciado: "Exemplo de litisconsórcio facultativo unitário: ______.", opcoes: [
+        "cobrança de devedores solidários",
+        "anulação de deliberação assemblear",
+        "ação de despejo",
+        "usucapião"
     ], correta: 1, explicacao: "Sócios podem ou não litigar juntos (facultativo), mas a nulidade é única (unitário)." },
 
-    // ===== BLOCO 10: DESAFIO – RECONVENÇÃO COM DÍVIDA VINCENDA =====
-    { tema: "Caso Prático – Reconvenção", enunciado: "Q20: A ré oferece reconvenção cobrando dívida que ainda não venceu. O juiz quer decidir desde logo. A decisão será:", opcoes: [
-        "Sentença definitiva, julgando o mérito da reconvenção.",
-        "Sentença terminativa, extinguindo sem mérito.",
-        "Decisão interlocutória de inadmissibilidade do julgamento da parcela, com fundamento na ausência de interesse processual (art. 354, par. c.c. 485, VI).",
-        "Despacho de mero expediente."
-    ], correta: 2, explicacao: "Falta interesse de agir (dívida vincenda). Extinção parcial sem mérito por decisão interlocutória (art. 354, parágrafo único)." },
-    { tema: "Caso Prático – Reconvenção", enunciado: "Q21: A decisão que inadmite a reconvenção por falta de interesse (dívida vincenda) faz coisa julgada material?", opcoes: [
-        "Sim, pois analisa o mérito.",
-        "Não, apenas coisa julgada formal, pois não há resolução de mérito (art. 502).",
-        "Sim, pois a extinção sem mérito gera coisa julgada material.",
-        "Não, não gera nenhuma coisa julgada."
+    // BLOCO 10: RECONVENÇÃO
+    { tema: "Caso Prático – Reconvenção", enunciado: "Reconvenção com dívida vincenda é inadmitida por decisão ______.", opcoes: [
+        "sentença definitiva",
+        "sentença terminativa",
+        "decisão interlocutória (art. 354)",
+        "despacho de mero expediente"
+    ], correta: 2, explicacao: "Falta interesse de agir (dívida vincenda). Extinção parcial sem mérito por decisão interlocutória." },
+    { tema: "Caso Prático – Reconvenção", enunciado: "Essa inadmissão (falta de interesse) faz coisa julgada ______.", opcoes: [
+        "material",
+        "formal",
+        "absoluta",
+        "nenhuma"
     ], correta: 1, explicacao: "Art. 502: coisa julgada material é exclusiva de decisão de mérito. A extinção sem mérito gera apenas formal." },
-    { tema: "Caso Prático – Reconvenção", enunciado: "Q22: Poderá a ré repropor a mesma reconvenção depois?", opcoes: [
-        "Não, a coisa julgada formal impede.",
-        "Sim, corrigindo o vício (aguardando o vencimento da dívida), nos termos do art. 486, §1º.",
-        "Sim, mas apenas se o autor concordar.",
-        "Não, a reconvenção não pode ser reproposta."
-    ], correta: 1, explicacao: "Art. 486, §1º: a extinção sem mérito permite a repropositura, desde que corrigido o vício que a motivou." },
+    { tema: "Caso Prático – Reconvenção", enunciado: "A reproposição da reconvenção é ______.", opcoes: [
+        "possível, corrigindo o vício (art. 486, §1º)",
+        "impossível, pois a coisa julgada formal impede",
+        "possível, com autorização do juiz",
+        "impossível, pois perde o direito"
+    ], correta: 0, explicacao: "Art. 486, §1º: a extinção sem mérito permite a repropositura, desde que corrigido o vício que a motivou." },
 
-    // ===== BLOCO 11: INTERVENÇÃO DE TERCEIROS – DETALHES =====
-    { tema: "Intervenção", enunciado: "Q23: Na assistência simples, o assistente não pode:", opcoes: [
-        "Juntar documentos.",
-        "Contrariar os atos do assistido (art. 121).",
-        "Recorrer da sentença.",
-        "Produzir provas."
+    // BLOCO 11: INTERVENÇÃO
+    { tema: "Intervenção", enunciado: "Na assistência simples, o assistente não pode ______.", opcoes: [
+        "juntar documentos",
+        "contrariar os atos do assistido (art. 121)",
+        "recorrer da sentença",
+        "produzir provas"
     ], correta: 1, explicacao: "Art. 121: o assistente simples não pode dispor do direito nem contrariar os atos do assistido." },
-    { tema: "Intervenção", enunciado: "Q24: A denunciação da lide, no CPC/2015, é:", opcoes: [
-        "Obrigatória em casos de evicção.",
-        "Facultativa (art. 125), cabível para garantia por evicção ou obrigação de indenizar.",
-        "Obrigatória em todos os casos.",
-        "Facultativa apenas para a União."
+    { tema: "Intervenção", enunciado: "A denunciação da lide, no CPC/2015, é ______.", opcoes: [
+        "obrigatória em casos de evicção",
+        "facultativa (art. 125)",
+        "obrigatória em todos os casos",
+        "vedada"
     ], correta: 1, explicacao: "Art. 125: faculdade do denunciante. Hipóteses: evicção e obrigação de indenizar." },
-    { tema: "Intervenção", enunciado: "Q25: O chamamento ao processo (art. 130) é cabível para chamar:", opcoes: [
-        "O alienante imediato.",
-        "O afiançado, os demais fiadores e os demais devedores solidários.",
-        "O amicus curiae.",
-        "O assistente simples."
+    { tema: "Intervenção", enunciado: "O chamamento ao processo (art. 130) é cabível para chamar ______.", opcoes: [
+        "o alienante imediato",
+        "o afiançado e os devedores solidários",
+        "o amicus curiae",
+        "o assistente simples"
     ], correta: 1, explicacao: "Art. 130: chamamento ao processo para integrar afiançado, demais fiadores e devedores solidários." },
-    { tema: "Intervenção", enunciado: "Q26: O Incidente de Desconsideração da Personalidade Jurídica (IDPJ) pode ser instaurado de ofício pelo juiz?", opcoes: [
-        "Sim, para proteger o credor.",
-        "Não, depende de requerimento da parte ou do MP (art. 133).",
-        "Sim, apenas na execução fiscal.",
-        "Não, apenas se o sócio concordar."
+    { tema: "Intervenção", enunciado: "O Incidente de Desconsideração da PJ (IDPJ) pode ser instaurado de ofício? ______.", opcoes: [
+        "Sim, para proteger o credor",
+        "Não, depende de requerimento (art. 133)",
+        "Sim, apenas na execução fiscal",
+        "Não, apenas com acordo do sócio"
     ], correta: 1, explicacao: "Art. 133: o IDPJ deve ser requerido; o juiz não pode instaurá-lo de ofício." },
-    { tema: "Intervenção", enunciado: "Q27: A oposição (art. 682) proposta antes da audiência tem qual procedimento?", opcoes: [
-        "O processo de origem é suspenso e a oposição é julgada separadamente.",
-        "Haverá instrução conjunta e uma mesma sentença julgará ambas as ações.",
-        "A oposição é extinta.",
-        "O juiz deve remeter a oposição para outro juízo."
+    { tema: "Intervenção", enunciado: "A oposição proposta antes da audiência terá ______.", opcoes: [
+        "instrução separada",
+        "instrução conjunta (art. 683)",
+        "extinção do processo",
+        "remessa a outro juízo"
     ], correta: 1, explicacao: "Art. 683: proposta antes da audiência, a oposição será processada em conjunto com a ação originária." },
 
-    // ===== BLOCO 12: RECURSOS =====
-    { tema: "Recursos", enunciado: "Q28: A lista do art. 1.015 (agravos de instrumento) é taxativa? O STJ admite exceções?", opcoes: [
-        "Sim, é absolutamente taxativa.",
-        "Não, o STJ adota a 'taxatividade mitigada', admitindo o agravo fora da lista se a urgência tornar inútil a discussão na apelação.",
-        "Não, é exemplificativa.",
-        "Sim, mas o juiz pode flexibilizar."
+    // BLOCO 12: RECURSOS
+    { tema: "Recursos", enunciado: "A lista do agravo de instrumento (art. 1.015) é ______.", opcoes: [
+        "absolutamente taxativa",
+        "taxativa, mas mitigada pelo STJ",
+        "exemplificativa",
+        "flexível a critério do juiz"
     ], correta: 1, explicacao: "STJ, EREsp 1.478.203: taxatividade mitigada – admite-se agravo em situações de urgência não previstas." },
-    { tema: "Recursos", enunciado: "Q29: A apelação contra sentença que concede alimentos tem efeito suspensivo?", opcoes: [
-        "Sim, sempre.",
-        "Não, art. 1.012, §1º, IV: apelação que julgar alimentos não tem efeito suspensivo.",
-        "Sim, se o recorrente pedir.",
-        "Não, apenas se for interposta no prazo."
+    { tema: "Recursos", enunciado: "A apelação contra sentença de alimentos tem efeito ______.", opcoes: [
+        "suspensivo",
+        "nenhum (não tem efeito suspensivo)",
+        "devolutivo apenas",
+        "suspensivo se o recorrente pedir"
     ], correta: 1, explicacao: "Art. 1.012, §1º: apelação sobre alimentos não tem efeito suspensivo." },
-    { tema: "Recursos", enunciado: "Q30: O agravo interno (art. 1.021) é cabível contra:", opcoes: [
-        "Decisão interlocutória de primeiro grau.",
-        "Decisão monocrática do relator no tribunal.",
-        "Sentença de primeiro grau.",
-        "Acórdão do tribunal pleno."
+    { tema: "Recursos", enunciado: "O agravo interno (art. 1.021) é cabível contra ______.", opcoes: [
+        "decisão interlocutória de 1º grau",
+        "decisão monocrática do relator",
+        "sentença de 1º grau",
+        "acórdão do tribunal pleno"
     ], correta: 1, explicacao: "Art. 1.021: agravo interno contra decisão monocrática do relator ou do presidente." },
-    { tema: "Recursos", enunciado: "Q31: O que é o juízo de retratação no agravo de instrumento (art. 1.018)?", opcoes: [
-        "O relator modifica a decisão monocrática.",
-        "O juiz de primeiro grau pode reconsiderar sua decisão antes de enviar os autos ao tribunal.",
-        "O tribunal anula a decisão de primeiro grau.",
-        "A parte pode desistir do recurso."
+    { tema: "Recursos", enunciado: "O juízo de retratação no agravo permite que o juiz de 1º grau ______.", opcoes: [
+        "modifique a decisão a pedido do tribunal",
+        "reconsidere sua decisão (art. 1.018, §3º)",
+        "anule a decisão",
+        "desista do recurso"
     ], correta: 1, explicacao: "Art. 1.018, §3º: o juiz de primeiro grau pode exercer juízo de retratação, reconsiderando a decisão." },
 
-    // ===== BLOCO 13: PROCEDIMENTOS ESPECIAIS =====
-    { tema: "Procedimentos Especiais", enunciado: "Q32: Na ação possessória, a liminar pode ser concedida sem oitiva do réu se:", opcoes: [
-        "Houve prova documental da posse e do esbulho há menos de ano e dia (art. 562).",
-        "O autor prestar caução.",
-        "Houve audiência de conciliação.",
-        "O réu for revel."
+    // BLOCO 13: PROCEDIMENTOS ESPECIAIS
+    { tema: "Procedimentos Especiais", enunciado: "Na ação possessória, a liminar exige posse e esbulho há menos de ______.", opcoes: [
+        "ano e dia (art. 562)",
+        "30 dias",
+        "60 dias",
+        "90 dias"
     ], correta: 0, explicacao: "Art. 562: liminar possessória exige prova da posse e esbulho recente (menos de ano e dia)." },
-    { tema: "Procedimentos Especiais", enunciado: "Q33: Na ação de exigir contas, se o réu não apresentar as contas, o juiz pode:", opcoes: [
-        "Extinguir o processo.",
-        "Ordenar a apresentação e, se não cumprida, determinar a liquidação por arbitramento (art. 550).",
-        "Condenar o réu imediatamente.",
-        "Suspender o processo."
+    { tema: "Procedimentos Especiais", enunciado: "Na ação de exigir contas, a falta de apresentação permite ______.", opcoes: [
+        "extinção do processo",
+        "liquidação por arbitramento (art. 550)",
+        "condenação imediata do réu",
+        "suspensão do processo"
     ], correta: 1, explicacao: "Art. 550: se o réu não prestar contas, o juiz pode determinar a liquidação por arbitramento." },
-    { tema: "Procedimentos Especiais", enunciado: "Q34: A consignação em pagamento (art. 539) é cabível quando:", opcoes: [
-        "O devedor não quer pagar.",
-        "O credor não pode ou recusa receber, ou há dúvida sobre o credor.",
-        "O credor é desconhecido.",
-        "O devedor está insolvente."
+    { tema: "Procedimentos Especiais", enunciado: "A consignação em pagamento é cabível quando o credor ______.", opcoes: [
+        "não quer pagar",
+        "recusa receber ou há dúvida sobre o credor",
+        "é desconhecido",
+        "está insolvente"
     ], correta: 1, explicacao: "Art. 539: cabe consignação se o credor recusa ou não pode receber, ou há dúvida sobre o credor." },
-    { tema: "Procedimentos Especiais", enunciado: "Q35: A liquidação de sentença (art. 509) é cabível quando:", opcoes: [
-        "A sentença é líquida.",
-        "A sentença é ilíquida (genérica), para apurar o quantum debeatur.",
-        "O réu não paga.",
-        "O autor desiste da execução."
+    { tema: "Procedimentos Especiais", enunciado: "A liquidação é cabível quando a sentença é ______.", opcoes: [
+        "líquida",
+        "ilíquida (genérica)",
+        "impaga",
+        "desistida"
     ], correta: 1, explicacao: "A liquidação apura o valor exato da condenação quando a sentença foi genérica (ilíquida)." },
 
-    // ===== BLOCO 14: TEORIA GERAL – COMPETÊNCIA E CONEXÃO =====
-    { tema: "Teoria Geral", enunciado: "Q36: A litispendência (art. 485, V) caracteriza-se por:", opcoes: [
-        "Duas ações com o mesmo pedido, mas causas de pedir diferentes.",
-        "Duas ações idênticas (mesmas partes, pedido e causa de pedir) tramitando simultaneamente.",
-        "Duas ações conexas que devem ser reunidas.",
-        "A ação que já foi julgada e transitou em julgado."
+    // BLOCO 14: TEORIA GERAL
+    { tema: "Teoria Geral", enunciado: "A litispendência ocorre com duas ações ______.", opcoes: [
+        "conexas",
+        "idênticas (mesmas partes, pedido e causa de pedir)",
+        "distintas",
+        "sucessivas"
     ], correta: 1, explicacao: "Litispendência = identidade de partes, pedido e causa de pedir (art. 337, §§1º-2º)." },
-    { tema: "Teoria Geral", enunciado: "Q37: A incompetência relativa (territorial) deve ser arguida em que momento, sob pena de prorrogação?", opcoes: [
-        "A qualquer tempo.",
-        "Na contestação (art. 65).",
-        "Na apelação.",
-        "Na execução."
+    { tema: "Teoria Geral", enunciado: "A incompetência relativa deve ser arguida na ______.", opcoes: [
+        "petição inicial",
+        "contestação (art. 65)",
+        "apelação",
+        "execução"
     ], correta: 1, explicacao: "Art. 65: a incompetência relativa prorroga-se se não for arguida na contestação." },
-    { tema: "Teoria Geral", enunciado: "Q38: A incompetência absoluta (matéria, função) pode ser conhecida de ofício?", opcoes: [
-        "Não, depende de requerimento.",
-        "Sim, a qualquer tempo e grau de jurisdição (art. 64, §1º).",
-        "Sim, apenas na apelação.",
-        "Não, apenas o tribunal pode conhecer."
+    { tema: "Teoria Geral", enunciado: "A incompetência absoluta pode ser conhecida de ofício ______.", opcoes: [
+        "apenas se requerida pela parte",
+        "a qualquer tempo (art. 64, §1º)",
+        "apenas na apelação",
+        "apenas pelo tribunal"
     ], correta: 1, explicacao: "Incompetência absoluta é de ordem pública, cognoscível de ofício a qualquer tempo." },
-    { tema: "Teoria Geral", enunciado: "Q39: O negócio jurídico processual (art. 190) permite às partes convencionarem sobre:", opcoes: [
-        "Alteração da competência absoluta.",
-        "Mudanças no procedimento e ônus probatório, desde que não afetem direitos indisponíveis.",
-        "A renúncia ao direito de recorrer antes da sentença.",
-        "A extinção do processo sem anuência do juiz."
+    { tema: "Teoria Geral", enunciado: "O negócio jurídico processual (art. 190) não pode versar sobre direitos ______.", opcoes: [
+        "disponíveis",
+        "indisponíveis",
+        "patrimoniais",
+        "processuais"
     ], correta: 1, explicacao: "Art. 190: negócio jurídico processual sobre ônus, poderes, faculdades e deveres, desde que não verse sobre direitos indisponíveis." },
-    { tema: "Teoria Geral", enunciado: "Q40: A produção antecipada de provas (art. 381) é cabível para:", opcoes: [
-        "Apenas para provas urgentes.",
-        "Justificar ou evitar o ajuizamento de ação, viabilizar autocomposição ou quando a prova for urgente.",
-        "Apenas para provas documentais.",
-        "Substituir o processo principal."
+    { tema: "Teoria Geral", enunciado: "A produção antecipada de provas é cabível quando a prova for ______.", opcoes: [
+        "documental",
+        "urgente (ou para evitar o ajuizamento)",
+        "testemunhal",
+        "pericial"
     ], correta: 1, explicacao: "Art. 381, incisos: I (urgência), II (autocomposição), III (evitar o ajuizamento)." },
 
-    // ===== BLOCO 15: PRESUNÇÕES E PROVAS =====
-    { tema: "Presunções e Provas", enunciado: "Q41: A presunção absoluta (iure et de iure) admite prova em contrário?", opcoes: [
-        "Sim, sempre.",
-        "Não, é uma ficção legal que não admite prova em contrário (ex: intenção de abandonar imóvel – CC, art. 1.276, §1º).",
-        "Admite, se a prova for robusta.",
-        "Admite apenas se for judicial."
+    // BLOCO 15: PRESUNÇÕES
+    { tema: "Presunções e Provas", enunciado: "A presunção absoluta (iure et de iure) ______.", opcoes: [
+        "admite prova em contrário",
+        "não admite prova em contrário (ficção legal)",
+        "admite prova apenas judicial",
+        "é relativa"
     ], correta: 1, explicacao: "Presunção absoluta = não admite prova em contrário, operando como ficção legal." },
-    { tema: "Presunções e Provas", enunciado: "Q42: A confissão é considerada um meio de prova?", opcoes: [
-        "Sim, é um dos principais meios.",
-        "Não, é uma declaração de conhecimento de fatos que ingressa por meio de depoimento pessoal ou documento.",
-        "Sim, é meio atípico.",
-        "Não, é apenas um indício."
+    { tema: "Presunções e Provas", enunciado: "A confissão é considerada ______.", opcoes: [
+        "meio de prova",
+        "declaração de conhecimento de fatos",
+        "prova atípica",
+        "mero indício"
     ], correta: 1, explicacao: "Confissão não é meio de prova, mas declaração de conhecimento." },
-    { tema: "Presunções e Provas", enunciado: "Q43: Quais são as exceções à Teoria do Fruto da Árvore Envenenada?", opcoes: [
-        "Ausência de nexo de causalidade (derivação mediata) e fonte independente (descoberta inevitável).",
-        "Nenhuma, a regra é absoluta.",
-        "Proporcionalidade e interesse público.",
-        "Decadência e prescrição."
-    ], correta: 0, explicacao: "Exceções previstas no CPP, art. 157, §§ 1º e 2º: derivação mediata e fonte independente." },
+    { tema: "Presunções e Provas", enunciado: "Exceções à árvore envenenada: derivação mediata e ______.", opcoes: [
+        "fonte ilegal",
+        "fonte independente (descoberta inevitável)",
+        "proporcionalidade",
+        "decadência"
+    ], correta: 1, explicacao: "Exceções previstas no CPP, art. 157, §§ 1º e 2º: derivação mediata e fonte independente." },
 
-    // ===== BLOCO 16: ESTABILIDADES EXCEPCIONAIS =====
-    { tema: "Estabilidades Excepcionais", enunciado: "Q44: A sentença arbitral faz coisa julgada? Cabe ação rescisória?", opcoes: [
-        "Sim, faz coisa julgada e cabe ação rescisória.",
-        "Sim, faz coisa julgada, mas cabe ação anulatória (prazo de 90 dias) por defeitos de forma, não rescisória.",
-        "Não, sentença arbitral não faz coisa julgada.",
-        "Sim, mas o prazo para rescisória é de 1 ano."
+    // BLOCO 16: ESTABILIDADES EXCEPCIONAIS
+    { tema: "Estabilidades Excepcionais", enunciado: "Sentença arbitral faz coisa julgada, mas cabe ______.", opcoes: [
+        "ação rescisória",
+        "ação anulatória (prazo de 90 dias)",
+        "apelação",
+        "agravo"
     ], correta: 1, explicacao: "Lei de Arbitragem, art. 33: a sentença arbitral produz coisa julgada, mas a impugnação é por ação anulatória (90 dias)." },
-    { tema: "Estabilidades Excepcionais", enunciado: "Q45: A estabilidade da tutela antecipada antecedente (art. 304) é coisa julgada?", opcoes: [
-        "Sim, é coisa julgada material.",
-        "Não, é estabilidade dos efeitos, não faz coisa julgada. Pode ser revista em ação própria no prazo de 2 anos.",
-        "Sim, é coisa julgada formal.",
-        "Não, a tutela perde eficácia automaticamente após 30 dias."
+    { tema: "Estabilidades Excepcionais", enunciado: "A estabilidade da tutela antecipada antecedente (art. 304) ______.", opcoes: [
+        "é coisa julgada material",
+        "não é coisa julgada (é estabilidade dos efeitos)",
+        "é coisa julgada formal",
+        "perde efeito automaticamente após 30 dias"
     ], correta: 1, explicacao: "Art. 304, §6º: a estabilidade não é coisa julgada. A parte pode ajuizar ação revisional em até 2 anos." }
 ];
 
 // ============================================================
-//  ESTADO E LÓGICA (idêntica ao padrão)
+//  ESTADO E LÓGICA (com áudio e confetes)
 // ============================================================
 let questions = [];
 let userAnswers = [];
@@ -674,7 +688,18 @@ function renderQuestion() {
 
 function selectOption(idx) {
     if (userAnswers[currentIndex] !== -1) return;
+
+    const isCorrect = (idx === questions[currentIndex].correta);
     userAnswers[currentIndex] = idx;
+
+    // --- FEEDBACK SONORO E CONFETE ---
+    if (isCorrect) {
+        playSound('correct');
+        confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 }, colors: ['#d97706', '#4caf50', '#fff'] });
+    } else {
+        playSound('wrong');
+    }
+
     renderQuestion();
     showFeedback(currentIndex);
     updateNav();
@@ -730,6 +755,8 @@ function shuffleQuestions() {
 }
 
 function showResults() {
+    playSound('win');
+
     let correct = 0, wrong = 0, markedCount = 0;
     const wrongList = [];
     for (let i = 0; i < questions.length; i++) {
@@ -753,6 +780,7 @@ function showResults() {
     listDiv.innerHTML = '';
     if (wrongList.length === 0) {
         listDiv.innerHTML = '<p style="color:#a7f3d0;">🎉 Parabéns! Você acertou todas!</p>';
+        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
     } else {
         const ul = document.createElement('ul');
         ul.style.listStyle = 'none';
