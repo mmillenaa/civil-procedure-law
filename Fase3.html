@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -271,6 +272,25 @@
 </div>
 
 <script>
+// ============================================================
+//  FUNÇÃO DE ÁUDIO (FEEDBACK SONORO)
+// ============================================================
+function playSound(type) {
+    const soundMap = {
+        correct: 'https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/correct.mp3',
+        wrong: 'https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/wrong.mp3',
+        win: 'https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/win.mp3'
+    };
+    const url = soundMap[type];
+    if (!url) return;
+    try {
+        const audio = new Audio(url);
+        audio.play().catch(e => console.warn('Áudio bloqueado:', e));
+    } catch (e) {
+        console.warn('Erro ao carregar áudio:', e);
+    }
+}
+
 // ============================================================
 // 60 QUESTÕES COMPLEMENTARES – VARIAÇÕES E APROFUNDAMENTOS
 // ============================================================
@@ -651,7 +671,7 @@ const questionsData = [
 ];
 
 // ============================================================
-//  ESTADO E LÓGICA (idêntica à anterior)
+//  ESTADO E LÓGICA (com áudio e confetes)
 // ============================================================
 let questions = [];
 let userAnswers = [];
@@ -746,7 +766,18 @@ function renderQuestion() {
 
 function selectOption(idx) {
     if (userAnswers[currentIndex] !== -1) return;
+
+    const isCorrect = (idx === questions[currentIndex].correta);
     userAnswers[currentIndex] = idx;
+
+    // --- FEEDBACK SONORO E CONFETE ---
+    if (isCorrect) {
+        playSound('correct');
+        confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 }, colors: ['#d97706', '#4caf50', '#fff'] });
+    } else {
+        playSound('wrong');
+    }
+
     renderQuestion();
     showFeedback(currentIndex);
     updateNav();
@@ -802,6 +833,8 @@ function shuffleQuestions() {
 }
 
 function showResults() {
+    playSound('win');
+
     let correct = 0, wrong = 0, markedCount = 0;
     const wrongList = [];
     for (let i = 0; i < questions.length; i++) {
@@ -825,6 +858,7 @@ function showResults() {
     listDiv.innerHTML = '';
     if (wrongList.length === 0) {
         listDiv.innerHTML = '<p style="color:#a7f3d0;">🎉 Parabéns! Você acertou todas!</p>';
+        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
     } else {
         const ul = document.createElement('ul');
         ul.style.listStyle = 'none';
