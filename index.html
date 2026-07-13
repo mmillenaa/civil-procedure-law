@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🏛️ Processo Civil II — Simulados</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0f0f10;
+            color: #e4e4ed;
+            font-family: 'Cardo', Georgia, serif;
+            font-size: 17px;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: #16161a;
+            border: 1px solid #2d2d38;
+            border-radius: 16px;
+            padding: 40px 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px solid #2d2d38;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #d97706;
+        }
+
+        .header p {
+            color: #9494a1;
+            font-size: 16px;
+            margin-top: 6px;
+        }
+
+        .subtitle {
+            color: #9494a1;
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: #1a1a24;
+            border: 1px solid #2d2d38;
+            border-radius: 10px;
+            padding: 22px 18px 18px;
+            text-align: center;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: #e4e4ed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card:hover {
+            border-color: #d97706;
+            background: #22222e;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(217, 119, 6, 0.15);
+        }
+
+        .card .fase {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #d97706;
+            margin-bottom: 4px;
+        }
+
+        .card .titulo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .card .desc {
+            font-size: 14px;
+            color: #9494a1;
+            margin-top: 4px;
+        }
+
+        .card .badge {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 12px;
+            background: #222227;
+            padding: 4px 14px;
+            border-radius: 20px;
+            color: #9494a1;
+            border: 1px solid #2d2d38;
+        }
+
+        .footer {
+            margin-top: 35px;
+            text-align: center;
+            font-size: 13px;
+            color: #575766;
+            border-top: 1px solid #1f1f26;
+            padding-top: 20px;
+        }
+
+        .footer a {
+            color: #d97706;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 18px;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .card {
+                padding: 16px 12px;
+            }
+            .card .titulo {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>⚖️ <span>Processo Civil II</span></h1>
+        <p>Simulados interativos — DPC 0319</p>
+    </div>
+
+    <div class="subtitle">
+        Escolha uma das fases abaixo para começar a revisão.
+    </div>
+
+    <div class="grid">
+        <!-- FASE 1 -->
+        <a href="Fase1.html" class="card">
+            <div class="fase">Fase 1</div>
+            <div class="titulo">70 questões</div>
+            <div class="desc">Base — múltipla escolha</div>
+            <span class="badge">📝 70 perguntas</span>
+        </a>
+
+        <!-- FASE 2 -->
+        <a href="Fase2.html" class="card">
+            <div class="fase">Fase 2</div>
+            <div class="titulo">70 questões</div>
+            <div class="desc">Alternativas equilibradas</div>
+            <span class="badge">⚖️ 70 perguntas</span>
+        </a>
+
+        <!-- FASE 3 -->
+        <a href="Fase3.html" class="card">
+            <div class="fase">Fase 3</div>
+            <div class="titulo">60 questões</div>
+            <div class="desc">Variações e aprofundamentos</div>
+            <span class="badge">🔄 60 perguntas</span>
+        </a>
+
+        <!-- FASE 4 -->
+        <a href="Fase4.html" class="card">
+            <div class="fase">Fase 4</div>
+            <div class="titulo">45 questões</div>
+            <div class="desc">Estrutura da prova — casos práticos</div>
+            <span class="badge">📋 45 perguntas</span>
+        </a>
+
+        <!-- FASE 5 -->
+        <a href="Fase5.html" class="card">
+            <div class="fase">Fase 5</div>
+            <div class="titulo">70 questões</div>
+            <div class="desc">Lacunas — conceitos-chave</div>
+            <span class="badge">✏️ 70 lacunas</span>
+        </a>
+
+        <!-- FASE 6 -->
+        <a href="Fase6.html" class="card">
+            <div class="fase">Fase 6</div>
+            <div class="titulo">60 questões</div>
+            <div class="desc">Lacunas — variações</div>
+            <span class="badge">✏️ 60 lacunas</span>
+        </a>
+
+        <!-- FASE 7 -->
+        <a href="Fase7.html" class="card">
+            <div class="fase">Fase 7</div>
+            <div class="titulo">45 questões</div>
+            <div class="desc">Lacunas — estrutura da prova</div>
+            <span class="badge">✏️ 45 lacunas</span>
+        </a>
+    </div>
+
+    <div class="footer">
+        <p>
+            📂 Repositório: <a href="https://github.com/mmillenaa/civil-procedure-law" target="_blank">mmillenaa/civil-procedure-law</a>
+            &nbsp;·&nbsp; 🎯 Clique em qualquer card para acessar o simulado.
+        </p>
+    </div>
+</div>
+
+</body>
+</html>
