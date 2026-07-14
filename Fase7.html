@@ -333,63 +333,6 @@
 </div>
 
 <script>
-// ============================================================
-//  EFEITOS SONOROS (Web Audio API) – sem arquivos externos
-// ============================================================
-let audioCtx = null;
-
-function playSound(type) {
-    try {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        // Retoma o contexto se estiver suspenso (necessário após interação do usuário)
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        if (type === 'correct') {
-            // Tom duplo ascendente: 880 Hz → 1100 Hz
-            osc.frequency.value = 880;
-            gain.gain.value = 0.2;
-            osc.start();
-            setTimeout(() => { osc.frequency.value = 1100; }, 80);
-            setTimeout(() => { gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2); }, 150);
-            osc.stop(audioCtx.currentTime + 0.3);
-        } else if (type === 'wrong') {
-            // Tom grave curto: 330 Hz
-            osc.frequency.value = 330;
-            gain.gain.value = 0.2;
-            osc.start();
-            setTimeout(() => { gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); }, 100);
-            osc.stop(audioCtx.currentTime + 0.4);
-        } else if (type === 'complete') {
-            // Arpejo ascendente de vitória: Dó, Mi, Sol (523, 659, 784 Hz)
-            [523, 659, 784].forEach((freq, i) => {
-                setTimeout(() => {
-                    const osc2 = audioCtx.createOscillator();
-                    const gain2 = audioCtx.createGain();
-                    osc2.connect(gain2);
-                    gain2.connect(audioCtx.destination);
-                    osc2.frequency.value = freq;
-                    gain2.gain.value = 0.15;
-                    osc2.start();
-                    osc2.stop(audioCtx.currentTime + 0.15);
-                }, i * 150);
-            });
-        }
-    } catch (e) {
-        // Silenciosamente ignora erros (ex: navegador sem suporte)
-    }
-}
-
-// ============================================================
-//  DADOS DO SIMULADO (mantidos integralmente)
-// ============================================================
 const questionsData = [
     // === REVISÕES SOLICITADAS ===
     {
@@ -599,8 +542,8 @@ const questionsData = [
             "alegações orais finais",
             "advogados da autora",
             "advogados do réu",
-            "se não for necessário completar a instrução, com conversão do julgamento e, diligência",
-            "sentença"
+            "se não for necesário completar a instrução, com conversão do julgamento e, diligência",
+            "senteça"
         ],
         explicacao: "A ordem segue o CPC, partindo da abertura (pregão, conciliação), produção de provas orais (peritos, depoimentos, testemunhas), alegações finais e sentença."
     },
@@ -864,6 +807,26 @@ const questionsData = [
 // ============================================================
 // APP LOGIC
 // ============================================================
+
+// ============================================================
+//  FUNÇÃO DE ÁUDIO (FEEDBACK SONORO)
+// ============================================================
+function playSound(type) {
+    const soundMap = {
+        correct: 'https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/correct.mp3',
+        wrong: 'https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/wrong.mp3',
+        win: 'https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/win.mp3'
+    };
+    const url = soundMap[type];
+    if (!url) return;
+    try {
+        const audio = new Audio(url);
+        audio.play().catch(e => console.warn('Áudio bloqueado:', e));
+    } catch (e) {
+        console.warn('Erro ao carregar áudio:', e);
+    }
+}
+
 let questions = [];
 let userStatus = [];
 let userInputs = [];
@@ -872,6 +835,7 @@ let currentIndex = 0;
 
 function init() {
     questions = questionsData.map((q, idx) => {
+        // shuffle MSQ options internally but keep track of correct ones
         if (q.type === 'msq') {
             q.shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
         }
@@ -1056,6 +1020,8 @@ function renderQuestion() {
                     q.shuffledItems.splice(draggedIdx, 1);
                     q.shuffledItems.splice(targetIdx, 0, draggedItem);
                     
+                    // re-render the list only
+                    const oldStatus = userStatus[currentIndex];
                     renderQuestion(); 
                 };
             } else {
@@ -1292,16 +1258,15 @@ function confirmAnswer() {
     userInputs[currentIndex] = uVal;
     userStatus[currentIndex] = isCorrect ? 1 : 0;
 
-    // 🔔 Efeitos sonoros
-    playSound(isCorrect ? 'correct' : 'wrong');
-
-    // 🎉 Confetes
-    if (isCorrect) {
-        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ['#d97706', '#4caf50', '#fff'] });
-    }
-
     renderQuestion(); // Re-render to show colors/disabled states
     updateNav();
+
+    if (isCorrect) {
+        playSound('correct');
+        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ['#d97706', '#4caf50', '#fff'] });
+    } else {
+        playSound('wrong');
+    }
 
     // Check if all answered to show end button or auto-finish
     if(userStatus.every(s => s !== -1)) {
@@ -1321,6 +1286,7 @@ function showFeedback(idx) {
     title.className = 'fb-title ' + (isCorrect ? 'correct' : 'wrong');
     text.textContent = q.explicacao;
     
+    // Only show "Expected answers" block if it's blanks, to avoid clutter for MCQs where the green UI is enough
     if(q.type === 'blanks') {
         let ansHtml = '<strong>Respostas esperadas:</strong> ';
         q.blanks.forEach((b, i) => { ansHtml += (i > 0 ? ', ' : '') + '<span style="color:#d97706;">' + b + '</span>'; });
@@ -1373,6 +1339,10 @@ function shuffleQuestions() {
 }
 
 function showResults() {
+    playSound('win');
+    if ((correct / questions.length) >= 0.7) {
+        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+    }
     let correct = 0, wrong = 0, markedCount = 0;
     const wrongList = [];
     for (let i = 0; i < questions.length; i++) {
@@ -1388,12 +1358,6 @@ function showResults() {
     document.getElementById('correctCount').textContent = correct;
     document.getElementById('wrongCount').textContent = wrong;
     document.getElementById('markedCount').textContent = markedCount;
-
-    // 🎵 Som de vitória se ≥ 70%
-    if (pct >= 70) {
-        playSound('complete');
-        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
-    }
 
     const listDiv = document.getElementById('wrongList');
     listDiv.innerHTML = '';
