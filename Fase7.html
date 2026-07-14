@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simulado — Estrutura da Prova (45 lacunas)</title>
+    <title>Fase 7 — Estrutura da Prova (Completa)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -116,7 +116,7 @@
             font-family:'Cardo',Georgia,serif;
             font-size:17px;
             padding:2px 8px;
-            width:180px;
+            width:200px;
             margin:0 4px;
             transition:0.2s;
         }
@@ -132,6 +132,87 @@
         .question-box .q-text input.wrong-input {
             border-color:#ef4444;
             background:rgba(239,68,68,0.15);
+        }
+        .question-box .q-text .radio-group, .question-box .q-text .checkbox-group {
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+            margin-top:8px;
+        }
+        .question-box .q-text .radio-group label, .question-box .q-text .checkbox-group label {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            background:#222227;
+            border:1px solid #2d2d38;
+            border-radius:6px;
+            padding:10px 14px;
+            cursor:pointer;
+            transition:0.2s;
+            font-size:16px;
+            font-weight:400;
+            color:#e4e4ed;
+        }
+        .question-box .q-text .radio-group label:hover, .question-box .q-text .checkbox-group label:hover {
+            background:#2b2b33;
+            border-color:#444456;
+        }
+        .question-box .q-text .radio-group input[type="radio"], .question-box .q-text .checkbox-group input[type="checkbox"] {
+            accent-color:#d97706;
+            width:18px;
+            height:18px;
+            flex-shrink:0;
+            cursor:pointer;
+        }
+        .question-box .q-text .radio-group label.correct-option, .question-box .q-text .checkbox-group label.correct-option {
+            border-color:#4caf50;
+            background:rgba(76,175,80,0.12);
+            color:#a7f3d0;
+        }
+        .question-box .q-text .radio-group label.wrong-option, .question-box .q-text .checkbox-group label.wrong-option {
+            border-color:#ef4444;
+            background:rgba(239,68,68,0.12);
+            color:#fca5a5;
+        }
+        .question-box .q-text .radio-group label.disabled, .question-box .q-text .checkbox-group label.disabled {
+            cursor:default;
+            opacity:0.75;
+        }
+        .question-box .q-text .radio-group label.disabled:hover, .question-box .q-text .checkbox-group label.disabled:hover {
+            background:#222227;
+            border-color:#2d2d38;
+        }
+        .question-box .q-text .order-group {
+            display:flex;
+            flex-direction:column;
+            gap:6px;
+        }
+        .question-box .q-text .order-group .order-item {
+            background:#222227;
+            border:1px solid #2d2d38;
+            border-radius:6px;
+            padding:8px 14px;
+            cursor:grab;
+            user-select:none;
+            transition:0.2s;
+            font-size:16px;
+        }
+        .question-box .q-text .order-group .order-item:hover {
+            background:#2b2b33;
+            border-color:#444456;
+        }
+        .question-box .q-text .order-group .order-item.dragging {
+            opacity:0.4;
+        }
+        .question-box .q-text .order-group .order-item.correct-order {
+            border-color:#4caf50;
+            background:rgba(76,175,80,0.12);
+            color:#a7f3d0;
+        }
+        .question-box .q-text .order-group .order-item.wrong-order {
+            border-color:#ef4444;
+            background:rgba(239,68,68,0.12);
+            color:#fca5a5;
         }
 
         .feedback-box {
@@ -224,6 +305,7 @@
             .control-bar .counter { font-size:13px; }
             .feedback-box { font-size:15px; }
             .result-stats { gap:20px; font-size:16px; }
+            .question-box .q-text .radio-group label, .question-box .q-text .checkbox-group label { font-size:15px; }
         }
         ::-webkit-scrollbar { width:0px; background:transparent; }
         .hidden { display:none; }
@@ -232,17 +314,17 @@
 <body>
 <div class="container" id="app">
     <div class="header">
-        <h1>⚖️ Estrutura da Prova — DPC II</h1>
+        <h1>⚖️ Fase 7 — Estrutura da Prova</h1>
         <div class="header-info">
-            <div>45 questões — lacunas conceituais</div>
-            <div><strong>Prova Final / Substitutiva</strong></div>
+            <div>70+ questões — lacunas, múltipla escolha, associações</div>
+            <div><strong>DPC 0319</strong> — USP</div>
         </div>
     </div>
 
     <div class="nav-top" id="navTop"></div>
 
     <div class="control-bar">
-        <span class="counter" id="qCounter">Questão 1 de 45</span>
+        <span class="counter" id="qCounter">Questão 1 de 70</span>
         <div class="actions">
             <button class="btn-small mark-toggle" id="markBtn" onclick="toggleMark()">⭐ Marcar</button>
             <button class="btn-small shuffle" onclick="shuffleQuestions()">🔀 Embaralhar</button>
@@ -282,89 +364,380 @@
 
 <script>
 // ============================================================
-// 45 QUESTÕES – LACUNAS CONCEITUAIS (CORRIGIDAS)
+// BANCO DE QUESTÕES – FASE 7 (COMPLETO)
 // ============================================================
 const questionsData = [
-    // ===== BLOCO 1: CALMON DE PASSOS =====
-    { tema: "Paz Social vs Verdade", texto: "Segundo Calmon de Passos, o sistema prefere a paz social à exaustiva apuração dos fatos. Contudo, a ______________, prevista no art. 370, permite ao juiz determinar provas de ofício, desafiando essa visão.", blanks: ["iniciativa probatória"], explicacao: "Os poderes instrutórios do juiz (art. 370) são exemplos de regras que buscam a verdade material." },
-    { tema: "Paz Social vs Verdade", texto: "A ______________ (art. 508) é uma regra que endossa a visão de Calmon, pois impede a rediscussão de fatos que poderiam ter sido alegados, promovendo a estabilidade.", blanks: ["eficácia preclusiva"], explicacao: "A eficácia preclusiva encerra a discussão em prol da paz social." },
+    // ---- BLOCO 1: CALMON DE PASSOS ----
+    { tema: "Paz Social vs Verdade", tipo: "text", texto: "Segundo Calmon de Passos, o sistema prefere a paz social à exaustiva apuração dos fatos. Contudo, a [iniciativa probatória], prevista no art. 370, permite ao juiz determinar provas de ofício, desafiando essa visão.", blanks: ["iniciativa probatória"], explicacao: "Os poderes instrutórios do juiz (art. 370) são exemplos de regras que buscam a verdade material." },
+    { tema: "Paz Social vs Verdade", tipo: "text", texto: "A [eficácia preclusiva] (art. 508) é uma regra que endossa a visão de Calmon, pois impede a rediscussão de fatos que poderiam ter sido alegados, promovendo a estabilidade.", blanks: ["eficácia preclusiva"], explicacao: "A eficácia preclusiva encerra a discussão em prol da paz social." },
 
-    // ===== BLOCO 2: PODERES INSTRUTÓRIOS x ÔNUS =====
-    { tema: "Poderes Instrutórios", texto: "Para a perspectiva publicista, as regras do ônus da prova (art. 373) são regras de ______________, aplicadas apenas no momento final da sentença, para evitar o non liquet.", blanks: ["julgamento"], explicacao: "Ônus objetivo = regra de julgamento (última saída)." },
-    { tema: "Poderes Instrutórios", texto: "O não atendimento ao art. 373 gera uma ______________ processual: a decisão desfavorável à parte que tinha o encargo de provar, se a dúvida persistir.", blanks: ["sanção"], explicacao: "A sanção é o julgamento desfavorável, característica do ônus objetivo." },
+    // ---- BLOCO 2: PODERES INSTRUTÓRIOS x ÔNUS (excluída a questão do art. 373) ----
+    { tema: "Poderes Instrutórios", tipo: "text", texto: "Para a perspectiva publicista, as regras do ônus da prova (art. 373) são regras de [julgamento], aplicadas apenas no momento final da sentença, para evitar o non liquet.", blanks: ["julgamento"], explicacao: "Ônus objetivo = regra de julgamento (última saída)." },
+    // (a questão sobre "O não atendimento ao art. 373 gera uma __ processual" foi excluída)
 
-    // ===== BLOCO 3: SOLIDARIEDADE =====
-    { tema: "Litisconsórcio", texto: "Na cobrança contra devedor solidário, a solidariedade passiva configura litisconsórcio ______________, sendo vedada a inclusão de ofício (art. 275 CC).", blanks: ["facultativo"], explicacao: "O credor pode cobrar de um ou de todos, portanto facultativo." },
-    { tema: "Litisconsórcio", texto: "O ______________ ao processo (art. 130) permite ao réu chamar os demais devedores solidários, excepcionando a faculdade do credor.", blanks: ["chamamento"], explicacao: "Chamamento ao processo é a exceção que integra os codevedores." },
+    // ---- BLOCO 3: SOLIDARIEDADE ----
+    { tema: "Litisconsórcio", tipo: "text", texto: "Na cobrança contra devedor solidário, a solidariedade passiva configura litisconsórcio [facultativo], sendo vedada a inclusão de ofício (art. 275 CC).", blanks: ["facultativo"], explicacao: "O credor pode cobrar de um ou de todos, portanto facultativo." },
+    { tema: "Litisconsórcio", tipo: "text", texto: "O [chamamento] ao processo (art. 130) permite ao réu chamar os demais devedores solidários, excepcionando a faculdade do credor.", blanks: ["chamamento"], explicacao: "Chamamento ao processo é a exceção que integra os codevedores." },
 
-    // ===== BLOCO 4: COISA JULGADA =====
-    { tema: "Coisa Julgada", texto: "A coisa julgada material atinge apenas o ______________ da sentença (art. 504).", blanks: ["dispositivo"], explicacao: "O dispositivo é o comando final, objeto da imutabilidade." },
-    { tema: "Coisa Julgada", texto: "A sentença que extingue o processo por ilegitimidade de parte (art. 485, VI) produz coisa julgada ______________, permitindo a repropositura.", blanks: ["formal"], explicacao: "Extinção sem mérito = coisa julgada formal (art. 486, §1º)." },
+    // ---- BLOCO 4: COISA JULGADA ----
+    { tema: "Coisa Julgada", tipo: "text", texto: "A coisa julgada material atinge apenas o [dispositivo] da sentença (art. 504).", blanks: ["dispositivo"], explicacao: "O dispositivo é o comando final, objeto da imutabilidade." },
+    { tema: "Coisa Julgada", tipo: "text", texto: "A sentença que extingue o processo por ilegitimidade de parte (art. 485, VI) produz coisa julgada [formal], permitindo a repropositura.", blanks: ["formal"], explicacao: "Extinção sem mérito = coisa julgada formal (art. 486, §1º)." },
 
-    // ===== BLOCO 5: ACIDENTE DE TRÂNSITO =====
-    { tema: "Caso Prático – Acidente", texto: "Carlos perdeu ação contra a Viação Subino (trânsito em julgado). Ao tentar denunciá-la em novo processo com prova nova, o juiz deve ______________ a denunciação, pois há identidade de demandas e a eficácia preclusiva (art. 508) impede a rediscussão.", blanks: ["inadmitir"], explicacao: "Coisa julgada + eficácia preclusiva bloqueiam a denunciação." },
-    { tema: "Caso Prático – Acidente", texto: "Se Carlos quisesse atacar a decisão anterior por prova falsa, a via adequada é a ______________, com prazo de 2 anos (art. 966, VII).", blanks: ["ação rescisória"], explicacao: "Prova falsa = fundamento para ação rescisória." },
+    // ---- BLOCO 5: ACIDENTE DE TRÂNSITO ----
+    { tema: "Caso Prático – Acidente", tipo: "text", texto: "Carlos perdeu ação contra a Viação Subino (trânsito em julgado). Ao tentar denunciá-la em novo processo com prova nova, o juiz deve [inadmitir] a denunciação, pois há identidade de demandas e a eficácia preclusiva (art. 508) impede a rediscussão.", blanks: ["inadmitir"], explicacao: "Coisa julgada + eficácia preclusiva bloqueiam a denunciação." },
+    { tema: "Caso Prático – Acidente", tipo: "text", texto: "Se Carlos quisesse atacar a decisão anterior por prova falsa, a via adequada é a [ação rescisória], com prazo de 2 anos (art. 966, VII).", blanks: ["ação rescisória"], explicacao: "Prova falsa = fundamento para ação rescisória." },
 
-    // ===== BLOCO 6: PARADIGMA OBJETIVISTA =====
-    { tema: "Paradigma Objetivista", texto: "Indeferir testemunhas sob o argumento de 'estar intimamente convencido' viola o paradigma ______________ e configura cerceamento de defesa.", blanks: ["objetivista"], explicacao: "O paradigma objetivista exige racionalidade, não crença íntima." },
-    { tema: "Paradigma Objetivista", texto: "No processo moderno, os destinatários da prova são o juiz, as partes e a ______________.", blanks: ["sociedade"], explicacao: "A prova é um direito à informação, com controle social." },
+    // ---- BLOCO 6: PARADIGMA OBJETIVISTA ----
+    { tema: "Paradigma Objetivista", tipo: "text", texto: "Indeferir testemunhas sob o argumento de 'estar intimamente convencido' viola o paradigma [objetivista] e configura cerceamento de defesa.", blanks: ["objetivista"], explicacao: "O paradigma objetivista exige racionalidade, não crença íntima." },
+    { tema: "Paradigma Objetivista", tipo: "text", texto: "No processo moderno, os destinatários da prova são o juiz, as partes e a [sociedade].", blanks: ["sociedade"], explicacao: "A prova é um direito à informação, com controle social." },
 
-    // ===== BLOCO 7: STANDARD E ÔNUS =====
-    { tema: "Standard e Ônus", texto: "O ______________ probatório é o grau de evidência necessário para considerar um fato provado; o ônus subjetivo é a regra de conduta; o ônus objetivo é a regra de julgamento.", blanks: ["standard"], explicacao: "Standard = grau de suficiência." },
-    { tema: "Standard e Ônus", texto: "O standard é etapa lógica ______________ ao ônus objetivo; se o standard não for atingido, aplica-se a regra de julgamento contra o onerado.", blanks: ["anterior"], explicacao: "Primeiro verifica-se o standard; depois, o ônus objetivo." },
+    // ---- BLOCO 7: STANDARD E ÔNUS (modificada) ----
+    { tema: "Standard e Ônus", tipo: "text", texto: "O [standard] é etapa lógica anterior ao ônus [objetivo]; se o standard não for atingido, aplica-se a regra de julgamento contra o onerado. Segundo a teoria [publicista] o juiz deve esgotar os meios instrutórios para alcançar a verdade.", blanks: ["standard", "objetivo", "publicista"], explicacao: "Standard = grau de evidência; ônus objetivo = regra de julgamento; publicista = visão de Bedaque." },
+    // (a outra questão sobre standard foi removida)
 
-    // ===== BLOCO 8: OBJETO DA PROVA =====
-    { tema: "Objeto da Prova", texto: "O objeto da prova é o conjunto das ______________ controvertidas e relevantes, abrangendo não apenas o mérito, mas também questões processuais e, excepcionalmente, o direito.", blanks: ["alegações"], explicacao: "Não são os fatos em si, mas as alegações sobre eles." },
-    { tema: "Objeto da Prova", texto: "Fatos ______________, confessados, incontroversos ou presumidos por lei independem de prova (art. 374).", blanks: ["notórios"], explicacao: "Art. 374 elenca fatos que dispensam prova." },
+    // ---- BLOCO 8: OBJETO DA PROVA (modificada) ----
+    { tema: "Objeto da Prova", tipo: "text", texto: "O objeto da prova é o conjunto das [alegações] controvertidas e relevantes, abrangendo não apenas o mérito, mas também questões processuais e, excepcionalmente, o direito.", blanks: ["alegações"], explicacao: "Não são os fatos em si, mas as alegações sobre eles." },
+    { tema: "Objeto da Prova", tipo: "text", texto: "Fatos notórios, c[onfessados], in[controversos] ou p[resumidos] por lei INDEPENDEM de prova (art. 374).", blanks: ["confessados", "incontroversos", "presumidos"], explicacao: "Art. 374: fatos notórios, confessados, incontroversos e presumidos dispensam prova." },
 
-    // ===== BLOCO 9: LITISCONSÓRCIO NECESSÁRIO x UNITÁRIO =====
-    { tema: "Litisconsórcio", texto: "O litisconsórcio ______________ exige citação obrigatória (art. 114); o unitário exige decisão uniforme (art. 116).", blanks: ["necessário"], explicacao: "Necessário = citação; unitário = uniformidade." },
-    { tema: "Litisconsórcio", texto: "Na ação de usucapião, a citação dos confinantes é obrigatória, caracterizando litisconsórcio necessário ______________ (não unitário).", blanks: ["comum"], explicacao: "Art. 246, §3º: necessário comum." },
-    { tema: "Litisconsórcio", texto: "Na ação de anulação de deliberação assemblear, qualquer sócio pode propor (facultativo), mas a decisão é uniforme para todos, sendo um exemplo de litisconsórcio ______________ unitário.", blanks: ["facultativo"], explicacao: "Facultativo porque o sócio pode optar por não entrar; unitário porque a decisão é uma só." },
+    // ---- BLOCO 9: LITISCONSÓRCIO (excluída a da usucapião, modificada a da assemblear) ----
+    { tema: "Litisconsórcio", tipo: "text", texto: "O litisconsórcio [necessário] exige citação obrigatória (art. 114); o unitário exige decisão uniforme (art. 116).", blanks: ["necessário"], explicacao: "Necessário = citação; unitário = uniformidade." },
+    // (excluída a questão sobre usucapião "necessário comum")
+    { tema: "Litisconsórcio", tipo: "radio", texto: "Na ação de anulação de deliberação assemblear, qualquer sócio pode propor (facultativo), mas a decisão é uniforme para todos, sendo um exemplo de litisconsórcio ______________ unitário. Assinale a opção que completa corretamente a lacuna.", opcoes: [
+        "Ação de dissolução parcial de sociedade",
+        "Ação de prestação de contas",
+        "Ação de responsabilidade contra administrador",
+        "Ação de exclusão de sócio",
+        "Ação de anulação de deliberação assemblear"
+    ], correta: 4, explicacao: "A ação de anulação de deliberação assemblear é o exemplo clássico de litisconsórcio facultativo unitário: qualquer sócio pode propor, mas a decisão é única para todos." },
 
-    // ===== BLOCO 10: RECONVENÇÃO COM DÍVIDA VINCENDA =====
-    { tema: "Caso Prático – Reconvenção", texto: "A reconvenção com dívida ainda não vencida é inadmitida por decisão ______________, com fundamento na ausência de interesse processual (art. 354, par. c.c. 485, VI).", blanks: ["interlocutória"], explicacao: "Decisão interlocutória de inadmissibilidade do julgamento da parcela." },
-    { tema: "Caso Prático – Reconvenção", texto: "Essa decisão não faz coisa julgada material, apenas ______________, pois não há resolução de mérito (art. 502).", blanks: ["formal"], explicacao: "Sem mérito = coisa julgada formal." },
-    { tema: "Caso Prático – Reconvenção", texto: "A ré pode repropor a reconvenção após corrigir o vício (aguardar o vencimento), nos termos do art. ______________, §1º.", blanks: ["486"], explicacao: "Art. 486, §1º: repropositura após correção do vício." },
+    // ---- BLOCO 10: RECONVENÇÃO (modificada, excluídas as outras duas) ----
+    { tema: "Caso Prático – Reconvenção", tipo: "text", texto: "A reconvenção com dívida ainda não vencida é inadmitida por decisão [interlocutória], com fundamento na [ausência de interesse processual] (art. 354, par. c.c. 485, VI).", blanks: ["interlocutória", "ausência de interesse processual"], explicacao: "Decisão interlocutória de inadmissibilidade do julgamento da parcela, por falta de interesse." },
+    // (excluídas as questões sobre coisa julgada formal e art. 486)
 
-    // ===== BLOCO 11: INTERVENÇÃO DE TERCEIROS =====
-    { tema: "Intervenção", texto: "Na assistência simples, o assistente não pode contrariar os atos do assistido (art. ______________).", blanks: ["121"], explicacao: "Art. 121: vedação à contrariedade." },
-    { tema: "Intervenção", texto: "A denunciação da lide (art. 125) é ______________, cabível para garantia por evicção ou obrigação de indenizar.", blanks: ["facultativa"], explicacao: "Art. 125: faculdade do denunciante." },
-    { tema: "Intervenção", texto: "O chamamento ao processo (art. 130) é cabível para chamar o afiançado, os demais fiadores e os demais devedores ______________.", blanks: ["solidários"], explicacao: "Art. 130: devedores solidários, fiadores e afiançado." },
-    { tema: "Intervenção", texto: "O Incidente de Desconsideração da Personalidade Jurídica (IDPJ) não pode ser instaurado de ofício; depende de pedido da parte ou do ______________ (art. 133).", blanks: ["Ministério Público"], explicacao: "Art. 133: legitimidade para requerer o IDPJ." },
-    { tema: "Intervenção", texto: "A oposição (art. 682) proposta antes da audiência será processada em ______________ com a ação originária (art. 683).", blanks: ["conjunto"], explicacao: "Instrução conjunta quando proposta antes da audiência." },
+    // ---- BLOCO 11: INTERVENÇÃO DE TERCEIROS (excluída a do art. 121) ----
+    { tema: "Intervenção", tipo: "text", texto: "A denunciação da lide (art. 125) é [facultativa], cabível para garantia por evicção ou obrigação de indenizar.", blanks: ["facultativa"], explicacao: "Art. 125: faculdade do denunciante." },
+    { tema: "Intervenção", tipo: "text", texto: "O chamamento ao processo (art. 130) é cabível para chamar o afiançado, os demais fiadores e os demais devedores [solidários].", blanks: ["solidários"], explicacao: "Art. 130: devedores solidários, fiadores e afiançado." },
+    { tema: "Intervenção", tipo: "text", texto: "O Incidente de Desconsideração da Personalidade Jurídica (IDPJ) não pode ser instaurado de ofício; depende de pedido da parte ou do [Ministério Público] (art. 133).", blanks: ["Ministério Público"], explicacao: "Art. 133: legitimidade para requerer o IDPJ." },
+    { tema: "Intervenção", tipo: "text", texto: "A oposição (art. 682) proposta antes da audiência será processada em [conjunto] com a ação originária (art. 683).", blanks: ["conjunto"], explicacao: "Instrução conjunta quando proposta antes da audiência." },
 
-    // ===== BLOCO 12: RECURSOS =====
-    { tema: "Recursos", texto: "O STJ adota a '______________ mitigada' para o agravo de instrumento, admitindo-o fora da lista do art. 1.015 em casos de urgência.", blanks: ["taxatividade"], explicacao: "STJ, EREsp 1.478.203: taxatividade mitigada." },
-    { tema: "Recursos", texto: "A apelação contra sentença que concede ______________ não tem efeito suspensivo (art. 1.012, §1º, IV).", blanks: ["alimentos"], explicacao: "Art. 1.012, §1º: apelação sobre alimentos sem efeito suspensivo." },
-    { tema: "Recursos", texto: "O agravo interno (art. 1.021) é cabível contra decisão ______________ do relator no tribunal.", blanks: ["monocrática"], explicacao: "Art. 1.021: agravo interno contra decisão monocrática." },
-    { tema: "Recursos", texto: "O juízo de retratação no agravo de instrumento permite que o juiz de primeiro grau ______________ sua decisão (art. 1.018, §3º).", blanks: ["reconsidere"], explicacao: "Art. 1.018, §3º: juízo de retratação = reconsideração." },
+    // ---- BLOCO 12: RECURSOS (excluída a dos alimentos) ----
+    { tema: "Recursos", tipo: "text", texto: "O STJ adota a '[taxatividade] mitigada' para o agravo de instrumento, admitindo-o fora da lista do art. 1.015 em casos de urgência.", blanks: ["taxatividade"], explicacao: "STJ, EREsp 1.478.203: taxatividade mitigada." },
+    // (excluída a questão sobre apelação/alimentos)
+    { tema: "Recursos", tipo: "text", texto: "O agravo interno (art. 1.021) é cabível contra decisão [monocrática] do relator no tribunal.", blanks: ["monocrática"], explicacao: "Art. 1.021: agravo interno contra decisão monocrática." },
+    { tema: "Recursos", tipo: "text", texto: "O [juízo de retratação] no agravo de instrumento permite que o juiz de primeiro grau reconsidere sua decisão (art. 1.018, §3º).", blanks: ["juízo de retratação"], explicacao: "Art. 1.018, §3º: juízo de retratação = reconsideração." },
+    { tema: "Recursos", tipo: "radio", texto: "A renúncia ao direito de recorrer (art. 1.000) deve ser expressa e feita ______.", opcoes: [
+        "antes da decisão, não depois.",
+        "antes e depois da decisão.",
+        "depois da decisão, não antes.",
+        "nem antes e nem depois.",
+        "após a decisão, mas apenas se o juiz permitir."
+    ], correta: 2, explicacao: "Art. 1.000: a renúncia é admissível após a decisão que se quer recorrer, não antes." },
 
-    // ===== BLOCO 13: PROCEDIMENTOS ESPECIAIS =====
-    { tema: "Procedimentos Especiais", texto: "Na ação possessória, a liminar exige prova documental da posse e do esbulho recente (menos de ______________ e dia).", blanks: ["ano"], explicacao: "Art. 562: liminar com esbulho há menos de ano e dia." },
-    { tema: "Procedimentos Especiais", texto: "Na ação de exigir contas, se o réu não apresentar as contas, o juiz pode determinar a liquidação por ______________ (art. 550).", blanks: ["arbitramento"], explicacao: "Art. 550: liquidação por arbitramento." },
-    { tema: "Procedimentos Especiais", texto: "A consignação em pagamento (art. 539) é cabível quando o credor recusa ou não pode receber, ou há ______________ sobre o credor.", blanks: ["dúvida"], explicacao: "Art. 539: dúvida sobre o credor legitima a consignação." },
-    { tema: "Procedimentos Especiais", texto: "A liquidação de sentença (art. 509) é cabível quando a sentença é ______________ (genérica), para apurar o quantum debeatur.", blanks: ["ilíquida"], explicacao: "Liquidação apura o valor da sentença ilíquida." },
+    // ---- BLOCO 13: PROCEDIMENTOS ESPECIAIS (excluída a da ação possessória) ----
+    { tema: "Procedimentos Especiais", tipo: "text", texto: "Na [ação de exigir contas], se o réu não apresentar as contas, o juiz pode determinar a liquidação por arbitramento (art. 550).", blanks: ["ação de exigir contas"], explicacao: "Art. 550: liquidação por arbitramento." },
+    { tema: "Procedimentos Especiais", tipo: "text", texto: "A [consignação em pagamento] (art. 539) é cabível quando o credor recusa ou não pode receber, ou há dúvida sobre o credor.", blanks: ["consignação em pagamento"], explicacao: "Art. 539: consignação para credor recusante ou dúvida." },
+    { tema: "Procedimentos Especiais", tipo: "text", texto: "Os [embargos à execução] (art. 914) servem para discutir a dívida quando não houve processo de conhecimento, no caso de títulos extrajudiciais.", blanks: ["embargos à execução"], explicacao: "Embargos à execução discutem dívida em títulos extrajudiciais." },
+    { tema: "Procedimentos Especiais", tipo: "text", texto: "A [liquidação de sentença] (art. 509) é cabível quando a sentença é ilíquida, para apurar o quantum debeatur.", blanks: ["liquidação de sentença"], explicacao: "A liquidação apura o quantum da sentença ilíquida." },
+    // (excluída a questão sobre ação possessória "ano e dia")
 
-    // ===== BLOCO 14: TEORIA GERAL =====
-    { tema: "Teoria Geral", texto: "A litispendência (art. 485, V) ocorre quando duas ações ______________ (mesmas partes, pedido e causa de pedir) tramitam simultaneamente.", blanks: ["idênticas"], explicacao: "Litispendência = identidade de partes, pedido e causa de pedir." },
-    { tema: "Teoria Geral", texto: "A incompetência relativa (territorial) deve ser arguida na contestação, sob pena de ______________ (art. 65).", blanks: ["prorrogação"], explicacao: "Art. 65: incompetência relativa prorroga-se se não arguida." },
-    { tema: "Teoria Geral", texto: "A incompetência absoluta (matéria, função) pode ser conhecida de ofício pelo juiz a qualquer tempo, pois é de ordem ______________ (art. 64, §1º).", blanks: ["pública"], explicacao: "Incompetência absoluta = ordem pública." },
-    { tema: "Teoria Geral", texto: "O negócio jurídico processual (art. 190) não pode versar sobre direitos ______________.", blanks: ["indisponíveis"], explicacao: "Art. 190: proibição de direitos indisponíveis." },
-    { tema: "Teoria Geral", texto: "A produção antecipada de provas (art. 381) é cabível para justificar ou evitar o ajuizamento de ação, viabilizar autocomposição ou quando a prova for ______________.", blanks: ["urgente"], explicacao: "Art. 381, incisos: I (urgência), II (autocomposição), III (evitar o ajuizamento)." },
+    // ---- BLOCO 14: TEORIA GERAL ----
+    { tema: "Teoria Geral", tipo: "text", texto: "A litispendência (art. 485, V) caracteriza-se por duas ações idênticas que tramitam ao mesmo tempo e têm como elementos: mesmas [partes], mesmo [pedido] e mesma [causa de pedir].", blanks: ["partes", "pedido", "causa de pedir"], explicacao: "Litispendência = identidade de partes, pedido e causa de pedir." },
+    { tema: "Teoria Geral", tipo: "text", texto: "A [conexão] ocorre quando duas ou mais ações possuem mesmo pedido ou mesma causa de pedir.", blanks: ["conexão"], explicacao: "Conexão = mesmo pedido ou mesma causa de pedir." },
+    { tema: "Teoria Geral", tipo: "text", texto: "A [continência] ocorre quando uma ação contém o mesmo objeto e causa de pedir de outra, mas de forma mais ampla.", blanks: ["continência"], explicacao: "Continência = ação mais ampla contém a outra." },
+    { tema: "Teoria Geral", tipo: "text", texto: "A incompetência [absoluta] (matéria, função) pode ser conhecida de ofício pelo juiz a qualquer tempo (art. 64, §1º), pois é de ordem pública.", blanks: ["absoluta"], explicacao: "Incompetência absoluta = ordem pública, cognoscível de ofício." },
+    { tema: "Teoria Geral", tipo: "text", texto: "A incompetência relativa (territorial) deve ser arguida na contestação, sob pena de [prorrogação] (art. 65).", blanks: ["prorrogação"], explicacao: "Art. 65: incompetência relativa prorroga-se se não arguida." },
+    { tema: "Teoria Geral", tipo: "text", texto: "O negócio jurídico processual (art. 190) permite mudanças no procedimento e ônus probatório, desde que não afetem direitos [indisponíveis].", blanks: ["indisponíveis"], explicacao: "Art. 190: não pode versar sobre direitos indisponíveis." },
+    { tema: "Teoria Geral", tipo: "text", texto: "A [produção antecipada de provas] (art. 381) é cabível para justificar ou evitar o ajuizamento de ação, viabilizar autocomposição ou quando a prova for urgente.", blanks: ["produção antecipada de provas"], explicacao: "Art. 381, incisos: urgência, autocomposição, evitar o ajuizamento." },
 
-    // ===== BLOCO 15: PRESUNÇÕES E PROVAS =====
-    { tema: "Presunções e Provas", texto: "A presunção ______________ (iure et de iure) não admite prova em contrário, operando como ficção legal.", blanks: ["absoluta"], explicacao: "Absoluta = não admite prova em contrário." },
-    { tema: "Presunções e Provas", texto: "A confissão não é meio de prova, mas declaração de conhecimento que ingressa por ______________ pessoal ou documento.", blanks: ["depoimento"], explicacao: "Confissão vem pelo depoimento pessoal ou documento." },
-    { tema: "Presunções e Provas", texto: "As exceções à teoria do fruto da árvore envenenada são a derivação ______________ e a fonte independente.", blanks: ["mediata"], explicacao: "Derivação mediata e fonte independente (CPP, art. 157)." },
+    // ---- NOVAS QUESTÕES SOBRE PRESUNÇÕES (lacunas e associações) ----
+    { tema: "Presunções", tipo: "text", texto: "A presunção legal [absoluta] (iure et de iure) não admite prova em contrário. Exemplo: a lei presume a paternidade do marido em relação ao filho concebido na constância do casamento (art. 1.597 CC).", blanks: ["absoluta"], explicacao: "Presunção absoluta = não admite prova em contrário." },
+    { tema: "Presunções", tipo: "text", texto: "A presunção legal [relativa] (iuris tantum) admite prova em contrário. Exemplo: presume-se verdadeira a declaração de pobreza para concessão da gratuidade da justiça (art. 99, §3º CPC).", blanks: ["relativa"], explicacao: "Presunção relativa = admite prova em contrário." },
+    { tema: "Presunções", tipo: "text", texto: "A presunção [hominis] (judicial) é feita pelo juiz a partir de indícios ou da experiência comum, e pode ser afastada por prova em contrário. Exemplo: quem é encontrado com bem furtado logo após o crime pode provar que o comprou sem saber.", blanks: ["hominis"], explicacao: "Presunção hominis = raciocínio judicial, sempre relativa." },
+    { tema: "Presunções", tipo: "radio", texto: "Qual das seguintes presunções NÃO admite prova em contrário?", opcoes: [
+        "Presunção relativa (iuris tantum)",
+        "Presunção absoluta (iure et de iure)",
+        "Presunção hominis (judicial)",
+        "Presunção legal (em geral)"
+    ], correta: 1, explicacao: "Presunção absoluta = iure et de iure, não admite prova em contrário." },
+    { tema: "Presunções", tipo: "radio", texto: "A presunção de paternidade do marido (art. 1.597 CC) é um exemplo de:", opcoes: [
+        "Presunção legal absoluta",
+        "Presunção legal relativa",
+        "Presunção judicial hominis",
+        "Presunção mista"
+    ], correta: 0, explicacao: "Art. 1.597 CC é presunção legal absoluta." },
+    { tema: "Presunções", tipo: "radio", texto: "A presunção de veracidade da declaração de pobreza (art. 99, §3º CPC) é um exemplo de:", opcoes: [
+        "Presunção legal absoluta",
+        "Presunção legal relativa",
+        "Presunção judicial hominis",
+        "Presunção ficta"
+    ], correta: 1, explicacao: "Art. 99, §3º: presunção relativa (iuris tantum)." },
+    { tema: "Presunções", tipo: "radio", texto: "Quando o juiz infere a culpa de alguém com base em indícios da experiência comum, está usando:", opcoes: [
+        "Presunção legal absoluta",
+        "Presunção legal relativa",
+        "Presunção hominis",
+        "Presunção de inocência"
+    ], correta: 2, explicacao: "Presunção hominis = raciocínio judicial baseado em indícios." },
 
-    // ===== BLOCO 16: ESTABILIDADES EXCEPCIONAIS =====
-    { tema: "Estabilidades Excepcionais", texto: "A sentença arbitral produz coisa julgada, mas a impugnação é por ação ______________ (prazo de 90 dias), não rescisória.", blanks: ["anulatória"], explicacao: "Lei de Arbitragem, art. 33: ação anulatória." },
-    { tema: "Estabilidades Excepcionais", texto: "A estabilidade da tutela antecipada antecedente (art. 304) não é coisa julgada; pode ser revista em ação própria no prazo de ______________ anos.", blanks: ["2"], explicacao: "Art. 304, §6º: 2 anos para ação revisional." }
+    // ---- NOVAS QUESTÕES SOBRE FRUTO DA ÁRVORE ENVENENADA (múltipla escolha e associações) ----
+    { tema: "Prova – Árvore Envenenada", tipo: "radio", texto: "As exceções à teoria do fruto da árvore envenenada são:", opcoes: [
+        "derivação mediata e a fonte independente",
+        "prova ilícita e prova ilegítima",
+        "confissão espontânea e delação premiada",
+        "nulidade absoluta e nulidade relativa",
+        "presunção legal absoluta e presunção judicial hominis"
+    ], correta: 0, explicacao: "Exceções: derivação mediata e fonte independente (CPP, art. 157)." },
+    { tema: "Prova – Árvore Envenenada", tipo: "radio", texto: "Qual termo corresponde à seguinte definição: 'Regra segundo a qual provas obtidas por meio ilícito contaminam todas as provas derivadas dela.'?", opcoes: [
+        "Teoria do fruto da árvore envenenada",
+        "Derivação mediata",
+        "Fonte independente",
+        "Prova emprestada",
+        "Ônus da prova"
+    ], correta: 0, explicacao: "Teoria do fruto da árvore envenenada = contaminação das provas derivadas." },
+    { tema: "Prova – Árvore Envenenada", tipo: "radio", texto: "Qual termo corresponde à seguinte definição: 'Quando a prova poderia ser obtida por outro caminho lícito, independentemente da prova ilícita inicial.'?", opcoes: [
+        "Teoria do fruto da árvore envenenada",
+        "Derivação mediata (descoberta inevitável)",
+        "Fonte independente",
+        "Prova emprestada",
+        "Confissão ficta"
+    ], correta: 1, explicacao: "Derivação mediata = prova poderia ser obtida de outra forma lícita." },
+    { tema: "Prova – Árvore Envenenada", tipo: "radio", texto: "Qual termo corresponde à seguinte definição: 'Quando a prova é obtida de forma autônoma, sem relação causal com a prova ilícita.'?", opcoes: [
+        "Teoria do fruto da árvore envenenada",
+        "Derivação mediata",
+        "Fonte independente",
+        "Prova ilícita",
+        "Presunção hominis"
+    ], correta: 2, explicacao: "Fonte independente = prova autônoma, sem relação com a ilícita." },
+    { tema: "Prova – Árvore Envenenada", tipo: "radio", texto: "Associe o exemplo à figura correta: 'Interceptação telefônica ilegal → invalida documentos obtidos a partir dela.'", opcoes: [
+        "Derivação mediata",
+        "Fonte independente",
+        "Teoria do fruto da árvore envenenada",
+        "Prova ilegítima",
+        "Confissão ficta"
+    ], correta: 2, explicacao: "Exemplo clássico da teoria do fruto da árvore envenenada." },
+    { tema: "Prova – Árvore Envenenada", tipo: "radio", texto: "Associe o exemplo à figura correta: 'Testemunha que seria encontrada por investigação regular, mesmo sem a prova ilícita.'", opcoes: [
+        "Derivação mediata (descoberta inevitável)",
+        "Fonte independente",
+        "Teoria do fruto da árvore envenenada",
+        "Prova ilícita",
+        "Presunção hominis"
+    ], correta: 0, explicacao: "Derivação mediata = descoberta inevitável." },
+    { tema: "Prova – Árvore Envenenada", tipo: "radio", texto: "Associe o exemplo à figura correta: 'Documento entregue voluntariamente por terceiro, sem ligação com a interceptação ilegal.'", opcoes: [
+        "Derivação mediata",
+        "Fonte independente",
+        "Teoria do fruto da árvore envenenada",
+        "Prova emprestada",
+        "Ônus da prova"
+    ], correta: 1, explicacao: "Fonte independente = prova autônoma." },
+
+    // ---- NOVAS QUESTÕES SOBRE AIJ (ordenação e motivos de adiamento) ----
+    { tema: "AIJ – Ordenação", tipo: "order", texto: "Coloque os seguintes atos da AIJ na ordem correta (separe por vírgula): proclamação, pregão inicial (partes e advogados), tentativa de conciliação, se não alcançada a autocomposição, instrução oral, esclarecimentos de peritos e assistentes, depoimento pessoal da autora (sem a presença do réu), depoimento pessoal do réu (sem a presença da autora), inquirição de testemunhas da autora, inquirição de testemunhas do réu, alegações orais finais, advogados da autora, advogados do réu, se não for necessário completar a instrução, com conversão do julgamento e, diligência, sentença.", orderItems: [
+        "proclamação",
+        "pregão inicial",
+        "tentativa de conciliação",
+        "se não alcançada a autocomposição",
+        "instrução oral",
+        "esclarecimentos de peritos e assistentes",
+        "depoimento pessoal da autora",
+        "depoimento pessoal do réu",
+        "inquirição de testemunhas da autora",
+        "inquirição de testemunhas do réu",
+        "alegações orais finais",
+        "advogados da autora",
+        "advogados do réu",
+        "se não for necessário completar a instrução, com conversão do julgamento e, diligência",
+        "sentença"
+    ], orderCorrect: [
+        "proclamação",
+        "pregão inicial",
+        "tentativa de conciliação",
+        "se não alcançada a autocomposição",
+        "instrução oral",
+        "esclarecimentos de peritos e assistentes",
+        "depoimento pessoal da autora",
+        "depoimento pessoal do réu",
+        "inquirição de testemunhas da autora",
+        "inquirição de testemunhas do réu",
+        "alegações orais finais",
+        "advogados da autora",
+        "advogados do réu",
+        "se não for necessário completar a instrução, com conversão do julgamento e, diligência",
+        "sentença"
+    ], explicacao: "A ordem da AIJ é a prevista no art. 361 e seguintes do CPC." },
+    { tema: "AIJ – Adiamento", tipo: "checkbox", texto: "Quais dos seguintes motivos podem levar ao adiamento da AIJ? Marque todos os aplicáveis.", opcoes: [
+        "Convenção das partes",
+        "Ausência de sujeito necessário",
+        "Ausência de sujeito não necessário, por falta de intimação ou outro justo motivo",
+        "Atraso injustificado de seu início por mais de 30 minutos",
+        "Retardamento da entrega de laudo pericial",
+        "Pedido de adiamento por conveniência exclusiva do advogado, sem justo motivo",
+        "Ausência de testemunha arrolada fora do prazo",
+        "Falta de preparo recursal",
+        "Pedido de adiamento para juntar documentos que poderiam ter sido apresentados antes",
+        "Alegação genérica de 'falta de tempo para defesa' sem fundamento legal",
+        "Ausência de advogado substituto quando a parte já tinha outro constituído",
+        "Pedido de adiamento para aguardar julgamento de outro processo sem conexão"
+    ], corretas: [0,1,2,3,4], explicacao: "Os motivos legais para adiamento são: convenção das partes, ausência de sujeito necessário, ausência de sujeito não necessário com justo motivo, atraso injustificado >30 min, retardamento na entrega de laudo. As demais são pegadinhas." },
+
+    // ---- QUESTÃO SOBRE REVISÃO DA SENTENÇA ----
+    { tema: "Sentença – Revisão", tipo: "checkbox", texto: "Em quais situações o juiz pode revisar sua sentença? Marque todas as corretas.", opcoes: [
+        "Inexatidão material ou erro de cálculo (art. 494, I)",
+        "Embargos de declaração (art. 494, II)",
+        "Juízo de retratação (ex: apelação contra sentença terminativa ou improcedência liminar)",
+        "Ação rescisória",
+        "Revisão por mero arrependimento do juiz",
+        "Revisão por pedido da parte perdedora, mesmo sem fundamento legal"
+    ], corretas: [0,1,2,3], explicacao: "O juiz pode rever a sentença para corrigir inexatidão/erro, em embargos de declaração, em juízo de retratação, ou via ação rescisória. Não pode rever por arrependimento." },
+
+    // ---- QUESTÃO SOBRE INTERVENÇÕES VOLUNTÁRIAS/PROVOCADAS ----
+    { tema: "Intervenção de Terceiros", tipo: "checkbox", texto: "Quais das seguintes intervenções são VOLUNTÁRIAS? Marque todas.", opcoes: [
+        "Assistência",
+        "Amicus curiae",
+        "Recurso de 3º prejudicado",
+        "Reconvenção proposta pelo réu em litisconsórcio com 3º",
+        "Embargos de terceiro e oposição",
+        "Denunciação da lide",
+        "Chamamento ao processo",
+        "IDPJ",
+        "Reconvenção proposta contra autora e 3º"
+    ], corretas: [0,1,2,3,4], explicacao: "Voluntárias: assistência, amicus curiae, recurso de 3º prejudicado, reconvenção com 3º, embargos/oposição. Provocadas: denunciação, chamamento, IDPJ, reconvenção contra autora e 3º." },
+    { tema: "Intervenção de Terceiros", tipo: "checkbox", texto: "Quais das seguintes intervenções são PROVOCADAS (coatas)? Marque todas.", opcoes: [
+        "Assistência",
+        "Amicus curiae",
+        "Recurso de 3º prejudicado",
+        "Reconvenção proposta pelo réu em litisconsórcio com 3º",
+        "Embargos de terceiro e oposição",
+        "Denunciação da lide",
+        "Chamamento ao processo",
+        "IDPJ",
+        "Reconvenção proposta contra autora e 3º"
+    ], corretas: [5,6,7,8], explicacao: "Provocadas: denunciação, chamamento, IDPJ, reconvenção contra autora e 3º." },
+
+    // ---- CLASSIFICAÇÃO AMPLIATIVA/NÃO AMPLIATIVA ----
+    { tema: "Intervenção de Terceiros", tipo: "checkbox", texto: "Quais intervenções são OBJETIVAMENTE AMPLIATIVAS (ampliam o objeto do processo)? Marque todas.", opcoes: [
+        "Denunciação da lide",
+        "Chamamento ao processo",
+        "IDPJ",
+        "Reconvenção subjetivamente ampliativa",
+        "Assistência",
+        "Amicus curiae",
+        "Recurso de 3º prejudicado"
+    ], corretas: [0,1,2,3], explicacao: "Objetivamente ampliativas: denunciação, chamamento, IDPJ, reconvenção subjetivamente ampliativa." },
+    { tema: "Intervenção de Terceiros", tipo: "checkbox", texto: "Quais intervenções são NÃO OBJETIVAMENTE AMPLIATIVAS? Marque todas.", opcoes: [
+        "Denunciação da lide",
+        "Chamamento ao processo",
+        "IDPJ",
+        "Reconvenção subjetivamente ampliativa",
+        "Assistência",
+        "Amicus curiae",
+        "Recurso de 3º prejudicado"
+    ], corretas: [4,5,6], explicacao: "Não ampliativas: assistência, amicus curiae, recurso de 3º prejudicado." },
+
+    // ---- INSTRUMENTOS DE MODIFICAÇÃO DA DECISÃO TRANSITADA ----
+    { tema: "Coisa Julgada – Modificação", tipo: "checkbox", texto: "Quais são os instrumentos de modificação da decisão transitada em julgado? Marque todos.", opcoes: [
+        "Correção de erro material (art. 494, I)",
+        "Ação rescisória (arts. 966 ss)",
+        "Querela nullitatis (arts. 525, §1º, I e 535, I)",
+        "Impugnação ao cumprimento de sentença com fundamento em decisão de controle de constitucionalidade anterior ao trânsito (arts. 525, §12 e 535, §5º)",
+        "Ação revisional (para relações continuativas)",
+        "Mero arrependimento do juiz"
+    ], corretas: [0,1,2,3,4], explicacao: "Os instrumentos são: correção de erro material, ação rescisória, querela nullitatis, impugnação com base em controle de constitucionalidade, e ação revisional para relações continuativas." },
+
+    // ---- TUTELA ANTECIPADA (prazo) ----
+    { tema: "Estabilidades Excepcionais", tipo: "text", texto: "A tutela antecipada antecedente deve ser revista, reformada ou invalidada num prazo de [2] anos (art. 304, §5º).", blanks: ["2"], explicacao: "Art. 304, §5º: prazo de 2 anos para ação revisional." },
+
+    // ---- QUESTÕES SOBRE CONDUTA CAUSATIVA/INDUTIVA ----
+    { tema: "Litisconsórcio Unitário", tipo: "radio", texto: "No litisconsórcio unitário, a conduta de um litisconsorte que gera diretamente o resultado uniforme para todos é chamada de:", opcoes: [
+        "Conduta indutiva",
+        "Conduta causativa",
+        "Conduta facultativa",
+        "Conduta subsidiária",
+        "Conduta autônoma"
+    ], correta: 1, explicacao: "Conduta causativa = produz diretamente o efeito uniforme." },
+    { tema: "Litisconsórcio Unitário", tipo: "radio", texto: "No litisconsórcio unitário, quando a conduta de um litisconsorte não gera o resultado por si só, mas influencia o convencimento do juiz, estamos diante de:", opcoes: [
+        "Conduta causativa",
+        "Conduta indutiva",
+        "Conduta necessária",
+        "Conduta exclusiva",
+        "Conduta impeditiva"
+    ], correta: 1, explicacao: "Conduta indutiva = influencia o juiz, não causa diretamente." },
+    { tema: "Litisconsórcio Unitário", tipo: "radio", texto: "Assinale a alternativa correta sobre condutas no litisconsórcio unitário:", opcoes: [
+        "A conduta causativa é aquela que produz diretamente o efeito uniforme da decisão para todos os litisconsortes.",
+        "A conduta indutiva é irrelevante para o julgamento, pois não influencia o juiz.",
+        "A conduta causativa só vale para o litisconsórcio simples.",
+        "A conduta indutiva não admite prova em contrário.",
+        "Ambas são equivalentes e não se distinguem no CPC."
+    ], correta: 0, explicacao: "Conduta causativa = efeito direto; indutiva = influência." },
+    { tema: "Litisconsórcio Unitário", tipo: "radio", texto: "Associe os conceitos: (1) Conduta causativa; (2) Conduta indutiva. Qual alternativa relaciona corretamente os números às definições? A: Ato que gera diretamente o resultado uniforme da decisão. B: Ato que não gera o resultado por si só, mas influencia o convencimento do juiz.", opcoes: [
+        "1–A, 2–B",
+        "1–B, 2–A",
+        "1–A, 2–A",
+        "1–B, 2–B",
+        "Nenhuma das anteriores"
+    ], correta: 0, explicacao: "Conduta causativa (1) = A; conduta indutiva (2) = B." },
+
+    // ---- RECONHECIMENTO, RENÚNCIA, TRANSAÇÃO ----
+    { tema: "Litisconsórcio", tipo: "radio", texto: "No litisconsórcio comum, se um litisconsorte renuncia ao direito ou reconhece o pedido, qual é o efeito sobre os demais litisconsortes?", opcoes: [
+        "A renúncia vincula automaticamente todos os litisconsortes.",
+        "A renúncia só vincula os litisconsortes que concordarem expressamente.",
+        "A renúncia não prejudica os demais; estes podem prosseguir normalmente.",
+        "A renúncia torna nula a ação para todos."
+    ], correta: 2, explicacao: "No comum, cada um atua de forma independente." },
+    { tema: "Litisconsórcio", tipo: "radio", texto: "No litisconsórcio unitário, quando um litisconsorte reconhece o pedido, qual providência o juiz deve adotar para que o ato seja eficaz?", opcoes: [
+        "Nada; o reconhecimento é eficaz automaticamente.",
+        "Intimar todos os litisconsortes para se manifestarem, sob pena de extinção do processo principal.",
+        "Converter o processo em litisconsórcio comum.",
+        "Determinar a produção de prova pericial."
+    ], correta: 1, explicacao: "No unitário, atos causativos exigem manifestação de todos." },
+
+    // ---- PRAZOS E INTIMAÇÕES ----
+    { tema: "Litisconsórcio", tipo: "radio", texto: "Segundo o CPC, art. 118 e art. 231, §1º, como se inicia a contagem do prazo quando há litisconsórcio?", opcoes: [
+        "Da intimação do primeiro litisconsorte citado.",
+        "Da intimação do último litisconsorte.",
+        "Da publicação no diário oficial.",
+        "Da juntada do mandado aos autos."
+    ], correta: 1, explicacao: "Prazo comum inicia-se com a intimação do último litisconsorte." },
+    { tema: "Litisconsórcio", tipo: "radio", texto: "No processo eletrônico, quanto à dimensão do prazo para litisconsortes, aplica-se:", opcoes: [
+        "Prazo em dobro para todos.",
+        "Prazo simples, conforme art. 229, §2º.",
+        "Prazo contado em horas.",
+        "Prazo suspenso até manifestação de todos."
+    ], correta: 1, explicacao: "Prazo de processo eletrônico é prazo simples." },
+
+    // ---- EFICÁCIA DA SENTENÇA E COISA JULGADA ----
+    { tema: "Litisconsórcio", tipo: "radio", texto: "Regra geral sobre eficácia da sentença em litisconsórcio:", opcoes: [
+        "Sentença é eficaz apenas para quem propôs a ação.",
+        "Sentença é eficaz para todos que integram o litisconsórcio; coisa julgada alcança apenas os citados regularmente.",
+        "Coisa julgada alcança terceiros não citados.",
+        "Sentença não produz coisa julgada em litisconsórcio unitário."
+    ], correta: 1, explicacao: "Sentença atinge todos do litisconsórcio; coisa julgada vale só para os citados." },
+    { tema: "Litisconsórcio", tipo: "radio", texto: "Exceção à eficácia plena da coisa julgada em litisconsórcio unitário facultativo é conhecida como:", opcoes: [
+        "Coisa julgada formal.",
+        "Coisa julgada secundum eventum litis.",
+        "Coisa julgada absoluta.",
+        "Coisa julgada parcial."
+    ], correta: 1, explicacao: "Secundum eventum litis = coisa julgada não alcança todos." },
+
+    // ---- ASSOCIAÇÕES (coluna A e B) ----
+    { tema: "Litisconsórcio", tipo: "radio", texto: "Associe a coluna A à coluna B: (A) Intimação do último litisconsorte; (B) Prazo simples no processo eletrônico; (C) Renúncia no litisconsórcio comum; (D) Intimação de todos no litisconsórcio unitário. Qual opção relaciona corretamente os números?",
+        opcoes: [
+            "A→2, B→4, C→3, D→1",
+            "A→1, B→2, C→3, D→4",
+            "A→3, B→1, C→4, D→2",
+            "A→4, B→3, C→2, D→1",
+            "A→2, B→3, C→4, D→1"
+        ], correta: 0, explicacao: "A→2 (inicia contagem), B→4 (prazo simples), C→3 (não prejudica), D→1 (intimar todos)." },
+
+    // ---- V/F ----
+    { tema: "Litisconsórcio", tipo: "radio", texto: "No litisconsórcio comum, a confissão de um litisconsorte vincula automaticamente os demais.", opcoes: ["Verdadeiro", "Falso"], correta: 1, explicacao: "Falso. No comum, a confissão atinge apenas quem a fez." },
+    { tema: "Litisconsórcio", tipo: "radio", texto: "No litisconsórcio unitário, a revelia de um litisconsorte pode repercutir sobre todos.", opcoes: ["Verdadeiro", "Falso"], correta: 0, explicacao: "Verdadeiro. No unitário, a decisão é uniforme e pode atingir todos." },
+    { tema: "Litisconsórcio", tipo: "radio", texto: "Se não houver previsão de substituição processual, o colegitimado que não foi parte em litisconsórcio unitário facultativo será sempre alcançado pela coisa julgada.", opcoes: ["Verdadeiro", "Falso"], correta: 1, explicacao: "Falso. Sem substituição processual, quem não participou pode não ser alcançado." },
+
+    // ---- INSTRUMENTOS DE MODIFICAÇÃO (já incluído acima, mas vou repetir para garantir) ----
+    // (já incluído)
 ];
 
 // ============================================================
-//  ESTADO E LÓGICA (com confetes)
+//  LÓGICA DO SIMULADO (adaptada para text, radio, checkbox, order)
 // ============================================================
 let questions = [];
 let userStatus = [];
@@ -421,36 +794,141 @@ function renderQuestion() {
 
     const container = document.getElementById('qText');
     container.innerHTML = '';
-    const parts = q.texto.split('______');
-    const numBlanks = q.blanks.length;
 
-    const savedValues = userInputs[currentIndex] || [];
+    const saved = userInputs[currentIndex];
 
-    for (let i = 0; i < parts.length; i++) {
-        container.appendChild(document.createTextNode(parts[i]));
-        if (i < numBlanks) {
+    if (q.tipo === 'text') {
+        // Montar texto com colchetes
+        const parts = q.texto.split('[');
+        for (let i = 0; i < parts.length; i++) {
+            const segment = parts[i];
+            if (segment.includes(']')) {
+                const [lacuna, resto] = segment.split(']');
+                container.appendChild(document.createTextNode('['));
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = 'blank-' + i;
+                input.className = 'blank-input';
+                input.autocomplete = 'off';
+                if (saved && saved[i]) {
+                    input.value = saved[i];
+                }
+                if (userStatus[currentIndex] !== -1) {
+                    input.disabled = true;
+                    const expected = q.blanks[i] ? q.blanks[i].trim().toLowerCase() : '';
+                    if (input.value.trim().toLowerCase() === expected) {
+                        input.classList.add('correct-input');
+                    } else {
+                        input.classList.add('wrong-input');
+                    }
+                } else {
+                    input.disabled = false;
+                    input.onkeydown = (e) => { if (e.key === 'Enter') confirmAnswer(); };
+                }
+                container.appendChild(input);
+                container.appendChild(document.createTextNode(']' + resto));
+            } else {
+                container.appendChild(document.createTextNode(segment));
+            }
+        }
+    } else if (q.tipo === 'radio') {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'radio-group';
+        q.opcoes.forEach((opt, idx) => {
+            const label = document.createElement('label');
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'question';
+            radio.value = idx;
+            if (saved !== null && saved === idx) radio.checked = true;
+            if (userStatus[currentIndex] !== -1) {
+                radio.disabled = true;
+                label.classList.add('disabled');
+                if (idx === q.correta) label.classList.add('correct-option');
+                else if (saved === idx && saved !== q.correta) label.classList.add('wrong-option');
+            } else {
+                radio.onchange = () => {};
+            }
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(opt));
+            wrapper.appendChild(label);
+        });
+        container.appendChild(wrapper);
+    } else if (q.tipo === 'checkbox') {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'checkbox-group';
+        q.opcoes.forEach((opt, idx) => {
+            const label = document.createElement('label');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = 'question';
+            checkbox.value = idx;
+            if (saved && Array.isArray(saved) && saved.includes(idx)) checkbox.checked = true;
+            if (userStatus[currentIndex] !== -1) {
+                checkbox.disabled = true;
+                label.classList.add('disabled');
+                if (q.corretas && q.corretas.includes(idx)) {
+                    label.classList.add('correct-option');
+                } else if (saved && Array.isArray(saved) && saved.includes(idx) && !q.corretas.includes(idx)) {
+                    label.classList.add('wrong-option');
+                }
+            } else {
+                checkbox.onchange = () => {};
+            }
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(opt));
+            wrapper.appendChild(label);
+        });
+        container.appendChild(wrapper);
+    } else if (q.tipo === 'order') {
+        // Exibe os itens em ordem aleatória com campos de texto para o usuário digitar a ordem
+        // Vamos criar uma lista numerada onde o usuário pode digitar a posição
+        const shuffled = q.orderItems.map((item, idx) => ({ item, idx }))
+            .sort(() => Math.random() - 0.5);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'order-group';
+        shuffled.forEach((obj) => {
+            const div = document.createElement('div');
+            div.className = 'order-item';
+            div.textContent = obj.item;
+            // Adicionar um campo de número ao lado
             const input = document.createElement('input');
-            input.type = 'text';
-            input.id = 'blank-' + i;
-            input.className = 'blank-input';
-            input.autocomplete = 'off';
-            if (savedValues[i]) {
-                input.value = savedValues[i];
+            input.type = 'number';
+            input.min = 1;
+            input.max = q.orderItems.length;
+            input.style.width = '60px';
+            input.style.background = '#222227';
+            input.style.border = '1px solid #444456';
+            input.style.color = '#fff';
+            input.style.borderRadius = '4px';
+            input.style.padding = '2px 6px';
+            input.style.marginLeft = '10px';
+            input.dataset.item = obj.item;
+            if (saved && saved[obj.idx] !== undefined) {
+                input.value = saved[obj.idx];
             }
             if (userStatus[currentIndex] !== -1) {
                 input.disabled = true;
-                if (input.value.trim().toLowerCase() === q.blanks[i].trim().toLowerCase()) {
-                    input.classList.add('correct-input');
+                const expected = q.orderCorrect.indexOf(obj.item) + 1;
+                if (parseInt(input.value) === expected) {
+                    div.classList.add('correct-order');
                 } else {
-                    input.classList.add('wrong-input');
+                    div.classList.add('wrong-order');
                 }
             } else {
-                input.disabled = false;
-                input.onkeydown = (e) => { if (e.key === 'Enter') confirmAnswer(); };
+                input.onchange = () => {};
             }
-            container.appendChild(input);
-            container.appendChild(document.createTextNode(' '));
-        }
+            div.appendChild(input);
+            wrapper.appendChild(div);
+        });
+        container.appendChild(wrapper);
+        // Adicionar instrução
+        const instr = document.createElement('p');
+        instr.style.fontSize = '14px';
+        instr.style.color = '#9494a1';
+        instr.style.marginTop = '8px';
+        instr.textContent = 'Digite ao lado de cada item a ordem correta (1, 2, 3, ...)';
+        container.appendChild(instr);
     }
 
     document.getElementById('qCounter').textContent =
@@ -466,29 +944,86 @@ function confirmAnswer() {
     if (userStatus[currentIndex] !== -1) return;
 
     const q = questions[currentIndex];
-    const inputs = document.querySelectorAll('.blank-input');
-    let allCorrect = true;
-    const userValues = [];
+    let allCorrect = false;
+    let userValue = null;
 
-    inputs.forEach((inp, idx) => {
-        const val = inp.value.trim();
-        userValues.push(val);
-        const expected = q.blanks[idx].trim().toLowerCase();
-        if (val.toLowerCase() !== expected) {
-            allCorrect = false;
-            inp.classList.add('wrong-input');
-        } else {
-            inp.classList.add('correct-input');
-        }
-        inp.disabled = true;
-    });
+    if (q.tipo === 'text') {
+        const inputs = document.querySelectorAll('.blank-input');
+        const userValues = [];
+        let allOk = true;
+        inputs.forEach((inp, idx) => {
+            const val = inp.value.trim();
+            userValues.push(val);
+            const expected = q.blanks[idx] ? q.blanks[idx].trim().toLowerCase() : '';
+            const expectedList = expected.split(',').map(s => s.trim());
+            if (expectedList.length > 1) {
+                if (!expectedList.some(e => val.toLowerCase() === e)) {
+                    allOk = false;
+                    inp.classList.add('wrong-input');
+                } else {
+                    inp.classList.add('correct-input');
+                }
+            } else {
+                if (val.toLowerCase() !== expected) {
+                    allOk = false;
+                    inp.classList.add('wrong-input');
+                } else {
+                    inp.classList.add('correct-input');
+                }
+            }
+            inp.disabled = true;
+        });
+        userInputs[currentIndex] = userValues;
+        allCorrect = allOk;
+    } else if (q.tipo === 'radio') {
+        const selected = document.querySelector('input[name="question"]:checked');
+        if (!selected) return;
+        const idx = parseInt(selected.value);
+        userInputs[currentIndex] = idx;
+        allCorrect = (idx === q.correta);
+        document.querySelectorAll('input[name="question"]').forEach(el => el.disabled = true);
+        document.querySelectorAll('.radio-group label').forEach(lbl => lbl.classList.add('disabled'));
+        document.querySelectorAll('.radio-group label').forEach((lbl, i) => {
+            if (i === q.correta) lbl.classList.add('correct-option');
+            else if (i === idx && idx !== q.correta) lbl.classList.add('wrong-option');
+        });
+    } else if (q.tipo === 'checkbox') {
+        const checked = document.querySelectorAll('input[name="question"]:checked');
+        const selectedIndices = Array.from(checked).map(el => parseInt(el.value));
+        userInputs[currentIndex] = selectedIndices;
+        const correctIndices = q.corretas;
+        const allCorrectSelected = correctIndices.every(i => selectedIndices.includes(i));
+        const noIncorrectSelected = selectedIndices.every(i => correctIndices.includes(i));
+        allCorrect = allCorrectSelected && noIncorrectSelected && selectedIndices.length === correctIndices.length;
+        document.querySelectorAll('input[name="question"]').forEach(el => el.disabled = true);
+        document.querySelectorAll('.checkbox-group label').forEach(lbl => lbl.classList.add('disabled'));
+        document.querySelectorAll('.checkbox-group label').forEach((lbl, i) => {
+            if (correctIndices.includes(i)) lbl.classList.add('correct-option');
+            else if (selectedIndices.includes(i) && !correctIndices.includes(i)) lbl.classList.add('wrong-option');
+        });
+    } else if (q.tipo === 'order') {
+        const inputs = document.querySelectorAll('.order-item input[type="number"]');
+        const userValues = [];
+        let allOk = true;
+        inputs.forEach((inp, idx) => {
+            const val = parseInt(inp.value);
+            userValues.push(val);
+            const expected = q.orderCorrect.indexOf(inp.dataset.item) + 1;
+            if (isNaN(val) || val !== expected) {
+                allOk = false;
+                inp.parentElement.classList.add('wrong-order');
+            } else {
+                inp.parentElement.classList.add('correct-order');
+            }
+            inp.disabled = true;
+        });
+        userInputs[currentIndex] = userValues;
+        allCorrect = allOk;
+    }
 
-    userInputs[currentIndex] = userValues;
     userStatus[currentIndex] = allCorrect ? 1 : 0;
-
     updateNav();
     showFeedback(currentIndex);
-
     if (allCorrect) {
         confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ['#d97706', '#4caf50', '#fff'] });
     }
@@ -506,11 +1041,28 @@ function showFeedback(idx) {
     title.className = 'fb-title ' + (isCorrect ? 'correct' : 'wrong');
     text.textContent = q.explicacao;
 
-    let ansHtml = '<strong>Respostas esperadas:</strong> ';
-    q.blanks.forEach((b, i) => {
-        ansHtml += (i > 0 ? ', ' : '') + '<span style="color:#d97706;">' + b + '</span>';
-    });
-    answersDiv.innerHTML = ansHtml;
+    if (q.tipo === 'text' && q.blanks) {
+        let ansHtml = '<strong>Respostas esperadas:</strong> ';
+        q.blanks.forEach((b, i) => {
+            ansHtml += (i > 0 ? ', ' : '') + '<span style="color:#d97706;">' + b + '</span>';
+        });
+        answersDiv.innerHTML = ansHtml;
+    } else if (q.tipo === 'radio' && q.opcoes) {
+        let ansHtml = '<strong>Resposta correta:</strong> ' + q.opcoes[q.correta];
+        answersDiv.innerHTML = ansHtml;
+    } else if (q.tipo === 'checkbox' && q.opcoes && q.corretas) {
+        let ansHtml = '<strong>Opções corretas:</strong> ';
+        q.corretas.forEach((i, idx) => {
+            ansHtml += (idx > 0 ? ', ' : '') + q.opcoes[i];
+        });
+        answersDiv.innerHTML = ansHtml;
+    } else if (q.tipo === 'order') {
+        let ansHtml = '<strong>Ordem correta:</strong> ';
+        q.orderCorrect.forEach((item, idx) => {
+            ansHtml += (idx > 0 ? ' → ' : '') + item;
+        });
+        answersDiv.innerHTML = ansHtml;
+    }
 
     fb.style.display = 'block';
 }
