@@ -185,7 +185,7 @@
 
         @media (max-width: 600px) {
             .container {
-                padding: 45px 18px 25px; /* Mais padding no topo para o botão caber */
+                padding: 45px 18px 25px; 
             }
             .header h1 {
                 font-size: 24px;
@@ -217,13 +217,14 @@
 </head>
 <body>
 
-<!-- Áudio de Fundo (Loop) convertido para raw.githubusercontent -->
-<audio id="bg-music" loop>
+<!-- Áudio de Fundo com autoplay adicionado -->
+<audio id="bg-music" loop autoplay>
     <source src="https://raw.githubusercontent.com/mmillenaa/civil-procedure-law/main/zombies.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container">
     
+    <!-- Botão de controle -->
     <button class="music-btn" id="music-btn" onclick="toggleMusic()">
         🔇 Tocar Música
     </button>
@@ -238,7 +239,6 @@
     </div>
 
     <div class="grid">
-        <!-- FASE 1 -->
         <a href="Fase1.html" class="card">
             <div class="fase">Fase 1</div>
             <div class="titulo">70 questões</div>
@@ -246,7 +246,6 @@
             <span class="badge">📝 70 perguntas</span>
         </a>
 
-        <!-- FASE 2 -->
         <a href="Fase2.html" class="card">
             <div class="fase">Fase 2</div>
             <div class="titulo">70 questões</div>
@@ -254,7 +253,6 @@
             <span class="badge">⚖️ 70 perguntas</span>
         </a>
 
-        <!-- FASE 3 -->
         <a href="Fase3.html" class="card">
             <div class="fase">Fase 3</div>
             <div class="titulo">60 questões</div>
@@ -262,7 +260,6 @@
             <span class="badge">🔄 60 perguntas</span>
         </a>
 
-        <!-- FASE 4 -->
         <a href="Fase4.html" class="card">
             <div class="fase">Fase 4</div>
             <div class="titulo">45 questões</div>
@@ -270,7 +267,6 @@
             <span class="badge">📋 45 perguntas</span>
         </a>
 
-        <!-- FASE 5 -->
         <a href="Fase5.html" class="card">
             <div class="fase">Fase 5</div>
             <div class="titulo">70 questões</div>
@@ -278,7 +274,6 @@
             <span class="badge">✏️ 70 lacunas</span>
         </a>
 
-        <!-- FASE 6 -->
         <a href="Fase6.html" class="card">
             <div class="fase">Fase 6</div>
             <div class="titulo">60 questões</div>
@@ -286,7 +281,6 @@
             <span class="badge">✏️ 60 lacunas</span>
         </a>
 
-        <!-- FASE 7 -->
         <a href="Fase7.html" class="card">
             <div class="fase">Fase 7</div>
             <div class="titulo">45 questões</div>
@@ -304,35 +298,44 @@
 </div>
 
 <script>
-    // Controle da Música de Fundo
     const bgMusic = document.getElementById('bg-music');
     const musicBtn = document.getElementById('music-btn');
     let hasUserInteracted = false;
 
+    // Sincroniza o botão com o estado real do áudio
+    bgMusic.addEventListener('play', () => {
+        musicBtn.innerHTML = '🔊 Pausar Música';
+        musicBtn.classList.add('playing');
+    });
+
+    bgMusic.addEventListener('pause', () => {
+        musicBtn.innerHTML = '🔇 Tocar Música';
+        musicBtn.classList.remove('playing');
+    });
+
+    // Função de clique no botão
     function toggleMusic() {
         if (bgMusic.paused) {
             bgMusic.play();
-            musicBtn.innerHTML = '🔊 Pausar Música';
-            musicBtn.classList.add('playing');
         } else {
             bgMusic.pause();
-            musicBtn.innerHTML = '🔇 Tocar Música';
-            musicBtn.classList.remove('playing');
         }
     }
 
-    // Tentar tocar a música automaticamente assim que o usuário clicar em qualquer lugar da tela (política dos navegadores modernos)
-    document.body.addEventListener('click', function() {
-        if (!hasUserInteracted && bgMusic.paused) {
-            bgMusic.play().then(() => {
-                musicBtn.innerHTML = '🔊 Pausar Música';
-                musicBtn.classList.add('playing');
-            }).catch((e) => {
-                console.log("Autoplay bloqueado pelo navegador.");
-            });
-            hasUserInteracted = true; // Só tenta uma vez
-        }
-    }, { once: true });
+    // Tenta forçar o áudio a tocar quando a página carrega
+    window.addEventListener('DOMContentLoaded', () => {
+        bgMusic.play().catch(() => {
+            console.log("Autoplay bloqueado pelo navegador. Aguardando interação do usuário.");
+            
+            // Se bloqueado, tocará no exato momento do primeiro clique em qualquer lugar da tela
+            document.body.addEventListener('click', function() {
+                if (!hasUserInteracted && bgMusic.paused) {
+                    bgMusic.play();
+                    hasUserInteracted = true;
+                }
+            }, { once: true });
+        });
+    });
 </script>
 
 </body>
